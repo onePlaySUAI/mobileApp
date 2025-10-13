@@ -1,3 +1,5 @@
-export default function Register() {
+import {Redirect} from "expo-router";
 
+export default function Register() {
+  return <Redirect href='/home' />;
 }
