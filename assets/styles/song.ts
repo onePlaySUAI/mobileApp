@@ -1,4 +1,4 @@
-import {StyleSheet, ViewStyle, TextStyle, ImageStyle, useColorScheme} from 'react-native';
+import {StyleSheet, ViewStyle, TextStyle, ImageStyle } from 'react-native';
 import { Inter_400Regular } from '@expo-google-fonts/inter/400Regular';
 
 interface SongStyle {
@@ -14,8 +14,6 @@ interface SongStyle {
   sourceYT: ImageStyle,
   dotsStyle: ImageStyle,
 }
-
-
 
 export const getSongStyle = (isDarkMode: boolean, isActive=false) => {
 

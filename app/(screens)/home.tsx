@@ -4,15 +4,11 @@ import { useState, useEffect } from 'react';
 import {getHomeStyle} from "@/assets/styles/home";
 import Song from "@/assets/components/song";
 import {SafeAreaProvider} from "react-native-safe-area-context";
+import CustomHeader from "@/assets/components/customHeader";
 
 export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
   const colorScheme = useColorScheme();
-
-  useEffect(() => {
-    // Simulate checking authentication status
-    setTimeout(() => setIsAuthenticated(true), 2000);
-  }, []);
 
   if (!isAuthenticated) {
     return <Redirect href="/register" />;
@@ -21,10 +17,11 @@ export default function Home() {
   const style = getHomeStyle(colorScheme === 'dark');
 
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider style={ {backgroundColor: '#282828'} }>
       {/*'SafeAreaView deprecated'*/}
       {/*Однако в сети НОЛЬ доки, поэтому не меняю на safe-area-context.
          Может быть, поменяю, как появится дока*/}
+      <CustomHeader />
       <SafeAreaView style={style.container}>
         <Song params={{
           title: 'quwytefghjgasfvxchgdjsdfiujhsdfilujhgsdiufhguiysdgfuytigvsafvdhgjf',

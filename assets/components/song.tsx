@@ -1,6 +1,5 @@
-import {Image, Pressable, Text, TouchableOpacity, useColorScheme, View} from "react-native";
+import {Image, Pressable, Text, useColorScheme, View} from "react-native";
 import {getSongStyle} from "@/assets/styles/song";
-
 
 interface songParams {
   title: string,
