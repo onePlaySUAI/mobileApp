@@ -1,32 +1,51 @@
-import {StyleSheet, ViewStyle, TextStyle, ImageStyle } from 'react-native';
-import { Inter_400Regular } from '@expo-google-fonts/inter/400Regular';
+import { StyleSheet, ViewStyle, TextStyle, ImageStyle } from 'react-native';
 
 interface SongStyle {
-  songContainer: ViewStyle,
-
-  albumTitleContainer: ViewStyle,
-  albumCover: ImageStyle,
-  title: TextStyle,
-  artist: TextStyle,
-
-  sourceContainer: ViewStyle,
-  source: ImageStyle,
-  sourceYT: ImageStyle,
-  dotsStyle: ImageStyle,
+  songContainer: ViewStyle;
+  albumTitleContainer: ViewStyle;
+  albumCover: ImageStyle;
+  title: TextStyle;
+  artist: TextStyle;
+  sourceContainer: ViewStyle;
+  source: ImageStyle;
+  sourceYT: ImageStyle;
+  dotsStyle: ImageStyle;
 }
 
-export const getSongStyle = (isDarkMode: boolean, isActive=false) => {
+const LIGHT_THEME = {
+  border: '#ccc',
+  title: '#000',
+  artist: '#555',
+  background: '#f8f8f8',
+  activeTitle: '#FF0000',
+  activeArtist: '#1DB954',
+};
+
+const DARK_THEME = {
+  border: '#444',
+  title: '#fff',
+  artist: '#aaa',
+  background: 'inherit',
+  activeTitle: '#FF5555',
+  activeArtist: '#1DB954',
+};
+
+export const getSongStyle = (isDarkMode: boolean, isActive: boolean) => {
+  const COLORS = isDarkMode ? DARK_THEME : LIGHT_THEME;
 
   return StyleSheet.create<SongStyle>({
     songContainer: {
       height: 47,
       borderStyle: 'dashed',
       borderWidth: 2,
-      borderColor: '#fff',
+      borderColor: COLORS.border,
       width: '100%',
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
+      backgroundColor: COLORS.background,
+      borderRadius: 8,
+      paddingHorizontal: 6,
     },
     albumTitleContainer: {
       flex: 1,
@@ -34,22 +53,22 @@ export const getSongStyle = (isDarkMode: boolean, isActive=false) => {
       justifyContent: 'flex-start',
       alignItems: 'center',
     },
-    title: {
-      fontSize: 19,
-      fontFamily: 'Inter_400Regular',
-      color: (isActive ? '#FF0000' : '#fff'),
-    },
-    artist: {
-      fontSize: 10,
-      fontFamily: 'Inter_400Regular',
-      color: (isActive ? '#1DB954' : 'gray'),
-    },
     albumCover: {
       width: 47,
       height: 47,
       borderRadius: 7,
       marginRight: 16,
-      backgroundColor: 'gray',
+      backgroundColor: COLORS.border,
+    },
+    title: {
+      fontSize: 18,
+      fontFamily: 'Inter_400Regular',
+      color: isActive ? COLORS.activeTitle : COLORS.title,
+    },
+    artist: {
+      fontSize: 11,
+      fontFamily: 'Inter_400Regular',
+      color: isActive ? COLORS.activeArtist : COLORS.artist,
     },
     sourceContainer: {
       flexDirection: 'row',
@@ -70,6 +89,7 @@ export const getSongStyle = (isDarkMode: boolean, isActive=false) => {
       width: 20,
       marginRight: 10,
       resizeMode: 'contain',
+      tintColor: COLORS.title,
     },
-  })
-}
+  });
+};

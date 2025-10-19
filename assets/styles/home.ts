@@ -1,8 +1,11 @@
 import { StyleSheet, ViewStyle, TextStyle } from 'react-native';
 
 interface AppStyle {
+  safeAreaProvider: ViewStyle,
   container: ViewStyle,
   text: TextStyle,
+  songsPlaceHolder: ViewStyle,
+  songsContent: ViewStyle,
 }
 
 const LIGHT_THEME_COLORS = {
@@ -21,11 +24,22 @@ export const getHomeStyle = (isDarkMode: boolean) => {
   const COLORS = isDarkMode ? DARK_THEME_COLORS : LIGHT_THEME_COLORS;
 
   return StyleSheet.create<AppStyle>({
+    safeAreaProvider: {
+      backgroundColor: COLORS.background,
+    },
+    songsPlaceHolder: {
+      flex: 1,
+      width: '100%',
+      backgroundColor: COLORS.background,
+    },
+    songsContent: {
+      padding: 10,
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+      gap: 10,
+    },
     container: {
       flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: 20,
       backgroundColor: COLORS.background,
       shadowColor: COLORS.shadow,
     },
