@@ -15,7 +15,7 @@ const LIGHT_THEME_COLORS = {
 };
 
 const DARK_THEME_COLORS = {
-  background: '#282828',
+  background: '#1a1a1a', // Darker background to match Figma design
   text: '#ffffff',
   shadow: 'transparent',
 };

@@ -1,17 +1,15 @@
 import { StyleSheet, ViewStyle, TextStyle } from 'react-native';
 
-interface HeaderStyle {
+interface ProfileHeaderStyle {
   container: ViewStyle;
-  headerTop: ViewStyle;
-  circle: ViewStyle;
-  title: TextStyle;
   searchContainer: ViewStyle;
+  backBtn: ViewStyle;
+  backIcon: TextStyle;
   searchInput: TextStyle;
   searchButton: ViewStyle;
 }
 
-// The marginTop comes from safe area insets passed from the component.
-export const getHeaderStyle = (isDarkMode: boolean, marginTop: number) => {
+export const getProfileHeaderStyle = (isDarkMode: boolean, marginTop: number) => {
   const COLORS = {
     background: isDarkMode ? '#000' : '#f8f8f8',
     searchBackground: isDarkMode ? '#2a2a2a' : '#e5e5e7',
@@ -21,7 +19,7 @@ export const getHeaderStyle = (isDarkMode: boolean, marginTop: number) => {
     searchButton: '#00ff00',
   };
 
-  return StyleSheet.create<HeaderStyle>({
+  return StyleSheet.create<ProfileHeaderStyle>({
     container: {
       backgroundColor: COLORS.background,
       paddingTop: marginTop,
@@ -35,23 +33,6 @@ export const getHeaderStyle = (isDarkMode: boolean, marginTop: number) => {
       shadowRadius: 3,
       elevation: 3, // Android shadow
     },
-    headerTop: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginBottom: 12,
-    },
-    circle: {
-      width: 35,
-      height: 35,
-      borderRadius: 40,
-      marginRight: 12,
-      backgroundColor: '#8e8e93',
-    },
-    title: {
-      color: COLORS.title,
-      fontSize: 18,
-      fontWeight: '600',
-    },
     searchContainer: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -59,6 +40,15 @@ export const getHeaderStyle = (isDarkMode: boolean, marginTop: number) => {
       paddingHorizontal: 16,
       paddingVertical: 12,
       marginTop: 8,
+    },
+    backBtn: {
+      padding: 8,
+      marginRight: 6,
+    },
+    backIcon: {
+      color: '#ff3b30',
+      fontSize: 20,
+      fontWeight: '700',
     },
     searchInput: {
       flex: 1,
