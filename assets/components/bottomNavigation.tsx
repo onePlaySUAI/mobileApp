@@ -20,6 +20,7 @@ export default function BottomNavigation({ activeTab, onTabPress }: BottomNaviga
       <TouchableOpacity 
         style={[style.tab, activeTab === 'search' && style.activeTab]} 
         onPress={() => onTabPress('search')}
+        hitSlop={10}
       >
         {activeTab === 'search' ? (
           <SearchIcon width={24} height={24} />
@@ -31,6 +32,7 @@ export default function BottomNavigation({ activeTab, onTabPress }: BottomNaviga
       <TouchableOpacity 
         style={[style.tab, activeTab === 'queue' && style.activeTab]} 
         onPress={() => onTabPress('queue')}
+        hitSlop={10}
       >
         {activeTab === 'queue' ? (
           <LibraryIcon width={24} height={24} />

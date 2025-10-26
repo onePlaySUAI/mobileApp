@@ -1,5 +1,4 @@
-import { View, StyleSheet } from "react-native";
-import { useColorScheme } from "react-native";
+import { View, StyleSheet, useColorScheme } from "react-native";
 import ProfileHeader from "@/assets/components/profile/ProfileHeader";
 import ProfileAvatar from "@/assets/components/profile/ProfileAvatar";
 import ProfileInfo from "@/assets/components/profile/ProfileInfo";

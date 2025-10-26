@@ -1,17 +1,20 @@
 import { View, Text, TextInput, StyleSheet, Platform } from "react-native";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 interface ProfileInfoProps {
   isDark: boolean;
 }
 
 export default function ProfileInfo({ isDark }: ProfileInfoProps) {
+  const { name, email } = useSelector((state: RootState) => state.user);
   const style = getProfileInfoStyle(isDark);
 
   return (
     <>
       <View style={style.nameBlock}>
-        <Text style={style.name}>Name</Text>
-        <Text style={style.surname}>Surname</Text>
+        <Text style={style.name}>{name}</Text>
+        <Text style={style.email}>{email}</Text>
       </View>
 
       <View style={style.phoneRow}>
@@ -29,8 +32,8 @@ export default function ProfileInfo({ isDark }: ProfileInfoProps) {
 
 function getProfileInfoStyle(isDark: boolean) {
   const COLORS = {
-    text: '#ffffff',
-    textSecondary: '#bfbfbf',
+    text: isDark ? '#ffffff' : '#2e2e2e',
+    textSecondary: isDark ? '#bfbfbf' : '#797979',
   };
 
   return StyleSheet.create({
@@ -44,7 +47,7 @@ function getProfileInfoStyle(isDark: boolean) {
       fontSize: 22,
       fontWeight: '600',
     },
-    surname: {
+    email: {
       color: COLORS.textSecondary,
       fontSize: 20,
       marginTop: 6,

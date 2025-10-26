@@ -1,7 +1,7 @@
 import React from 'react';
 import Svg, { Rect, Defs, LinearGradient, Stop } from 'react-native-svg';
 
-const EqualizerIcon = ({ width = 27, height = 25, color = null }) => {
+const EqualizerIcon = ({ width = 27, height = 25, color = '#000' }) => {
   return (
     <Svg width={width} height={height} viewBox="0 0 27 25" fill="none">
       <Rect
