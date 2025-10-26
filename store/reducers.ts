@@ -15,6 +15,7 @@ export type UserAction = SetUserAction;
 const initialState: UserState = {
   name: '',
   email: '',
+  // token: ''; когда ручку будем делать
 };
 
 export const userReducer = (state = initialState, action: UserAction): UserState => {
