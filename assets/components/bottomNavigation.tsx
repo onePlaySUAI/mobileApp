@@ -6,8 +6,8 @@ import SearchIcon from "./icons/SearchIcon";
 import LibraryIcon from "./icons/LibraryIcon";
 
 interface BottomNavigationProps {
-  activeTab: 'search' | 'queue';
-  onTabPress: (tab: 'search' | 'queue') => void;
+  activeTab: 'search' | 'library';
+  onTabPress: (tab: 'search' | 'library') => void;
 }
 
 export default function BottomNavigation({ activeTab, onTabPress }: BottomNavigationProps) {
@@ -30,11 +30,11 @@ export default function BottomNavigation({ activeTab, onTabPress }: BottomNaviga
       </TouchableOpacity>
       
       <TouchableOpacity 
-        style={[style.tab, activeTab === 'queue' && style.activeTab]} 
-        onPress={() => onTabPress('queue')}
+        style={[style.tab, activeTab === 'library' && style.activeTab]} 
+        onPress={() => onTabPress('library')}
         hitSlop={10}
       >
-        {activeTab === 'queue' ? (
+        {activeTab === 'library' ? (
           <LibraryIcon width={24} height={24} />
         ) : (
           <LibraryIcon width={24} height={24} color="#ffffff" />

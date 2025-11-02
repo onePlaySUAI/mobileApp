@@ -3,6 +3,7 @@ import { StyleSheet, ViewStyle, TextStyle } from 'react-native';
 interface AppStyle {
   safeAreaProvider: ViewStyle,
   container: ViewStyle,
+  Tab: ViewStyle,
   text: TextStyle,
   songsPlaceHolder: ViewStyle,
   songsContent: ViewStyle,
@@ -37,6 +38,11 @@ export const getHomeStyle = (isDarkMode: boolean) => {
       flexDirection: 'column',
       justifyContent: 'flex-start',
       gap: 10,
+    },
+    Tab: {
+      flex: 1,
+      marginTop: 10,
+      paddingHorizontal: 16,
     },
     container: {
       flex: 1,
