@@ -1,6 +1,7 @@
 export interface UserState {
   name: string;
   email: string;
+  // token: ''; когда ручку будем делать
 }
 
 const SET_USER = 'SET_USER';
@@ -8,6 +9,7 @@ const SET_USER = 'SET_USER';
 export interface SetUserAction {
   type: typeof SET_USER;
   payload: UserState;
+  [key: string]: any; // ✅ разрешаем дополнительные поля
 }
 
 export type UserAction = SetUserAction;
@@ -15,7 +17,6 @@ export type UserAction = SetUserAction;
 const initialState: UserState = {
   name: '',
   email: '',
-  // token: ''; когда ручку будем делать
 };
 
 export const userReducer = (state = initialState, action: UserAction): UserState => {
