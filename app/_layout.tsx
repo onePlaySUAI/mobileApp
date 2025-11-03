@@ -8,6 +8,7 @@ export default function RootLayout() {
       <Stack screenOptions={ {headerShown: false} }>
         <Stack.Screen name='(screens)/home' />
         <Stack.Screen name='(screens)/register' />
+        <Stack.Screen name="(screens)/PlaylistDetail" />
       </Stack>
     </Provider>
   );

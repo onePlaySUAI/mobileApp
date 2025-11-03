@@ -4,18 +4,12 @@ import { ScrollView } from "react-native";
 import Song from "@/assets/components/song";
 import { useState } from "react";
 
-export default function SearchTabContent() {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [currentSong, setCurrentSong] = useState({ title: '', artist: '' });
+interface SearchTabContentProps {
+  openModal: (title: string, artist: string) => void;
+  closeModal: () => void;
+}
 
-  const openModal = (title: string, artist: string) => {
-    setCurrentSong({ title, artist });
-    setModalVisible(true);
-  };
-
-  const closeModal = () => {
-    setModalVisible(false);
-  };
+export default function SearchTabContent({openModal, closeModal} : SearchTabContentProps) {
 
   return (
     <ScrollView contentContainerStyle={{ paddingBottom: 80, gap: 12 }}>

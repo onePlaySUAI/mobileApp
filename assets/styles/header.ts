@@ -7,6 +7,7 @@ interface HeaderStyle {
   title: TextStyle;
   searchContainer: ViewStyle;
   searchInput: TextStyle;
+  libaryInput: TextStyle;
   searchButton: ViewStyle;
 }
 
@@ -67,6 +68,14 @@ export const getHeaderStyle = (isDarkMode: boolean, marginTop: number) => {
       borderBottomWidth: 1,
       borderBottomColor: COLORS.searchPlaceholder,
       paddingVertical: 4,
+      marginRight: 12,
+    },
+    libaryInput: {
+      flex: 1,
+      color: COLORS.searchPlaceholder,
+      fontSize: 20,
+      paddingVertical: 4,
+      marginLeft: 7,
       marginRight: 12,
     },
     searchButton: {

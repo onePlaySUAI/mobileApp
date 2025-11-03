@@ -1,15 +1,14 @@
 import {SafeAreaView, ScrollView, useColorScheme} from 'react-native';
 import { Redirect } from 'expo-router';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {getHomeStyle} from "@/assets/styles/home";
-import Song from "@/assets/components/song";
 import {SafeAreaProvider} from "react-native-safe-area-context";
-import CustomHeader from "@/assets/components/home/customHeader";
 import SongOptionsModal from "@/assets/components/songOptionsModal";
 import BottomNavigation from "@/assets/components/bottomNavigation";
 import NowPlayingBar from "@/assets/components/nowPlayingBar";
 import SearchTabContent from "@/assets/components/home/searchTabContent";
 import LibraryTabContent from '@/assets/components/home/libraryTabContent';
+import SearchHeader from '@/assets/components/home/searchHeader';
 
 export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
@@ -58,18 +57,31 @@ export default function Home() {
 
   const style = getHomeStyle(colorScheme === 'dark');
 
+  const myPlaylists = [
+    { id: '1', name: 'My Hits', count: '5 songs' },
+    { id: '2', name: 'Chill Vibes', count: '12 songs' },
+  ];
+
+
   return (
     <SafeAreaProvider
       style={style.safeAreaProvider}>
       {/*'SafeAreaView deprecated'*/}
       {/*Однако в сети НОЛЬ доки, поэтому не меняю на safe-area-context.
          Может быть, поменяю, как появится дока*/}
-      <CustomHeader params={{ page: 'Home' }} />
+      <SearchHeader params={{ page: activeTab }} />
       
       <SafeAreaView style={style.Tab}>
         {/* Отображаем контент в зависимости от вкладки */}
-        {activeTab === 'search' && <SearchTabContent />}
-        {activeTab === 'library' && <LibraryTabContent />}
+        {activeTab === 'search' && <SearchTabContent openModal={openModal} closeModal={closeModal}/>}
+        {
+          activeTab === 'library' && 
+          <LibraryTabContent
+            playlists={myPlaylists}
+            onPlaylistPress={(playlist) => console.log(playlist)}
+            onAddPlaylist={() => console.log('Add new')}
+          />
+        }
       </SafeAreaView>
 
 
@@ -85,10 +97,10 @@ export default function Home() {
       />
       
       <SongOptionsModal
-        isDarkMode={colorScheme === 'dark'}
-        onClose={closeModal}
         visible={modalVisible}
-        song={{title: modalCurrentSong.title, artist: modalCurrentSong.artist}}
+        onClose={closeModal}
+        song={modalCurrentSong}
+        isDarkMode={colorScheme === 'dark'}
       />
     </SafeAreaProvider>
   );
