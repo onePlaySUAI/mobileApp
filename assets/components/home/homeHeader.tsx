@@ -14,7 +14,7 @@ interface HeaderParams {
   params: HeaderProps;
 }
 
-export default function SearchHeader({ params }: HeaderParams) {
+export default function HomeHeader({ params }: HeaderParams) {
   const colorScheme = useColorScheme();
   const insets = useSafeAreaInsets();
   const style = getHeaderStyle(colorScheme === 'dark', insets.top);
@@ -45,12 +45,10 @@ export default function SearchHeader({ params }: HeaderParams) {
             value={searchText}
             onChangeText={setSearchText}
             autoFocus
-            // 🔽 Главное: при потере фокуса — скрываем
             onBlur={() => {
               setIsSearching(false);
               setSearchText('');
             }}
-            // Клавиатура скроется — и onBlur сработает
           />
         ) : (
           <Text style={style.libaryInput}>{displayText}</Text>

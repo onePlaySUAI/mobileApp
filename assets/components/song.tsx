@@ -1,7 +1,7 @@
 import {Image, Pressable, Text, useColorScheme, View} from "react-native";
 import {getSongStyle} from "@/assets/styles/song";
 
-interface songParams {
+export interface songParams {
   title: string,
   artist: string,
   source: 'Spotify' | 'Youtube' | 'Download';

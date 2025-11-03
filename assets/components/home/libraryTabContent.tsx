@@ -6,13 +6,11 @@ import {
   ScrollView, 
   StyleSheet 
 } from 'react-native';
-import PlaylistItem from '../playListItem';
+import PlaylistItem, { Playlist } from './PlayList/playListItem';
 
-
-interface Playlist {
+interface PlayListItemProps {
   id: string;
-  name: string;
-  count: string;
+  playlist: Playlist;
 }
 
 interface LibraryTabContentProps {
@@ -45,6 +43,7 @@ const LibraryTabContent = ({
           <PlaylistItem
             key={playlist.id}
             playlist={playlist}
+            onPress={() => onPlaylistPress(playlist)}
           />
         ))}
       </ScrollView>

@@ -2,32 +2,27 @@
 
 import React from 'react';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
-import { router } from 'expo-router';
+import { songParams } from '../../song';
 
-interface Playlist {
+export interface Playlist {
   id: string;
   name: string;
-  count: string;
+  songs: songParams[];
 }
 
 interface PlaylistItemProps {
   playlist: Playlist;
+  onPress?: () => void;
 }
 
-const PlaylistItem = ({ playlist }: PlaylistItemProps) => {
-  const handlePress = () => {
-    router.push({
-      pathname: '/PlaylistDetail', // ✅ Правильный путь
-      params: { playlist: JSON.stringify(playlist) },
-    });
-  };
+const PlaylistItem = ({ playlist, onPress }: PlaylistItemProps) => {
 
   return (
-    <TouchableOpacity style={styles.container} onPress={handlePress}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.cover} />
       <View style={styles.info}>
         <Text style={styles.name}>{playlist.name}</Text>
-        <Text style={styles.count}>{playlist.count}</Text>
+        <Text style={styles.count}>{playlist.songs.length}</Text>
       </View>
     </TouchableOpacity>
   );

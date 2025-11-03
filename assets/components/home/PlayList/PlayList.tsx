@@ -8,13 +8,8 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-
-interface Playlist {
-  id: string;
-  name: string;
-  count: string;
-  coverGradient?: string[];
-}
+import { Playlist } from './playListItem';
+import Song from '../../song';
 
 interface PlaylistContentProps {
   playlist: Playlist;
@@ -22,18 +17,25 @@ interface PlaylistContentProps {
 }
 
 const PlaylistContent = ({ playlist, onAddMusic }: PlaylistContentProps) => {
-  // Генерируем градиент обложки на основе имени
-  const getCoverGradientColors = () => {
-    if (playlist.coverGradient) {
-      return playlist.coverGradient;
-    }
+  const songs = playlist.songs || [];
+  const songElements = [];
 
-    // Генерируем цвет на основе хеша имени
+  // пока так, надо делать рефакторинг
+  for (let i = 0; i < songs.length; i++) {
+    const song = songs[i];
+    songElements.push(
+      <Song 
+        key={i} 
+        params={song} 
+        onDotsPress={() => console.log("Song options", song.title)} 
+      />
+    );
+  }
+  const getCoverGradientColors = () => {
     const hash = playlist.name
       .split('')
       .reduce((acc, char) => acc + char.charCodeAt(0), 0);
     const hue = hash % 360;
-    
     return ['#ccc', '#999', '#666', '#333'];
   };
 
@@ -46,18 +48,17 @@ const PlaylistContent = ({ playlist, onAddMusic }: PlaylistContentProps) => {
 
   return (
     <View style={styles.container}>
-      {/* Cover Image - градиент */}
-      <View style={styles.coverContainer}>
-        <View style={[styles.gradientTop, { backgroundColor: gradientColors[0] }]} />
-        <View style={[styles.gradientMiddle, { backgroundColor: gradientColors[1] }]} />
-        <View style={[styles.gradientBottom, { backgroundColor: gradientColors[2] }]} />
-      </View>
-
-      {/* Content */}
       <ScrollView 
         style={styles.scrollView}
         contentContainerStyle={styles.scrollContent}
       >
+        {/* Cover */}
+        <View style={styles.coverContainer}>
+          <View style={[styles.gradientTop, { backgroundColor: gradientColors[0] }]} />
+          <View style={[styles.gradientMiddle, { backgroundColor: gradientColors[1] }]} />
+          <View style={[styles.gradientBottom, { backgroundColor: gradientColors[2] }]} />
+        </View>
+
         {/* Add Music Button */}
         <TouchableOpacity 
           style={styles.addMusicButton}
@@ -66,18 +67,22 @@ const PlaylistContent = ({ playlist, onAddMusic }: PlaylistContentProps) => {
           <Text style={styles.addMusicText}>Add music</Text>
         </TouchableOpacity>
 
-        {/* Empty State */}
-        <View style={styles.emptyState}>
-          <Text style={styles.emptyIcon}>🎵</Text>
-          <Text style={styles.emptyTitle}>No songs yet</Text>
-          <Text style={styles.emptyDescription}>
-            Start adding songs to your playlist
-          </Text>
-        </View>
+        {/* Empty State или песни */}
+        {songs.length === 0 ? (
+          <View style={styles.emptyState}>
+            <Text style={styles.emptyTitle}>No songs yet</Text>
+            <Text style={styles.emptyDescription}>
+              Start adding songs to your playlist
+            </Text>
+          </View>
+        ) : (
+          songElements
+        )}
       </ScrollView>
     </View>
   );
 };
+
 
 export default PlaylistContent;
 
