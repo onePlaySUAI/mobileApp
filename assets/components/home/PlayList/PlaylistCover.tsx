@@ -34,14 +34,14 @@ const PlaylistCover = ({
 
     const hash = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
     if (colorScheme === 'dark') {
-      // Более темные варианты
+      // Темные цветные варианты для темной темы
       const gradients: readonly [string, string][] = [
-        ['#232a2a', '#282828'],
-        ['#2d2323', '#282828'],
-        ['#23233a', '#282828'],
-        ['#23232a', '#282828'],
-        ['#232a1d', '#282828'],
-        ['#23231d', '#282828'],
+        ['#388E3C', '#282828'], // Темно-зеленый
+        ['#D32F2F', '#282828'], // Темно-красный
+        ['#7B1FA2', '#282828'], // Темно-фиолетовый
+        ['#1976D2', '#282828'], // Темно-синий
+        ['#F57C00', '#282828'], // Темно-оранжевый
+        ['#5D4037', '#282828'], // Темно-коричневый
       ];
       return gradients[hash % gradients.length];
     } else {
@@ -81,14 +81,29 @@ const PlaylistCover = ({
       shadowRadius: isLarge ? 0 : 4,
       elevation: isLarge ? 0 : (colorScheme === 'dark' ? 6 : 2),
     },
-    gradient: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
+    baseContent: {
       width: '100%',
       height: '100%',
     },
+    gradient: {
+      flex: 1,
+      width: '100%',
+      height: '100%',
+    },
+    overlay: {
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      top: 0,
+      bottom: 0,
+      justifyContent: 'center',
+      alignItems: 'center',
+      zIndex: 1,
+      pointerEvents: 'none',
+    },
     initial: {
+      position: 'absolute',
+      zIndex: 2,
       fontSize: isLarge ? 120 : 24,
       fontWeight: '700',
       color: colorScheme === 'dark' ? '#eaeaea' : '#fff',
@@ -107,20 +122,36 @@ const PlaylistCover = ({
 
   const Container = onPress ? TouchableOpacity : View;
 
+  const overlayColors: readonly [string, string] = isLarge ? ['transparent', '#1a1a1a'] : ['transparent', 'transparent'];
+  const overlayLocations: readonly [number, number] = [0.3, 1];
+
   return (
     <Container style={styles.container} onPress={onPress}>
-      {customImage ? (
-        <Image source={{ uri: customImage }} style={styles.customImage} />
-      ) : (
-        <LinearGradient
-          colors={getGradientColors()}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.gradient}
-        >
-          <Text style={styles.initial}>{getInitial()}</Text>
-        </LinearGradient>
-      )}
+      {/* base: image or generated gradient */}
+      <View style={styles.baseContent}>
+        {customImage ? (
+          <Image source={{ uri: customImage }} style={styles.customImage} />
+        ) : (
+          <LinearGradient
+            colors={getGradientColors()}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.gradient}
+          />
+        )}
+      </View>
+
+      {/* overlay to mimic Spotify-style fade (transparent -> dark) */}
+      <LinearGradient
+        colors={overlayColors}
+        locations={overlayLocations}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 1 }}
+        style={styles.overlay}
+      />
+
+      {/* initial on top */}
+      <Text style={styles.initial}>{getInitial()}</Text>
     </Container>
   );
 };
