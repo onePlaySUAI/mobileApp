@@ -8,6 +8,9 @@ import {
   setPlaylists,
   setModalVisible,
   setModalCurrentSong,
+  toggleFavorite,
+  setPlaylistModalVisible,
+  setPlaylistModalCurrent,
   MusicState
 } from '../../store/reducers';
 
@@ -28,6 +31,12 @@ interface MusicContextType {
   closeModal: () => void;
   handlePlayPause: () => void;
   handleFavorite: () => void;
+  playlistModalVisible: boolean;
+  setPlaylistModalVisible: (visible: boolean) => void;
+  playlistModalCurrent: { id: string; name: string };
+  setPlaylistModalCurrent: (playlist: { id: string; name: string }) => void;
+  openPlaylistModal: (id: string, name: string) => void;
+  closePlaylistModal: () => void;
 }
 
 interface MusicProviderProps {
@@ -73,7 +82,16 @@ export const PlayerProvider: React.FC<MusicProviderProps> = ({ children }) => {
   };
 
   const handleFavorite = (): void => {
-    console.log('Favorite pressed');
+    dispatch(toggleFavorite());
+  };
+
+  const openPlaylistModal = (id: string, name: string): void => {
+    dispatch(setPlaylistModalVisible(true));
+    dispatch(setPlaylistModalCurrent({ id, name }));
+  };
+
+  const closePlaylistModal = (): void => {
+    dispatch(setPlaylistModalVisible(false));
   };
 
   const value: MusicContextType = {
@@ -93,6 +111,12 @@ export const PlayerProvider: React.FC<MusicProviderProps> = ({ children }) => {
     closeModal,
     handlePlayPause,
     handleFavorite,
+    playlistModalVisible: musicState.playlistModalVisible,
+    setPlaylistModalVisible: (visible: boolean) => dispatch(setPlaylistModalVisible(visible)),
+    playlistModalCurrent: musicState.playlistModalCurrent,
+    setPlaylistModalCurrent: (playlist: { id: string; name: string }) => dispatch(setPlaylistModalCurrent(playlist)),
+    openPlaylistModal,
+    closePlaylistModal,
   };
 
   return (

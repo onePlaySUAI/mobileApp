@@ -12,12 +12,14 @@ interface LibraryTabContentProps {
   playlists: Playlist[];
   onPlaylistPress: (playlist: Playlist) => void;
   onAddPlaylist: () => void;
+  onDotsPress: (playlist: Playlist) => void;
 }
 
 const LibraryTabContent = ({
   playlists,
   onPlaylistPress,
-  onAddPlaylist
+  onAddPlaylist,
+  onDotsPress
 }: LibraryTabContentProps) => {
   const styles = getLibraryTabContentStyle();
 
@@ -41,6 +43,7 @@ const LibraryTabContent = ({
             key={playlist.id}
             playlist={playlist}
             onPress={() => onPlaylistPress(playlist)}
+            onDotsPress={() => onDotsPress(playlist)}
           />
         ))}
       </ScrollView>

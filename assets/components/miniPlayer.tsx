@@ -11,6 +11,7 @@ interface MiniPlayerProps {
     artist: string;
     albumCover?: string;
     isPlaying?: boolean;
+    isFavorite?: boolean;
   } | null;
   onPlayPause?: () => void;
   onFavorite?: () => void;
@@ -52,7 +53,7 @@ export default function MiniPlayer({
       
       <View style={style.rightSection}>
         <TouchableOpacity onPress={onFavorite} style={style.actionButton}>
-          <Ionicons name="star" size={18} color="#ffd700" />
+          <Ionicons name={song.isFavorite ? "star" : "star-outline"} size={18} color="#ffd700" />
         </TouchableOpacity>
         <TouchableOpacity onPress={onPlayPause} style={style.actionButton}>
           <Ionicons 

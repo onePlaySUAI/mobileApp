@@ -26,5 +26,8 @@ export const getPlaylistItemStyle = () => {
       fontSize: 13,
       marginTop: 4,
     },
+    dotsContainer: {
+      padding: 5,
+    },
   });
 };

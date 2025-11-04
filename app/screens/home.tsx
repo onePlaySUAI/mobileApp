@@ -10,6 +10,7 @@ import LibraryTabContent from '@/assets/components/home/libraryTabContent';
 import HomeHeader from '@/assets/components/home/homeHeader';
 import PlaylistContent from '@/assets/components/home/playlist/Playlist';
 import PlaylistHeader from '@/assets/components/home/playlist/PlaylistHeader';
+import PlaylistOptionsModal from "@/assets/components/playlistOptionsModal";
 import { useMusic } from '../utils/PlayerContext';
 import { useAuthentication } from '../utils/useAuthentication';
 
@@ -28,6 +29,10 @@ export default function Home() {
     closeModal,
     handlePlayPause,
     handleFavorite,
+    playlistModalVisible,
+    playlistModalCurrent,
+    openPlaylistModal,
+    closePlaylistModal,
   } = useMusic();
   const colorScheme = useColorScheme();
 
@@ -66,11 +71,12 @@ export default function Home() {
             playlists={playlists}
             onPlaylistPress={(playlist) => setActivePlaylist(playlist)}
             onAddPlaylist={() => console.log('Add new')}
+            onDotsPress={(playlist) => openPlaylistModal(playlist.id, playlist.name)}
           />
         }
         {
           activeTab === 'library' && activePlaylist !== null &&
-          <PlaylistContent playlist={activePlaylist}></PlaylistContent>
+          <PlaylistContent playlist={activePlaylist} openModal={openModal} closeModal={closeModal}></PlaylistContent>
         }
       </SafeAreaView>
 
@@ -90,6 +96,17 @@ export default function Home() {
         onClose={closeModal}
         song={modalCurrentSong}
         isDarkMode={colorScheme === 'dark'}
+      />
+
+      <PlaylistOptionsModal
+        visible={playlistModalVisible}
+        onClose={closePlaylistModal}
+        playlist={playlists.find(p => p.id === playlistModalCurrent.id) || null}
+        isDarkMode={colorScheme === 'dark'}
+        onRename={() => console.log('Rename playlist')}
+        onEditCover={() => console.log('Edit cover')}
+        onShare={() => console.log('Share playlist')}
+        onDelete={() => console.log('Delete playlist')}
       />
     </SafeAreaProvider>
   );

@@ -16,9 +16,11 @@ import PlaylistCover from './PlaylistCover';
 interface PlaylistContentProps {
   playlist: Playlist;
   onAddMusic?: () => void;
+  openModal: (title: string, artist: string) => void;
+  closeModal: () => void;
 }
 
-const PlaylistContent = ({ playlist, onAddMusic }: PlaylistContentProps) => {
+const PlaylistContent = ({ playlist, onAddMusic, openModal, closeModal }: PlaylistContentProps) => {
   const styles = getPlaylistContentStyle();
   const songs = playlist.songs || [];
 
@@ -57,7 +59,7 @@ const PlaylistContent = ({ playlist, onAddMusic }: PlaylistContentProps) => {
               <Song
                 key={index}
                 params={song}
-                onDotsPress={() => console.log("Song options", song.title)}
+                onDotsPress={() => openModal(song.title, song.artist)}
               />
             ))
           )}

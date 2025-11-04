@@ -6,6 +6,9 @@ const SET_NOW_PLAYING_SONG = 'SET_NOW_PLAYING_SONG';
 const SET_PLAYLISTS = 'SET_PLAYLISTS';
 const SET_MODAL_VISIBLE = 'SET_MODAL_VISIBLE';
 const SET_MODAL_CURRENT_SONG = 'SET_MODAL_CURRENT_SONG';
+const TOGGLE_FAVORITE = 'TOGGLE_FAVORITE';
+const SET_PLAYLIST_MODAL_VISIBLE = 'SET_PLAYLIST_MODAL_VISIBLE';
+const SET_PLAYLIST_MODAL_CURRENT = 'SET_PLAYLIST_MODAL_CURRENT';
 
 // User state types
 export interface UserState {
@@ -30,6 +33,7 @@ export interface MusicState {
     artist: string;
     albumCover?: string;
     isPlaying?: boolean;
+    isFavorite?: boolean;
   } | null;
   playlists: {
     id: string;
@@ -40,10 +44,13 @@ export interface MusicState {
       source: 'Spotify' | 'Youtube' | 'Download';
       albumCover: string;
       active?: boolean;
+      isFavorite?: boolean;
     }[];
   }[];
   modalVisible: boolean;
   modalCurrentSong: { title: string; artist: string };
+  playlistModalVisible: boolean;
+  playlistModalCurrent: { id: string; name: string };
 }
 
 export interface SetActiveTabAction {
@@ -82,13 +89,33 @@ export interface SetModalCurrentSongAction {
   [key: string]: any;
 }
 
+export interface ToggleFavoriteAction {
+  type: typeof TOGGLE_FAVORITE;
+  [key: string]: any;
+}
+
+export interface SetPlaylistModalVisibleAction {
+  type: typeof SET_PLAYLIST_MODAL_VISIBLE;
+  payload: boolean;
+  [key: string]: any;
+}
+
+export interface SetPlaylistModalCurrentAction {
+  type: typeof SET_PLAYLIST_MODAL_CURRENT;
+  payload: { id: string; name: string };
+  [key: string]: any;
+}
+
 export type MusicAction =
   | SetActiveTabAction
   | SetActivePlaylistAction
   | SetNowPlayingSongAction
   | SetPlaylistsAction
   | SetModalVisibleAction
-  | SetModalCurrentSongAction;
+  | SetModalCurrentSongAction
+  | ToggleFavoriteAction
+  | SetPlaylistModalVisibleAction
+  | SetPlaylistModalCurrentAction;
 
 // Export constants for use in other files
 export {
@@ -98,7 +125,10 @@ export {
   SET_PLAYLISTS,
   SET_MODAL_VISIBLE,
   SET_MODAL_CURRENT_SONG,
-  SET_USER
+  SET_USER,
+  TOGGLE_FAVORITE,
+  SET_PLAYLIST_MODAL_VISIBLE,
+  SET_PLAYLIST_MODAL_CURRENT
 };
 
 const initialState: UserState = {
@@ -129,7 +159,8 @@ const initialMusicState: MusicState = {
     title: 'I hate you',
     artist: 'Иван Иваныч',
     albumCover: 'https://i.scdn.co/image/ab67616d00001e02a1edbe4e3f3e3fe296816af4',
-    isPlaying: false
+    isPlaying: false,
+    isFavorite: false
   },
   playlists: [
     {
@@ -141,6 +172,7 @@ const initialMusicState: MusicState = {
           artist: 'THE John',
           albumCover: 'https://upload.wikimedia.org/wikipedia/en/7/70/Graduation_%28album%29.jpg',
           source: 'Spotify',
+          isFavorite: false
         }
       ]
     },
@@ -152,6 +184,8 @@ const initialMusicState: MusicState = {
   ],
   modalVisible: false,
   modalCurrentSong: { title: 'null', artist: 'null' },
+  playlistModalVisible: false,
+  playlistModalCurrent: { id: 'null', name: 'null' },
 };
 
 export const musicReducer = (state = initialMusicState, action: MusicAction): MusicState => {
@@ -168,6 +202,21 @@ export const musicReducer = (state = initialMusicState, action: MusicAction): Mu
       return { ...state, modalVisible: action.payload };
     case SET_MODAL_CURRENT_SONG:
       return { ...state, modalCurrentSong: action.payload };
+    case TOGGLE_FAVORITE:
+      if (state.nowPlayingSong) {
+        return {
+          ...state,
+          nowPlayingSong: {
+            ...state.nowPlayingSong,
+            isFavorite: !state.nowPlayingSong.isFavorite
+          }
+        };
+      }
+      return state;
+    case SET_PLAYLIST_MODAL_VISIBLE:
+      return { ...state, playlistModalVisible: action.payload };
+    case SET_PLAYLIST_MODAL_CURRENT:
+      return { ...state, playlistModalCurrent: action.payload };
     default:
       return state;
   }
@@ -201,4 +250,18 @@ export const setModalVisible = (visible: boolean): SetModalVisibleAction => ({
 export const setModalCurrentSong = (song: { title: string; artist: string }): SetModalCurrentSongAction => ({
   type: SET_MODAL_CURRENT_SONG,
   payload: song,
+});
+
+export const toggleFavorite = (): ToggleFavoriteAction => ({
+  type: TOGGLE_FAVORITE,
+});
+
+export const setPlaylistModalVisible = (visible: boolean): SetPlaylistModalVisibleAction => ({
+  type: SET_PLAYLIST_MODAL_VISIBLE,
+  payload: visible,
+});
+
+export const setPlaylistModalCurrent = (playlist: { id: string; name: string }): SetPlaylistModalCurrentAction => ({
+  type: SET_PLAYLIST_MODAL_CURRENT,
+  payload: playlist,
 });
