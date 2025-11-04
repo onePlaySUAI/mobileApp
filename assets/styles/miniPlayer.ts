@@ -1,26 +1,26 @@
-import { StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { StyleSheet, ViewStyle, TextStyle, ImageStyle } from 'react-native';
 
-interface NowPlayingBarStyle {
+interface MiniPlayerStyle {
   container: ViewStyle;
   leftSection: ViewStyle;
   rightSection: ViewStyle;
-  albumCover: ViewStyle;
+  albumCover: ImageStyle;
   songInfo: ViewStyle;
   titleContainer: ViewStyle;
   songTitle: TextStyle;
   artistName: TextStyle;
-  sourceLogo: ViewStyle;
+  sourceLogo: ImageStyle;
   actionButton: ViewStyle;
 }
 
-export const getNowPlayingBarStyle = (isDarkMode: boolean) => {
+export const getMiniPlayerStyle = (isDarkMode: boolean) => {
   const COLORS = {
     background: '#4A0000', // Dark red background as in design
     text: '#ffffff',
     secondaryText: '#ffffff',
   };
 
-  return StyleSheet.create<NowPlayingBarStyle>({
+  return StyleSheet.create<MiniPlayerStyle>({
     container: {
       flexDirection: 'row',
       backgroundColor: COLORS.background,
@@ -48,6 +48,7 @@ export const getNowPlayingBarStyle = (isDarkMode: boolean) => {
       height: 40,
       borderRadius: 6,
       marginRight: 8,
+      resizeMode: 'cover',
     },
     songInfo: {
       flex: 1,
@@ -70,6 +71,7 @@ export const getNowPlayingBarStyle = (isDarkMode: boolean) => {
     sourceLogo: {
       width: 14,
       height: 14,
+      resizeMode: 'contain',
     },
     actionButton: {
       padding: 6,

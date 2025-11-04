@@ -1,22 +1,44 @@
 import {Image, Pressable, Text, useColorScheme, View} from "react-native";
 import {getSongStyle} from "@/assets/styles/song";
+import { truncateText } from "@/app/utils/textHelpers";
+import SpotifyIcon from "./icons/SpotifyIcon";
+import YoutubeIcon from "./icons/YoutubeIcon";
+import DownloadIcon from "./icons/DownloadIcon";
+import ThreeDotsIcon from "./icons/dotsIcon";
 
-export interface songParams {
-  title: string,
-  artist: string,
+export interface SongParams {
+  title: string;
+  artist: string;
   source: 'Spotify' | 'Youtube' | 'Download';
-  albumCover: string,
-  active?: boolean,
-}
-export interface songProps {
-  params: songParams,
-  onDotsPress?: () => void,
+  albumCover: string;
+  active?: boolean;
 }
 
-export default function Song ({ params, onDotsPress }: songProps) {
+export interface SongProps {
+  params: SongParams;
+  onDotsPress?: () => void;
+}
+
+const STRING_MAX_LENGTH = 22;
+
+export default function Song ({ params, onDotsPress }: SongProps) {
   const colorScheme = useColorScheme();
-  const style = getSongStyle(colorScheme === 'dark', params.active);
-  const STRING_MAX_LENGTH = 22;
+  const style = getSongStyle(colorScheme === 'dark', params.active ?? false);
+
+  const getSourceIcon = (source: string) => {
+    const iconProps = { width: 20, height: 20 };
+
+    switch (source) {
+      case 'Spotify':
+        return <SpotifyIcon {...iconProps} />;
+      case 'Youtube':
+        return <YoutubeIcon {...iconProps} />;
+      case 'Download':
+        return <DownloadIcon {...iconProps} />;
+      default:
+        return <SpotifyIcon {...iconProps} />;
+    }
+  };
 
   return (
     <View style={style.songContainer}>
@@ -28,51 +50,27 @@ export default function Song ({ params, onDotsPress }: songProps) {
         />
         {/* Title and Author box */}
         <View>
-          <Text style={style.title}>{params.title.length > STRING_MAX_LENGTH ? params.title.slice(0, STRING_MAX_LENGTH) + '...' : params.title}</Text>
-          <Text style={style.artist}>{params.artist.length > STRING_MAX_LENGTH ? params.artist.slice(0, STRING_MAX_LENGTH) + '...' : params.artist}</Text>
+          <Text style={style.title}>{truncateText(params.title, STRING_MAX_LENGTH)}</Text>
+          <Text style={style.artist}>{truncateText(params.artist, STRING_MAX_LENGTH)}</Text>
         </View>
       </View>
       <View>
         {/* Source logos */}
         <View style={style.sourceContainer}>
-          <Image
-            source={require('@/assets/images/spotifyLogo.png')}
-            style={{
-              ...(params.source === 'Youtube' ? style.sourceYT : style.source),
-              display: (params.source === 'Spotify' ? 'flex' : 'none')
-            }}
-          />
-          <Image
-            source={require('@/assets/images/ytLogo.png')}
-            style={{
-              ...(params.source === 'Youtube' ? style.sourceYT : style.source),
-              display: (params.source === 'Youtube' ? 'flex' : 'none')
-            }}
-          />
-          <Image
-            source={require('@/assets/images/downloadLogo.png')}
-            style={{
-              ...(params.source === 'Youtube' ? style.sourceYT : style.source),
-              display: (params.source === 'Download' ? 'flex' : 'none')
-            }}
-          />
+          {getSourceIcon(params.source)}
 
-        <Pressable
-          onPress={onDotsPress}
-          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-          style={({ pressed }) => [
-            style.dotsStyle,
-            { opacity: pressed ? 0.6 : 1 },
-          ]}
-        >
-          <Image
-            source={require('@/assets/images/dots.png')}
-            style={style.dotsStyle}
-          />
-        </Pressable>
-
+          <Pressable
+            onPress={onDotsPress}
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+            style={({ pressed }) => [
+              style.dotsStyle,
+              { opacity: pressed ? 0.6 : 1 },
+            ]}
+          >
+            <ThreeDotsIcon width={16} height={16} />
+          </Pressable>
         </View>
       </View>
     </View>
-  )
+  );
 }

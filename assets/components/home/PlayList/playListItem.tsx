@@ -1,13 +1,13 @@
-// assets/components/playListItem.tsx
-
 import React from 'react';
-import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
-import { songParams } from '../../song';
+import { TouchableOpacity, View, Text } from 'react-native';
+import { SongParams } from '../../song';
+import { getPlaylistItemStyle } from '@/assets/styles/playlistItem';
+import PlaylistCover from './PlaylistCover';
 
 export interface Playlist {
   id: string;
   name: string;
-  songs: songParams[];
+  songs: SongParams[];
 }
 
 interface PlaylistItemProps {
@@ -16,10 +16,13 @@ interface PlaylistItemProps {
 }
 
 const PlaylistItem = ({ playlist, onPress }: PlaylistItemProps) => {
+  const styles = getPlaylistItemStyle();
 
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
-      <View style={styles.cover} />
+      <View style={styles.coverContainer}>
+  <PlaylistCover name={playlist.name} size="small" />
+      </View>
       <View style={styles.info}>
         <Text style={styles.name}>{playlist.name}</Text>
         <Text style={styles.count}>{playlist.songs.length}</Text>
@@ -29,34 +32,3 @@ const PlaylistItem = ({ playlist, onPress }: PlaylistItemProps) => {
 };
 
 export default PlaylistItem;
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#1a1a1a',
-    borderRadius: 12,
-    padding: 12,
-    marginBottom: 12,
-  },
-  cover: {
-    width: 60,
-    height: 60,
-    backgroundColor: '#555',
-    borderRadius: 8,
-    marginRight: 12,
-  },
-  info: {
-    flex: 1,
-  },
-  name: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  count: {
-    color: '#888',
-    fontSize: 13,
-    marginTop: 4,
-  },
-});

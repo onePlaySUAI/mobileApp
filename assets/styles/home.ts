@@ -42,7 +42,6 @@ export const getHomeStyle = (isDarkMode: boolean) => {
     Tab: {
       flex: 1,
       marginTop: 10,
-      paddingHorizontal: 16,
     },
     container: {
       flex: 1,

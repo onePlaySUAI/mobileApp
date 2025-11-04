@@ -32,7 +32,7 @@ export default function Home() {
   const colorScheme = useColorScheme();
 
   if (!isAuthenticated) {
-    return <Redirect href="/register" />;
+    return <Redirect href="/screens/register" />;
   }
 
   const style = getHomeStyle(colorScheme === 'dark');

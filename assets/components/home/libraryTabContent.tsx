@@ -1,17 +1,12 @@
 import React from 'react';
-import { 
-  View, 
-  Text, 
-  TouchableOpacity, 
-  ScrollView, 
-  StyleSheet 
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
 } from 'react-native';
-import PlaylistItem, { Playlist } from './PlayList/playListItem';
-
-interface PlayListItemProps {
-  id: string;
-  playlist: Playlist;
-}
+import PlaylistItem, { Playlist } from './playlist/playlistItem';
+import { getLibraryTabContentStyle } from '@/assets/styles/libraryTabContent';
 
 interface LibraryTabContentProps {
   playlists: Playlist[];
@@ -19,24 +14,26 @@ interface LibraryTabContentProps {
   onAddPlaylist: () => void;
 }
 
-const LibraryTabContent = ({ 
-  playlists, 
-  onPlaylistPress, 
-  onAddPlaylist 
+const LibraryTabContent = ({
+  playlists,
+  onPlaylistPress,
+  onAddPlaylist
 }: LibraryTabContentProps) => {
+  const styles = getLibraryTabContentStyle();
+
   return (
     <View style={styles.container}>
-      {/* Кнопка "Add playlist" */}
-      <TouchableOpacity 
-        style={styles.addPlaylistButton} 
+      {/* Add playlist button */}
+      <TouchableOpacity
+        style={styles.addPlaylistButton}
         onPress={onAddPlaylist}
       >
         <Text style={styles.addPlaylistText}>Add playlist</Text>
       </TouchableOpacity>
 
-      {/* Список плейлистов */}
-      <ScrollView 
-        style={styles.list} 
+      {/* Playlists list */}
+      <ScrollView
+        style={styles.list}
         contentContainerStyle={styles.listContent}
       >
         {playlists.map((playlist) => (
@@ -52,30 +49,3 @@ const LibraryTabContent = ({
 };
 
 export default LibraryTabContent;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  addPlaylistButton: {
-    borderRadius: 10,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    backgroundColor: '#2b2b2b',
-    alignItems: 'center',
-    marginHorizontal: 16,
-    marginVertical: 8,
-  },
-  addPlaylistText: {
-    color: '#ffffff',
-    fontSize: 12,
-  },
-  list: {
-    flex: 1,
-  },
-  listContent: {
-    gap: 12,
-    paddingHorizontal: 16,
-    paddingBottom: 80,
-  },
-});

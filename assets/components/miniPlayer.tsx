@@ -1,9 +1,11 @@
 import { View, Text, TouchableOpacity, Image } from "react-native";
-import { getNowPlayingBarStyle } from "@/assets/styles/nowPlayingBar";
+import { getMiniPlayerStyle } from "@/assets/styles/miniPlayer";
 import { useColorScheme } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
+import SpotifyIcon from "./icons/SpotifyIcon";
+import AlbumPlaceholderIcon from "./icons/AlbumPlaceholderIcon";
 
-interface NowPlayingBarProps {
+interface MiniPlayerProps {
   song?: {
     title: string;
     artist: string;
@@ -14,13 +16,13 @@ interface NowPlayingBarProps {
   onFavorite?: () => void;
 }
 
-export default function NowPlayingBar({ 
+export default function MiniPlayer({ 
   song, 
   onPlayPause, 
   onFavorite 
-}: NowPlayingBarProps) {
+}: MiniPlayerProps) {
   const colorScheme = useColorScheme();
-  const style = getNowPlayingBarStyle(colorScheme === 'dark');
+  const style = getMiniPlayerStyle(colorScheme === 'dark');
 
   if (!song) {
     return null;
@@ -29,17 +31,20 @@ export default function NowPlayingBar({
   return (
     <View style={style.container}>
       <View style={style.leftSection}>
-        <Image 
-          source={{ uri: song.albumCover || require('@/assets/images/albumBlank.jpg') }} 
-          style={style.albumCover} 
-        />
+        {song.albumCover ? (
+          <Image
+            source={{ uri: song.albumCover }}
+            style={style.albumCover}
+          />
+        ) : (
+          <View style={[style.albumCover, { alignItems: 'center', justifyContent: 'center', backgroundColor: '#333' }]}>
+            <AlbumPlaceholderIcon width={32} height={32} color="#666666" />
+          </View>
+        )}
         <View style={style.songInfo}>
           <View style={style.titleContainer}>
             <Text style={style.songTitle}>{song.title}</Text>
-            <Image 
-              source={require('@/assets/images/spotifyLogo.png')} 
-              style={style.sourceLogo} 
-            />
+            <SpotifyIcon width={16} height={16} />
           </View>
           <Text style={style.artistName}>{song.artist}</Text>
         </View>

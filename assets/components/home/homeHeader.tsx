@@ -4,7 +4,7 @@ import { useColorScheme } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import SearchIcon from "../icons/SearchIcon";
 import { router } from "expo-router";
-import { useState, useEffect } from "react";
+import { useSearch } from "@/app/utils/useSearch";
 
 interface HeaderProps {
   page: 'search' | 'library';
@@ -18,22 +18,14 @@ export default function HomeHeader({ params }: HeaderParams) {
   const colorScheme = useColorScheme();
   const insets = useSafeAreaInsets();
   const style = getHeaderStyle(colorScheme === 'dark', insets.top);
-
-  const [isSearching, setIsSearching] = useState(false);
-  const [searchText, setSearchText] = useState('');
-
-  // Сброс при смене экрана
-  useEffect(() => {
-    setIsSearching(false);
-    setSearchText('');
-  }, [params.page]);
+  const { isSearching, searchText, setSearchText, toggleSearch, clearSearch } = useSearch(params.page);
 
   const displayText = params.page === 'search' ? 'Search' : 'Library';
 
   return (
     <View style={style.container}>
       <View style={style.searchContainer}>
-        <TouchableOpacity onPress={() => router.push('/(screens)/profile')}>
+        <TouchableOpacity onPress={() => router.push('/screens/profile')}>
           <View style={style.circle} />
         </TouchableOpacity>
 
@@ -45,10 +37,7 @@ export default function HomeHeader({ params }: HeaderParams) {
             value={searchText}
             onChangeText={setSearchText}
             autoFocus
-            onBlur={() => {
-              setIsSearching(false);
-              setSearchText('');
-            }}
+            onBlur={clearSearch}
           />
         ) : (
           <Text style={style.libaryInput}>{displayText}</Text>
@@ -56,17 +45,7 @@ export default function HomeHeader({ params }: HeaderParams) {
 
         <TouchableOpacity
           style={style.searchButton}
-          onPress={() => {
-            if (isSearching) {
-              // Если уже в поиске — сбрасываем
-              setIsSearching(false);
-              setSearchText('');
-            } else {
-              // Включаем
-              setIsSearching(true);
-              // Клавиатура появится сама из-за autoFocus
-            }
-          }}
+          onPress={toggleSearch}
         >
           <SearchIcon />
         </TouchableOpacity>

@@ -1,8 +1,9 @@
 import { createStore, combineReducers } from 'redux';
-import { userReducer } from './reducers';
+import { userReducer, musicReducer } from './reducers';
 
 const rootReducer = combineReducers({
   user: userReducer,
+  music: musicReducer,
 });
 
 const store = createStore(rootReducer);

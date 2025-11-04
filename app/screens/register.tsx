@@ -1,45 +1,76 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TextInput, Text, Pressable, useColorScheme } from 'react-native';
 import { Redirect } from 'expo-router';
+import * as SecureStore from 'expo-secure-store';
 import { LinearGradient } from 'expo-linear-gradient';
 import { getRegisterStyle, GRADIENT_COLORS } from '@/assets/styles/register';
 import { useDispatch } from 'react-redux';
 import { setUser } from '@/store/reducers';
 import { AppDispatch } from "@/store/store";
 
-export default function Login() {
+export default function Register() {
   const theme = useColorScheme();
   const isDarkMode = theme === 'dark';
   const styles = getRegisterStyle(isDarkMode);
 
   const dispatch = useDispatch<AppDispatch>();
 
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [errorText, setErrorText] = useState('');
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [redirectToRegister, setRedirectToRegister] = useState(false);
+  const [registered, setRegistered] = useState(false);
+  const [redirectToLogin, setRedirectToLogin] = useState(false);
 
-  const handleLogin = async () => {
-    if (!email) {
-      setErrorText('Email cannot be empty');
-      return;
+  const getUser = async () => {
+    // для теста
+    // await SecureStore.deleteItemAsync('user');
+
+    const savedUser = await SecureStore.getItemAsync('user');
+    if (savedUser === null) return;
+
+    const user = JSON.parse(savedUser);
+    if (user.name !== undefined && user.email !== undefined) {
+      dispatch(setUser({ name: user.name, email: user.email }))
+      setRegistered(true);
     }
+   }
 
-    setTimeout(() => {
-      // Mock login success
-      dispatch(setUser({ name: '', email }));
-      setLoggedIn(true);
-    }, 500);
+  const handleRegister = async () => {
+    if (email && password && name) {
+      await SecureStore.setItemAsync(
+        'user',
+        JSON.stringify({ email, name })
+      );
+      dispatch(setUser({ name, email }));
+      setRegistered(true);
+    } else setErrorText('Поле email или пароль или имя не могут быть пустыми');
   };
 
-  if (loggedIn) return <Redirect href="/home" />;
-  if (redirectToRegister) return <Redirect href="/register" />;
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  if (registered) {
+    return <Redirect href="/(screens)/home" />;
+  }
+
+  if (redirectToLogin) {
+    return <Redirect href="/screens/login" />;
+  }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
+      <Text style={styles.title}>Create Account</Text>
+
+      <TextInput
+        style={styles.input}
+        placeholder="Name"
+        placeholderTextColor={isDarkMode ? '#aaa' : '#777'}
+        value={name}
+        onChangeText={setName}
+      />
 
       <TextInput
         style={styles.input}
@@ -59,7 +90,6 @@ export default function Login() {
           secureTextEntry={!showPassword}
           value={password}
           onChangeText={setPassword}
-          autoCapitalize="none"
         />
         <Pressable
           onPress={() => setShowPassword(!showPassword)}
@@ -73,28 +103,20 @@ export default function Login() {
 
       <Text style={styles.errorText}>{errorText}</Text>
 
-      <Pressable onPress={handleLogin} style={{ width: '100%' }}>
+      <Pressable onPress={handleRegister} style={{ width: '100%' }}>
         <LinearGradient
           colors={GRADIENT_COLORS as [string, string]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
           style={styles.button}
         >
-          <Text style={styles.buttonText}>Login</Text>
+          <Text style={styles.buttonText}>Register</Text>
         </LinearGradient>
       </Pressable>
 
-      <Pressable
-        onPress={() => setRedirectToRegister(true)}
-        style={{ marginTop: 20 }}
-      >
-        <Text
-          style={{
-            color: isDarkMode ? '#aaa' : '#777',
-            textDecorationLine: 'underline',
-          }}
-        >
-          Нет аккаунта?
+      <Pressable onPress={() => setRedirectToLogin(true)} style={{ marginTop: 20 }}>
+        <Text style={{ color: isDarkMode ? '#aaa' : '#777', textDecorationLine: 'underline' }}>
+          Уже регистрировались?
         </Text>
       </Pressable>
     </View>
