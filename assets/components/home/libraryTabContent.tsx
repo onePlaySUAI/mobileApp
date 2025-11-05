@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import PlaylistItem, { Playlist } from './playlist/playlistItem';
+import PlaylistItem, { Playlist } from './PlayList/playListItem';
 import { getLibraryTabContentStyle } from '@/assets/styles/libraryTabContent';
 
 interface LibraryTabContentProps {

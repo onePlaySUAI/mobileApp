@@ -8,11 +8,12 @@ import MiniPlayer from "@/assets/components/miniPlayer";
 import SearchTabContent from "@/assets/components/home/searchTabContent";
 import LibraryTabContent from '@/assets/components/home/libraryTabContent';
 import HomeHeader from '@/assets/components/home/homeHeader';
-import PlaylistContent from '@/assets/components/home/playlist/Playlist';
-import PlaylistHeader from '@/assets/components/home/playlist/PlaylistHeader';
+
 import PlaylistOptionsModal from "@/assets/components/playlistOptionsModal";
 import { useMusic } from '../utils/PlayerContext';
 import { useAuthentication } from '../utils/useAuthentication';
+import PlaylistContent from '@/assets/components/home/PlayList/PlayList';
+import PlayListHeader from '@/assets/components/home/PlayList/PlayListHeader';
 
 export default function Home() {
   const { isAuthenticated } = useAuthentication();
@@ -53,7 +54,7 @@ export default function Home() {
       }
       {
         (activeTab === 'library' && activePlaylist !== null) &&
-        <PlaylistHeader isDark={true} onBack={() => setActivePlaylist(null)} title={activePlaylist.name}></PlaylistHeader>
+        <PlayListHeader isDark={true} onBack={() => setActivePlaylist(null)} title={activePlaylist.name}></PlayListHeader>
       }
 
       <SafeAreaView style={style.Tab}>

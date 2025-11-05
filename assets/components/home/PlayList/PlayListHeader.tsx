@@ -4,8 +4,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { useState } from 'react';
 import BackIcon from "../../icons/BackIcon";
-import PlaylistStartIcon from "../../icons/playlistStartIcon";
-import PlaylistPauseIcon from "../../icons/playlistPauseIcon";
+import PlayIcon from "../../icons/PlayListStartIcon";
+import PauseIcon from "../../icons/playlistPauseIcon";
 import { getPlaylistHeaderStyle } from "@/assets/styles/playlistHeader";
 
 interface PlayListHeaderProps {
@@ -50,7 +50,7 @@ export default function PlayListHeader({
           </LinearGradient>
         </MaskedView>
         <TouchableOpacity onPress={handlePlayPause} style={styles.backButton}>
-          {isPlaying ? <PlaylistPauseIcon /> : <PlaylistStartIcon />}
+          {isPlaying ? <PauseIcon /> : <PlayIcon />}
         </TouchableOpacity>
       </View>
     </View>
