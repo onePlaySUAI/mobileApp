@@ -1,4 +1,4 @@
-import { Playlist } from '@/assets/components/home/PlayList/PlayListItem';
+import { Playlist } from '@/assets/components/home/PlayList/playListItem';
 import { SongParams } from '@/assets/components/song';
 
 export const mockSongs1: SongParams[] = [

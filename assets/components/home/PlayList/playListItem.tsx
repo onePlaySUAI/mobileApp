@@ -18,7 +18,7 @@ interface PlaylistItemProps {
   onDotsPress?: () => void;
 }
 
-const PlaylistItem = ({
+const PlayListItem = ({
   playlist,
   onPress,
   onDotsPress,
@@ -48,4 +48,4 @@ const PlaylistItem = ({
   );
 };
 
-export default PlaylistItem;
+export default PlayListItem;

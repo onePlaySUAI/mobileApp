@@ -8,7 +8,7 @@ import MaskedView from '@react-native-masked-view/masked-view';
 import { useState } from 'react';
 import BackIcon from '../../icons/BackIcon';
 import { getPlaylistHeaderStyle } from '@/assets/styles/playlistHeader';
-import PlayListPauseIcon from '../../icons/PlayListPauseIcon';
+import PlayListPauseIcon from '../../icons/PlaylistPauseIcon';
 import PlayListStartIcon from '../../icons/PlayListStartIcon';
 import { Colors } from '../../../constants/colors';
 
