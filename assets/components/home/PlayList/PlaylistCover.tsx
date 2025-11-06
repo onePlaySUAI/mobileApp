@@ -1,7 +1,15 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  useColorScheme,
+  Dimensions,
+} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { StyleSheet } from 'react-native';
+import { Colors } from '../../../constants/colors';
 
 interface PlaylistCoverProps {
   name: string;
@@ -10,10 +18,7 @@ interface PlaylistCoverProps {
   onPress?: () => void;
 }
 
-
-import { useColorScheme, Dimensions } from 'react-native';
-
-const PlaylistCover = ({
+const PlayListCover = ({
   name,
   size = 'small',
   customImage,
@@ -22,39 +27,27 @@ const PlaylistCover = ({
   const isLarge = size === 'large';
   // Sizes tuned to match Figma "PlayListIn"
   const screenWidth = Dimensions.get('window').width;
-  const HORIZONTAL_PADDING = 16; // matches parent content padding
   const coverSize = isLarge ? screenWidth : 56; // small thumbnails 56, large use full screen width
   const coverWidth = coverSize;
   const coverHeight = coverSize; // always square
   const colorScheme = useColorScheme();
+  const isDark = colorScheme === 'dark';
 
   // Темные градиенты для dark theme
   const getGradientColors = (): readonly [string, string] => {
     if (customImage) return ['transparent', 'transparent'];
 
-    const hash = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    if (colorScheme === 'dark') {
-      // Темные цветные варианты для темной темы
-      const gradients: readonly [string, string][] = [
-        ['#388E3C', '#282828'], // Темно-зеленый
-        ['#D32F2F', '#282828'], // Темно-красный
-        ['#7B1FA2', '#282828'], // Темно-фиолетовый
-        ['#1976D2', '#282828'], // Темно-синий
-        ['#F57C00', '#282828'], // Темно-оранжевый
-        ['#5D4037', '#282828'], // Темно-коричневый
+    const hash = name
+      .split('')
+      .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    if (isDark) {
+      return Colors.gradient.playlistDark[
+        hash % Colors.gradient.playlistDark.length
       ];
-      return gradients[hash % gradients.length];
     } else {
-      // Яркие варианты для светлой темы
-      const gradients: readonly [string, string][] = [
-        ['#1DB954', '#282828'], // Spotify green to gray
-        ['#FF6B6B', '#282828'], // Red to gray
-        ['#A8E6CF', '#282828'], // Mint to gray
-        ['#DDA0DD', '#282828'], // Plum to gray
-        ['#87CEEB', '#282828'], // Sky blue to gray
-        ['#FFA07A', '#282828'], // Light salmon to gray
+      return Colors.gradient.playlistLight[
+        hash % Colors.gradient.playlistLight.length
       ];
-      return gradients[hash % gradients.length];
     }
   };
 
@@ -68,18 +61,19 @@ const PlaylistCover = ({
       height: coverHeight,
       borderRadius: isLarge ? 0 : 8,
       overflow: 'hidden',
-      position: 'relative',
-      borderWidth: colorScheme === 'dark' ? 1 : 0,
-      borderColor: colorScheme === 'dark' ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.05)',
-      backgroundColor: colorScheme === 'dark' ? '#121212' : '#fff',
+      borderWidth: isLarge ? 0 : 1,
+      borderColor: isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.05)',
+      backgroundColor: isDark
+        ? Colors.dark.background
+        : Colors.light.background,
       justifyContent: 'center',
       alignItems: 'center',
       // subtle shadow for thumbnails (only for small)
-      shadowColor: '#000',
+      shadowColor: Colors.light.Text.primary,
       shadowOffset: { width: 0, height: isLarge ? 0 : 2 },
-      shadowOpacity: colorScheme === 'dark' ? (isLarge ? 0 : 0.45) : (isLarge ? 0 : 0.12),
+      shadowOpacity: isDark ? (isLarge ? 0 : 0.45) : isLarge ? 0 : 0.12,
       shadowRadius: isLarge ? 0 : 4,
-      elevation: isLarge ? 0 : (colorScheme === 'dark' ? 6 : 2),
+      elevation: isLarge ? 0 : isDark ? 6 : 2,
     },
     baseContent: {
       width: '100%',
@@ -106,10 +100,10 @@ const PlaylistCover = ({
       zIndex: 2,
       fontSize: isLarge ? 120 : 24,
       fontWeight: '700',
-      color: colorScheme === 'dark' ? '#eaeaea' : '#fff',
-      textShadowColor: colorScheme === 'dark' ? 'rgba(0,0,0,0.8)' : 'rgba(0,0,0,0.3)',
-      textShadowOffset: { width: 0, height: 2 },
-      textShadowRadius: 6,
+      color: 'white',
+      textShadowColor: 'black',
+      textShadowOffset: { width: 0, height: 0 },
+      textShadowRadius: 4,
     },
     customImage: {
       width: '100%',
@@ -118,11 +112,11 @@ const PlaylistCover = ({
     },
   });
 
-
-
   const Container = onPress ? TouchableOpacity : View;
 
-  const overlayColors: readonly [string, string] = isLarge ? ['transparent', '#1a1a1a'] : ['transparent', 'transparent'];
+  const overlayColors: readonly [string, string] = isLarge
+    ? ['transparent', isDark ? Colors.dark.background : Colors.light.background]
+    : ['transparent', 'transparent'];
   const overlayLocations: readonly [number, number] = [0.3, 1];
 
   return (
@@ -156,4 +150,4 @@ const PlaylistCover = ({
   );
 };
 
-export default PlaylistCover;
+export default PlayListCover;

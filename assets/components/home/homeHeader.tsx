@@ -1,10 +1,16 @@
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
-import { getHeaderStyle } from "@/assets/styles/header";
-import { useColorScheme } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import SearchIcon from "../icons/SearchIcon";
-import { router } from "expo-router";
-import { useSearch } from "@/app/utils/useSearch";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  useColorScheme,
+} from 'react-native';
+import { getHeaderStyle } from '@/assets/styles/header';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import SearchIcon from '../icons/SearchIcon';
+import { router } from 'expo-router';
+import { useSearch } from '@/app/utils/useSearch';
+import { Colors } from '@/assets/constants/colors';
 
 interface HeaderProps {
   page: 'search' | 'library';
@@ -18,7 +24,8 @@ export default function HomeHeader({ params }: HeaderParams) {
   const colorScheme = useColorScheme();
   const insets = useSafeAreaInsets();
   const style = getHeaderStyle(colorScheme === 'dark', insets.top);
-  const { isSearching, searchText, setSearchText, toggleSearch, clearSearch } = useSearch(params.page);
+  const { isSearching, searchText, setSearchText, toggleSearch, clearSearch } =
+    useSearch(params.page);
 
   const displayText = params.page === 'search' ? 'Search' : 'Library';
 
@@ -33,7 +40,7 @@ export default function HomeHeader({ params }: HeaderParams) {
           <TextInput
             style={style.searchInput}
             placeholder="Search"
-            placeholderTextColor="#ff0000"
+            placeholderTextColor={Colors.accent}
             value={searchText}
             onChangeText={setSearchText}
             autoFocus
@@ -43,10 +50,7 @@ export default function HomeHeader({ params }: HeaderParams) {
           <Text style={style.libaryInput}>{displayText}</Text>
         )}
 
-        <TouchableOpacity
-          style={style.searchButton}
-          onPress={toggleSearch}
-        >
+        <TouchableOpacity style={style.searchButton} onPress={toggleSearch}>
           <SearchIcon />
         </TouchableOpacity>
       </View>

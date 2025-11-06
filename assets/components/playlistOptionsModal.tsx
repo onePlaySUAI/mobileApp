@@ -1,8 +1,8 @@
-import React from "react";
-import {Modal, Text, View, Pressable} from "react-native";
-import {EdgeInsets, useSafeAreaInsets} from "react-native-safe-area-context";
-import getModalStyles from "@/assets/styles/trackOptionsModal";
-import { Playlist } from "./home/playlist/playlistItem";
+import React from 'react';
+import { Modal, Text, View, Pressable } from 'react-native';
+import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
+import getModalStyles from '@/assets/styles/trackOptionsModal';
+import { Playlist } from './home/PlayList/PlayListItem';
 
 interface PlaylistOptionsModalProps {
   visible: boolean;
@@ -23,7 +23,7 @@ export default function PlaylistOptionsModal({
   onRename,
   onEditCover,
   onShare,
-  onDelete
+  onDelete,
 }: PlaylistOptionsModalProps) {
   const insets: EdgeInsets = useSafeAreaInsets();
   const styles = getModalStyles(isDarkMode, insets.bottom);
@@ -59,7 +59,9 @@ export default function PlaylistOptionsModal({
           </Pressable>
 
           <Pressable onPress={onDelete} style={[styles.optionButton]}>
-            <Text style={[styles.optionText, { color: "#e74c3c" }]}>Delete</Text>
+            <Text style={[styles.optionText, { color: '#e74c3c' }]}>
+              Delete
+            </Text>
           </Pressable>
 
           <Pressable onPress={onClose} style={styles.closeButton}>

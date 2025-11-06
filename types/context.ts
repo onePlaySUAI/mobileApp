@@ -15,29 +15,33 @@ export interface MusicContextType {
       active?: boolean;
     }[];
   } | null;
-  setActivePlaylist: (playlist: {
-    id: string;
-    name: string;
-    songs: {
-      title: string;
-      artist: string;
-      source: 'Spotify' | 'Youtube' | 'Download';
-      albumCover: string;
-      active?: boolean;
-    }[];
-  } | null) => void;
+  setActivePlaylist: (
+    playlist: {
+      id: string;
+      name: string;
+      songs: {
+        title: string;
+        artist: string;
+        source: 'Spotify' | 'Youtube' | 'Download';
+        albumCover: string;
+        active?: boolean;
+      }[];
+    } | null
+  ) => void;
   nowPlayingSong: {
     title: string;
     artist: string;
     albumCover?: string;
     isPlaying?: boolean;
   } | null;
-  setNowPlayingSong: (song: {
-    title: string;
-    artist: string;
-    albumCover?: string;
-    isPlaying?: boolean;
-  } | null) => void;
+  setNowPlayingSong: (
+    song: {
+      title: string;
+      artist: string;
+      albumCover?: string;
+      isPlaying?: boolean;
+    } | null
+  ) => void;
   playlists: {
     id: string;
     name: string;
@@ -49,17 +53,19 @@ export interface MusicContextType {
       active?: boolean;
     }[];
   }[];
-  setPlaylists: (playlists: {
-    id: string;
-    name: string;
-    songs: {
-      title: string;
-      artist: string;
-      source: 'Spotify' | 'Youtube' | 'Download';
-      albumCover: string;
-      active?: boolean;
-    }[];
-  }[]) => void;
+  setPlaylists: (
+    playlists: {
+      id: string;
+      name: string;
+      songs: {
+        title: string;
+        artist: string;
+        source: 'Spotify' | 'Youtube' | 'Download';
+        albumCover: string;
+        active?: boolean;
+      }[];
+    }[]
+  ) => void;
   modalVisible: boolean;
   setModalVisible: (visible: boolean) => void;
   modalCurrentSong: { title: string; artist: string };

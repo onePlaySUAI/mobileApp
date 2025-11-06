@@ -1,9 +1,15 @@
-import { View, Text, TouchableOpacity, Image } from "react-native";
-import { getMiniPlayerStyle } from "@/assets/styles/miniPlayer";
-import { useColorScheme } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  useColorScheme,
+} from 'react-native';
+import { getMiniPlayerStyle } from '@/assets/styles/miniPlayer';
 import { Ionicons } from '@expo/vector-icons';
-import SpotifyIcon from "./icons/SpotifyIcon";
-import AlbumPlaceholderIcon from "./icons/AlbumPlaceholderIcon";
+import SpotifyIcon from './icons/SpotifyIcon';
+import AlbumPlaceholderIcon from './icons/AlbumPlaceholderIcon';
+import { Colors } from '../constants/colors';
 
 interface MiniPlayerProps {
   song?: {
@@ -17,10 +23,10 @@ interface MiniPlayerProps {
   onFavorite?: () => void;
 }
 
-export default function MiniPlayer({ 
-  song, 
-  onPlayPause, 
-  onFavorite 
+export default function MiniPlayer({
+  song,
+  onPlayPause,
+  onFavorite,
 }: MiniPlayerProps) {
   const colorScheme = useColorScheme();
   const style = getMiniPlayerStyle(colorScheme === 'dark');
@@ -33,13 +39,23 @@ export default function MiniPlayer({
     <View style={style.container}>
       <View style={style.leftSection}>
         {song.albumCover ? (
-          <Image
-            source={{ uri: song.albumCover }}
-            style={style.albumCover}
-          />
+          <Image source={{ uri: song.albumCover }} style={style.albumCover} />
         ) : (
-          <View style={[style.albumCover, { alignItems: 'center', justifyContent: 'center', backgroundColor: '#333' }]}>
-            <AlbumPlaceholderIcon width={32} height={32} color="#666666" />
+          <View
+            style={[
+              style.albumCover,
+              {
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: Colors.dark.Text.primary,
+              },
+            ]}
+          >
+            <AlbumPlaceholderIcon
+              width={32}
+              height={32}
+              color={Colors.dark.Text.secondary}
+            />
           </View>
         )}
         <View style={style.songInfo}>
@@ -50,16 +66,20 @@ export default function MiniPlayer({
           <Text style={style.artistName}>{song.artist}</Text>
         </View>
       </View>
-      
+
       <View style={style.rightSection}>
         <TouchableOpacity onPress={onFavorite} style={style.actionButton}>
-          <Ionicons name={song.isFavorite ? "star" : "star-outline"} size={18} color="#ffd700" />
+          <Ionicons
+            name={song.isFavorite ? 'star' : 'star-outline'}
+            size={18}
+            color={Colors.favorite}
+          />
         </TouchableOpacity>
         <TouchableOpacity onPress={onPlayPause} style={style.actionButton}>
-          <Ionicons 
-            name={song.isPlaying ? "pause" : "play"} 
-            size={18} 
-            color="#ffffff" 
+          <Ionicons
+            name={song.isPlaying ? 'pause' : 'play'}
+            size={18}
+            color="#ffffff"
           />
         </TouchableOpacity>
       </View>

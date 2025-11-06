@@ -1,16 +1,17 @@
 import React from 'react';
 import Svg, { Path } from 'react-native-svg';
+import { Colors } from '../../constants/colors';
 
-interface PauseIconProps {
+interface PlayListPauseIconProps {
   width?: number;
   height?: number;
   color?: string;
 }
 
-const PauseIcon: React.FC<PauseIconProps> = ({
+const PlayListPauseIcon: React.FC<PlayListPauseIconProps> = ({
   width = 37,
   height = 37,
-  color = '#1DB954',
+  color = Colors.primary,
 }) => {
   return (
     <Svg width={width} height={height} viewBox="0 0 37 37" fill="none">
@@ -22,4 +23,4 @@ const PauseIcon: React.FC<PauseIconProps> = ({
   );
 };
 
-export default PauseIcon;
+export default PlayListPauseIcon;

@@ -5,12 +5,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { getRegisterStyle, GRADIENT_COLORS } from '@/assets/styles/register';
 import { useDispatch } from 'react-redux';
 import { setUser } from '@/store/reducers';
-import { AppDispatch } from "@/store/store";
+import { AppDispatch } from '@/store/store';
 
 export default function Login() {
   const theme = useColorScheme();
   const isDarkMode = theme === 'dark';
-  const styles = getRegisterStyle(isDarkMode);
+  const { styles, colors } = getRegisterStyle(isDarkMode);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -34,8 +34,9 @@ export default function Login() {
     }, 500);
   };
 
-  if (loggedIn) return <Redirect href={{ pathname: '/home' }} />;
-  if (redirectToRegister) return <Redirect href={{ pathname: '/screens/register' }} />;
+  if (loggedIn) return <Redirect href="/screens/home" />;
+  if (redirectToRegister)
+    return <Redirect href="/screens/register" />;
 
   return (
     <View style={styles.container}>
@@ -44,18 +45,18 @@ export default function Login() {
       <TextInput
         style={styles.input}
         placeholder="Email"
-        placeholderTextColor={isDarkMode ? '#aaa' : '#777'}
+        placeholderTextColor={colors.Text.tertiary}
         keyboardType="email-address"
         autoCapitalize="none"
         value={email}
         onChangeText={setEmail}
       />
 
-      <View style={{ width: '100%', position: 'relative', marginBottom: 15 }}>
+      <View style={styles.passwordContainer}>
         <TextInput
           style={styles.input}
           placeholder="Password"
-          placeholderTextColor={isDarkMode ? '#aaa' : '#777'}
+          placeholderTextColor={colors.Text.tertiary}
           secureTextEntry={!showPassword}
           value={password}
           onChangeText={setPassword}
@@ -63,9 +64,9 @@ export default function Login() {
         />
         <Pressable
           onPress={() => setShowPassword(!showPassword)}
-          style={{ position: 'absolute', right: 12, top: 12 }}
+          style={styles.showHideButton}
         >
-          <Text style={{ color: isDarkMode ? '#aaa' : '#777' }}>
+          <Text style={styles.showHideText}>
             {showPassword ? 'Hide' : 'Show'}
           </Text>
         </Pressable>
@@ -86,14 +87,9 @@ export default function Login() {
 
       <Pressable
         onPress={() => setRedirectToRegister(true)}
-        style={{ marginTop: 20 }}
+        style={styles.loginLink}
       >
-        <Text
-          style={{
-            color: isDarkMode ? '#aaa' : '#777',
-            textDecorationLine: 'underline',
-          }}
-        >
+        <Text style={styles.loginText}>
           Нет аккаунта?
         </Text>
       </Pressable>

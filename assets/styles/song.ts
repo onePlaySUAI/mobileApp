@@ -1,4 +1,5 @@
 import { StyleSheet, ViewStyle, TextStyle, ImageStyle } from 'react-native';
+import { Colors } from '../constants/colors';
 
 interface SongStyle {
   songContainer: ViewStyle;
@@ -12,38 +13,20 @@ interface SongStyle {
   dotsStyle: ImageStyle;
 }
 
-const LIGHT_THEME = {
-  border: '#ccc',
-  title: '#000',
-  artist: '#555',
-  background: '#f8f8f8',
-  activeTitle: '#FF0000',
-  activeArtist: '#1DB954',
-};
-
-const DARK_THEME = {
-  border: '#444',
-  title: '#fff',
-  artist: '#aaa',
-  background: 'inherit',
-  activeTitle: '#FF5555',
-  activeArtist: '#1DB954',
-};
-
 export const getSongStyle = (isDarkMode: boolean, isActive: boolean) => {
-  const COLORS = isDarkMode ? DARK_THEME : LIGHT_THEME;
+  const themeColors = isDarkMode ? Colors.dark : Colors.light;
 
   return StyleSheet.create<SongStyle>({
     songContainer: {
       height: 47,
       borderStyle: 'dashed',
       borderWidth: 2,
-      borderColor: COLORS.border,
+      borderColor: themeColors.Header.divider,
       width: '100%',
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      backgroundColor: COLORS.background,
+      backgroundColor: themeColors.Item.inActiveBackground,
       borderRadius: 8,
       paddingHorizontal: 6,
     },
@@ -58,17 +41,17 @@ export const getSongStyle = (isDarkMode: boolean, isActive: boolean) => {
       height: 47,
       borderRadius: 7,
       marginRight: 16,
-      backgroundColor: COLORS.border,
+      backgroundColor: themeColors.Header.divider,
     },
     title: {
       fontSize: 18,
       fontFamily: 'Inter_400Regular',
-      color: isActive ? COLORS.activeTitle : COLORS.title,
+      color: isActive ? Colors.accent : themeColors.Text.primary,
     },
     artist: {
       fontSize: 11,
       fontFamily: 'Inter_400Regular',
-      color: isActive ? COLORS.activeArtist : COLORS.artist,
+      color: isActive ? Colors.primary : themeColors.Text.secondary,
     },
     sourceContainer: {
       flexDirection: 'row',
@@ -89,7 +72,7 @@ export const getSongStyle = (isDarkMode: boolean, isActive: boolean) => {
       width: 20,
       marginRight: 10,
       resizeMode: 'contain',
-      tintColor: COLORS.title,
+      tintColor: themeColors.Text.primary,
     },
   });
 };

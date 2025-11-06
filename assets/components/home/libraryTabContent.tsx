@@ -4,8 +4,9 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
+  useColorScheme,
 } from 'react-native';
-import PlaylistItem, { Playlist } from './PlayList/playListItem';
+import PlaylistItem, { Playlist } from './PlayList/PlayListItem';
 import { getLibraryTabContentStyle } from '@/assets/styles/libraryTabContent';
 
 interface LibraryTabContentProps {
@@ -19,9 +20,11 @@ const LibraryTabContent = ({
   playlists,
   onPlaylistPress,
   onAddPlaylist,
-  onDotsPress
+  onDotsPress,
 }: LibraryTabContentProps) => {
-  const styles = getLibraryTabContentStyle();
+  const colorScheme = useColorScheme();
+  const isDark = colorScheme === 'dark';
+  const styles = getLibraryTabContentStyle(isDark);
 
   return (
     <View style={styles.container}>

@@ -128,7 +128,7 @@ export {
   SET_USER,
   TOGGLE_FAVORITE,
   SET_PLAYLIST_MODAL_VISIBLE,
-  SET_PLAYLIST_MODAL_CURRENT
+  SET_PLAYLIST_MODAL_CURRENT,
 };
 
 const initialState: UserState = {
@@ -136,7 +136,10 @@ const initialState: UserState = {
   email: '',
 };
 
-export const userReducer = (state = initialState, action: UserAction): UserState => {
+export const userReducer = (
+  state = initialState,
+  action: UserAction
+): UserState => {
   switch (action.type) {
     case SET_USER:
       return { ...state, ...action.payload };
@@ -158,9 +161,10 @@ const initialMusicState: MusicState = {
   nowPlayingSong: {
     title: 'I hate you',
     artist: 'Иван Иваныч',
-    albumCover: 'https://i.scdn.co/image/ab67616d00001e02a1edbe4e3f3e3fe296816af4',
+    albumCover:
+      'https://i.scdn.co/image/ab67616d00001e02a1edbe4e3f3e3fe296816af4',
     isPlaying: false,
-    isFavorite: false
+    isFavorite: false,
   },
   playlists: [
     {
@@ -168,18 +172,20 @@ const initialMusicState: MusicState = {
       name: 'My Hits',
       songs: [
         {
-          title: 'quwytefghjgasfvxchgdjsdfiujhsdfilujhgsdiufhguiysdgfuytigvsafvdhgjf',
+          title:
+            'quwytefghjgasfvxchgdjsdfiujhsdfilujhgsdiufhguiysdgfuytigvsafvdhgjf',
           artist: 'THE John',
-          albumCover: 'https://upload.wikimedia.org/wikipedia/en/7/70/Graduation_%28album%29.jpg',
+          albumCover:
+            'https://upload.wikimedia.org/wikipedia/en/7/70/Graduation_%28album%29.jpg',
           source: 'Spotify',
-          isFavorite: false
-        }
-      ]
+          isFavorite: false,
+        },
+      ],
     },
     {
       id: '2',
       name: 'Chill Vibes',
-      songs: []
+      songs: [],
     },
   ],
   modalVisible: false,
@@ -188,7 +194,10 @@ const initialMusicState: MusicState = {
   playlistModalCurrent: { id: 'null', name: 'null' },
 };
 
-export const musicReducer = (state = initialMusicState, action: MusicAction): MusicState => {
+export const musicReducer = (
+  state = initialMusicState,
+  action: MusicAction
+): MusicState => {
   switch (action.type) {
     case SET_ACTIVE_TAB:
       return { ...state, activeTab: action.payload };
@@ -208,8 +217,8 @@ export const musicReducer = (state = initialMusicState, action: MusicAction): Mu
           ...state,
           nowPlayingSong: {
             ...state.nowPlayingSong,
-            isFavorite: !state.nowPlayingSong.isFavorite
-          }
+            isFavorite: !state.nowPlayingSong.isFavorite,
+          },
         };
       }
       return state;
@@ -222,22 +231,30 @@ export const musicReducer = (state = initialMusicState, action: MusicAction): Mu
   }
 };
 
-export const setActiveTab = (tab: 'search' | 'library'): SetActiveTabAction => ({
+export const setActiveTab = (
+  tab: 'search' | 'library'
+): SetActiveTabAction => ({
   type: SET_ACTIVE_TAB,
   payload: tab,
 });
 
-export const setActivePlaylist = (id: string | null): SetActivePlaylistAction => ({
+export const setActivePlaylist = (
+  id: string | null
+): SetActivePlaylistAction => ({
   type: SET_ACTIVE_PLAYLIST,
   payload: id,
 });
 
-export const setNowPlayingSong = (song: MusicState['nowPlayingSong']): SetNowPlayingSongAction => ({
+export const setNowPlayingSong = (
+  song: MusicState['nowPlayingSong']
+): SetNowPlayingSongAction => ({
   type: SET_NOW_PLAYING_SONG,
   payload: song,
 });
 
-export const setPlaylists = (playlists: MusicState['playlists']): SetPlaylistsAction => ({
+export const setPlaylists = (
+  playlists: MusicState['playlists']
+): SetPlaylistsAction => ({
   type: SET_PLAYLISTS,
   payload: playlists,
 });
@@ -247,7 +264,10 @@ export const setModalVisible = (visible: boolean): SetModalVisibleAction => ({
   payload: visible,
 });
 
-export const setModalCurrentSong = (song: { title: string; artist: string }): SetModalCurrentSongAction => ({
+export const setModalCurrentSong = (song: {
+  title: string;
+  artist: string;
+}): SetModalCurrentSongAction => ({
   type: SET_MODAL_CURRENT_SONG,
   payload: song,
 });
@@ -256,12 +276,17 @@ export const toggleFavorite = (): ToggleFavoriteAction => ({
   type: TOGGLE_FAVORITE,
 });
 
-export const setPlaylistModalVisible = (visible: boolean): SetPlaylistModalVisibleAction => ({
+export const setPlaylistModalVisible = (
+  visible: boolean
+): SetPlaylistModalVisibleAction => ({
   type: SET_PLAYLIST_MODAL_VISIBLE,
   payload: visible,
 });
 
-export const setPlaylistModalCurrent = (playlist: { id: string; name: string }): SetPlaylistModalCurrentAction => ({
+export const setPlaylistModalCurrent = (playlist: {
+  id: string;
+  name: string;
+}): SetPlaylistModalCurrentAction => ({
   type: SET_PLAYLIST_MODAL_CURRENT,
   payload: playlist,
 });

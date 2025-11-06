@@ -1,5 +1,6 @@
 import React from 'react';
 import Svg, { Path } from 'react-native-svg';
+import { Colors } from '../../constants/colors';
 
 interface SpotifyIconProps {
   width?: number;
@@ -10,12 +11,12 @@ interface SpotifyIconProps {
 const SpotifyIcon: React.FC<SpotifyIconProps> = ({
   width = 24,
   height = 24,
-  color = '#1DB954',
+  color = Colors.primary,
 }) => {
   return (
-    <Svg 
-      width={width} 
-      height={height} 
+    <Svg
+      width={width}
+      height={height}
       viewBox="0 0 24 24"
       accessibilityLabel="Spotify SVG Icon"
     >

@@ -70,7 +70,11 @@ export interface LibraryTabContentProps {
     name: string;
     songs: SongParams[];
   }[];
-  onPlaylistPress: (playlist: { id: string; name: string; songs: SongParams[] }) => void;
+  onPlaylistPress: (playlist: {
+    id: string;
+    name: string;
+    songs: SongParams[];
+  }) => void;
 }
 
 export interface SearchTabContentProps {

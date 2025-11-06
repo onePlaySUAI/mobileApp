@@ -11,7 +11,7 @@ import {
   toggleFavorite,
   setPlaylistModalVisible,
   setPlaylistModalCurrent,
-  MusicState
+  MusicState,
 } from '../../store/reducers';
 
 interface MusicContextType {
@@ -57,9 +57,15 @@ export const PlayerProvider: React.FC<MusicProviderProps> = ({ children }) => {
   const dispatch = useDispatch();
   const musicState = useSelector((state: RootState) => state.music);
 
-  const activePlaylist = musicState.playlists.find((p: typeof musicState.playlists[0]) => p.id === musicState.activePlaylistId) || null;
+  const activePlaylist =
+    musicState.playlists.find(
+      (p: (typeof musicState.playlists)[0]) =>
+        p.id === musicState.activePlaylistId
+    ) || null;
 
-  const setActivePlaylistWrapper = (playlist: MusicState['playlists'][0] | null) => {
+  const setActivePlaylistWrapper = (
+    playlist: MusicState['playlists'][0] | null
+  ) => {
     dispatch(setActivePlaylist(playlist?.id || null));
   };
 
@@ -74,10 +80,12 @@ export const PlayerProvider: React.FC<MusicProviderProps> = ({ children }) => {
 
   const handlePlayPause = (): void => {
     if (musicState.nowPlayingSong) {
-      dispatch(setNowPlayingSong({
-        ...musicState.nowPlayingSong,
-        isPlaying: !musicState.nowPlayingSong.isPlaying
-      }));
+      dispatch(
+        setNowPlayingSong({
+          ...musicState.nowPlayingSong,
+          isPlaying: !musicState.nowPlayingSong.isPlaying,
+        })
+      );
     }
   };
 
@@ -100,28 +108,31 @@ export const PlayerProvider: React.FC<MusicProviderProps> = ({ children }) => {
     activePlaylist,
     setActivePlaylist: setActivePlaylistWrapper,
     nowPlayingSong: musicState.nowPlayingSong,
-    setNowPlayingSong: (song: MusicState['nowPlayingSong']) => dispatch(setNowPlayingSong(song)),
+    setNowPlayingSong: (song: MusicState['nowPlayingSong']) =>
+      dispatch(setNowPlayingSong(song)),
     playlists: musicState.playlists,
-    setPlaylists: (playlists: MusicState['playlists']) => dispatch(setPlaylists(playlists)),
+    setPlaylists: (playlists: MusicState['playlists']) =>
+      dispatch(setPlaylists(playlists)),
     modalVisible: musicState.modalVisible,
     setModalVisible: (visible: boolean) => dispatch(setModalVisible(visible)),
     modalCurrentSong: musicState.modalCurrentSong,
-    setModalCurrentSong: (song: { title: string; artist: string }) => dispatch(setModalCurrentSong(song)),
+    setModalCurrentSong: (song: { title: string; artist: string }) =>
+      dispatch(setModalCurrentSong(song)),
     openModal,
     closeModal,
     handlePlayPause,
     handleFavorite,
     playlistModalVisible: musicState.playlistModalVisible,
-    setPlaylistModalVisible: (visible: boolean) => dispatch(setPlaylistModalVisible(visible)),
+    setPlaylistModalVisible: (visible: boolean) =>
+      dispatch(setPlaylistModalVisible(visible)),
     playlistModalCurrent: musicState.playlistModalCurrent,
-    setPlaylistModalCurrent: (playlist: { id: string; name: string }) => dispatch(setPlaylistModalCurrent(playlist)),
+    setPlaylistModalCurrent: (playlist: { id: string; name: string }) =>
+      dispatch(setPlaylistModalCurrent(playlist)),
     openPlaylistModal,
     closePlaylistModal,
   };
 
   return (
-    <PlayerContext.Provider value={value}>
-      {children}
-    </PlayerContext.Provider>
+    <PlayerContext.Provider value={value}>{children}</PlayerContext.Provider>
   );
 };

@@ -1,6 +1,9 @@
 import { StyleSheet } from 'react-native';
+import { Colors } from '../constants/colors';
 
-export const getLibraryTabContentStyle = () => {
+export const getLibraryTabContentStyle = (isDark: boolean) => {
+  const themeColors = isDark ? Colors.dark : Colors.light;
+
   return StyleSheet.create({
     container: {
       flex: 1,
@@ -9,13 +12,13 @@ export const getLibraryTabContentStyle = () => {
       borderRadius: 10,
       paddingVertical: 8,
       paddingHorizontal: 16,
-      backgroundColor: '#2b2b2b',
+      backgroundColor: themeColors.Button.background,
       alignItems: 'center',
       marginHorizontal: 16,
       marginVertical: 8,
     },
     addPlaylistText: {
-      color: '#ffffff',
+      color: themeColors.Text.primary,
       fontSize: 12,
     },
     list: {

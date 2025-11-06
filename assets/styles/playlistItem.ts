@@ -1,11 +1,14 @@
 import { StyleSheet } from 'react-native';
+import { Colors } from '../constants/colors';
 
-export const getPlaylistItemStyle = () => {
+export const getPlaylistItemStyle = (isDark: boolean) => {
+  const themeColors = isDark ? Colors.dark : Colors.light;
+
   return StyleSheet.create({
     container: {
       flexDirection: 'row',
       alignItems: 'center',
-      backgroundColor: '#1a1a1a',
+      backgroundColor: themeColors.Item.inActiveBackground,
       borderRadius: 12,
       padding: 10,
       marginBottom: 8,
@@ -17,12 +20,12 @@ export const getPlaylistItemStyle = () => {
       flex: 1,
     },
     name: {
-      color: '#fff',
+      color: themeColors.Text.primary,
       fontSize: 16,
       fontWeight: '500',
     },
     count: {
-      color: '#888',
+      color: themeColors.Text.secondary,
       fontSize: 13,
       marginTop: 4,
     },

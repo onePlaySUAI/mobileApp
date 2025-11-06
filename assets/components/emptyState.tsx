@@ -1,16 +1,19 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
+import { getEmptyStateStyle } from '../styles/emptyState';
 
 interface EmptyStateProps {
   title?: string;
   description?: string;
+  isDark?: boolean;
 }
 
 const EmptyState: React.FC<EmptyStateProps> = ({
   title = 'No songs yet',
   description = 'Start adding songs to your playlist',
+  isDark = false,
 }) => {
-  const styles = getEmptyStateStyle();
+  const styles = getEmptyStateStyle(isDark);
 
   return (
     <View style={styles.emptyState}>
@@ -21,25 +24,3 @@ const EmptyState: React.FC<EmptyStateProps> = ({
 };
 
 export default EmptyState;
-
-const getEmptyStateStyle = () => {
-  return StyleSheet.create({
-    emptyState: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      paddingVertical: 60,
-    },
-    emptyTitle: {
-      color: '#fff',
-      fontSize: 20,
-      fontWeight: '600',
-      marginBottom: 8,
-    },
-    emptyDescription: {
-      color: '#888',
-      fontSize: 14,
-      textAlign: 'center',
-    },
-  });
-};

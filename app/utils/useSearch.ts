@@ -1,9 +1,5 @@
 import { useState, useEffect } from 'react';
 
-interface UseSearchProps {
-  initialPage?: 'search' | 'library';
-}
-
 export const useSearch = (initialPage?: 'search' | 'library') => {
   const [isSearching, setIsSearching] = useState(false);
   const [searchText, setSearchText] = useState('');

@@ -1,23 +1,24 @@
 import { StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { Colors } from '../constants/colors';
 
 interface AppStyle {
-  safeAreaProvider: ViewStyle,
-  container: ViewStyle,
-  Tab: ViewStyle,
-  text: TextStyle,
-  songsPlaceHolder: ViewStyle,
-  songsContent: ViewStyle,
+  safeAreaProvider: ViewStyle;
+  container: ViewStyle;
+  Tab: ViewStyle;
+  text: TextStyle;
+  songsPlaceHolder: ViewStyle;
+  songsContent: ViewStyle;
 }
 
 const LIGHT_THEME_COLORS = {
-  background: '#ffffff',
-  text: '#333333',
-  shadow: '#000',
+  background: Colors.light.background,
+  text: Colors.light.Text.primary,
+  shadow: Colors.light.Text.primary,
 };
 
 const DARK_THEME_COLORS = {
-  background: '#1a1a1a', // Darker background to match Figma design
-  text: '#ffffff',
+  background: Colors.dark.background,
+  text: Colors.dark.Text.primary,
   shadow: 'transparent',
 };
 
@@ -50,7 +51,6 @@ export const getHomeStyle = (isDarkMode: boolean) => {
     },
     text: {
       color: COLORS.text,
-    }
-  })
-}
-
+    },
+  });
+};

@@ -6,12 +6,13 @@ import {
   ScrollView,
   TouchableOpacity,
   Text,
+  useColorScheme,
 } from 'react-native';
 import Song from '../../song';
 import EmptyState from '../../emptyState';
 import { getPlaylistContentStyle } from '@/assets/styles/playlistContent';
-import { Playlist } from './playlistItem';
-import PlaylistCover from './PlaylistCover';
+import { Playlist } from './PlayListItem';
+import PlaylistCover from './PlayListCover';
 
 interface PlaylistContentProps {
   playlist: Playlist;
@@ -20,8 +21,15 @@ interface PlaylistContentProps {
   closeModal: () => void;
 }
 
-const PlaylistContent = ({ playlist, onAddMusic, openModal, closeModal }: PlaylistContentProps) => {
-  const styles = getPlaylistContentStyle();
+const PlaylistContent = ({
+  playlist,
+  onAddMusic,
+  openModal,
+  closeModal,
+}: PlaylistContentProps) => {
+  const colorScheme = useColorScheme();
+  const isDark = colorScheme === 'dark';
+  const styles = getPlaylistContentStyle(isDark);
   const songs = playlist.songs || [];
 
   const handleAddMusic = () => {
@@ -37,9 +45,9 @@ const PlaylistContent = ({ playlist, onAddMusic, openModal, closeModal }: Playli
       >
         {/* Cover */}
         <PlaylistCover
-            name={playlist.name}
-            size="large"
-            onPress={() => console.log('Change playlist cover')}
+          name={playlist.name}
+          size="large"
+          onPress={() => console.log('Change playlist cover')}
         />
 
         <View style={{ paddingHorizontal: 16, marginTop: 12 }}>
@@ -53,7 +61,7 @@ const PlaylistContent = ({ playlist, onAddMusic, openModal, closeModal }: Playli
 
           {/* Empty State или песни */}
           {songs.length === 0 ? (
-            <EmptyState />
+            <EmptyState isDark={isDark} />
           ) : (
             songs.map((song, index) => (
               <Song

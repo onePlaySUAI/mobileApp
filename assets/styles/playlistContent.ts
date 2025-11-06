@@ -1,20 +1,23 @@
 import { StyleSheet } from 'react-native';
+import { Colors } from '../constants/colors';
 
-export const getPlaylistContentStyle = () => {
+export const getPlaylistContentStyle = (isDark: boolean) => {
+  const themeColors = isDark ? Colors.dark : Colors.light;
+
   return StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#1a1a1a',
+      backgroundColor: themeColors.background,
       marginTop: -10,
     },
     coverContainer: {
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: '#1a1a1a',
+      backgroundColor: themeColors.background,
     },
     scrollView: {
       flex: 1,
-      backgroundColor: '#1a1a1a',
+      backgroundColor: themeColors.background,
     },
     scrollContent: {
       flexGrow: 1,
@@ -24,12 +27,12 @@ export const getPlaylistContentStyle = () => {
       borderRadius: 10,
       paddingVertical: 8,
       paddingHorizontal: 16,
-      backgroundColor: '#2b2b2b',
+      backgroundColor: themeColors.Button.background,
       alignItems: 'center',
       marginBottom: 12,
     },
     addMusicText: {
-      color: '#ffffff',
+      color: themeColors.Button.text,
       fontSize: 12,
     },
     emptyState: {
@@ -43,13 +46,13 @@ export const getPlaylistContentStyle = () => {
       marginBottom: 16,
     },
     emptyTitle: {
-      color: '#fff',
+      color: themeColors.Text.primary,
       fontSize: 20,
       fontWeight: '600',
       marginBottom: 8,
     },
     emptyDescription: {
-      color: '#888',
+      color: themeColors.Text.secondary,
       fontSize: 14,
       textAlign: 'center',
     },

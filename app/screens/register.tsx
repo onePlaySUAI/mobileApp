@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, TextInput, Text, Pressable, useColorScheme } from 'react-native';
 import { Redirect } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
@@ -6,12 +6,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { getRegisterStyle, GRADIENT_COLORS } from '@/assets/styles/register';
 import { useDispatch } from 'react-redux';
 import { setUser } from '@/store/reducers';
-import { AppDispatch } from "@/store/store";
+import { AppDispatch } from '@/store/store';
 
 export default function Register() {
   const theme = useColorScheme();
   const isDarkMode = theme === 'dark';
-  const styles = getRegisterStyle(isDarkMode);
+  const { styles, colors } = getRegisterStyle(isDarkMode);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -23,7 +23,7 @@ export default function Register() {
   const [registered, setRegistered] = useState(false);
   const [redirectToLogin, setRedirectToLogin] = useState(false);
 
-  const getUser = async () => {
+  const getUser = useCallback(async () => {
     // для теста
     // await SecureStore.deleteItemAsync('user');
 
@@ -32,17 +32,14 @@ export default function Register() {
 
     const user = JSON.parse(savedUser);
     if (user.name !== undefined && user.email !== undefined) {
-      dispatch(setUser({ name: user.name, email: user.email }))
+      dispatch(setUser({ name: user.name, email: user.email }));
       setRegistered(true);
     }
-   }
+  }, [dispatch]);
 
   const handleRegister = async () => {
     if (email && password && name) {
-      await SecureStore.setItemAsync(
-        'user',
-        JSON.stringify({ email, name })
-      );
+      await SecureStore.setItemAsync('user', JSON.stringify({ email, name }));
       dispatch(setUser({ name, email }));
       setRegistered(true);
     } else setErrorText('Поле email или пароль или имя не могут быть пустыми');
@@ -50,10 +47,10 @@ export default function Register() {
 
   useEffect(() => {
     getUser();
-  }, []);
+  }, [getUser]);
 
   if (registered) {
-    return <Redirect href="/(screens)/home" />;
+    return <Redirect href="/screens/home" />;
   }
 
   if (redirectToLogin) {
@@ -67,7 +64,7 @@ export default function Register() {
       <TextInput
         style={styles.input}
         placeholder="Name"
-        placeholderTextColor={isDarkMode ? '#aaa' : '#777'}
+        placeholderTextColor={colors.Text.tertiary}
         value={name}
         onChangeText={setName}
       />
@@ -75,27 +72,29 @@ export default function Register() {
       <TextInput
         style={styles.input}
         placeholder="Email"
-        placeholderTextColor={isDarkMode ? '#aaa' : '#777'}
+        placeholderTextColor={colors.Text.tertiary}
         keyboardType="email-address"
         autoCapitalize="none"
         value={email}
         onChangeText={setEmail}
       />
 
-      <View style={{ width: '100%', position: 'relative', marginBottom: 15 }}>
+      <View style={styles.passwordContainer}>
         <TextInput
           style={styles.input}
           placeholder="Password"
-          placeholderTextColor={isDarkMode ? '#aaa' : '#777'}
+          placeholderTextColor={colors.Text.tertiary}
           secureTextEntry={!showPassword}
           value={password}
           onChangeText={setPassword}
         />
         <Pressable
           onPress={() => setShowPassword(!showPassword)}
-          style={{ position: 'absolute', right: 12, top: 12 }}
+          style={styles.showHideButton}
         >
-          <Text style={{ color: isDarkMode ? '#aaa' : '#777' }}>
+          <Text
+            style={styles.showHideText}
+          >
             {showPassword ? 'Hide' : 'Show'}
           </Text>
         </Pressable>
@@ -114,8 +113,13 @@ export default function Register() {
         </LinearGradient>
       </Pressable>
 
-      <Pressable onPress={() => setRedirectToLogin(true)} style={{ marginTop: 20 }}>
-        <Text style={{ color: isDarkMode ? '#aaa' : '#777', textDecorationLine: 'underline' }}>
+      <Pressable
+        onPress={() => setRedirectToLogin(true)}
+        style={styles.loginLink}
+      >
+        <Text
+          style={styles.loginText}
+        >
           Уже регистрировались?
         </Text>
       </Pressable>

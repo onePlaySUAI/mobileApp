@@ -1,5 +1,6 @@
 import React from 'react';
 import Svg, { Path } from 'react-native-svg';
+import { Colors } from '../../constants/colors';
 
 interface ThreeDotsIconProps {
   width?: number;
@@ -10,7 +11,7 @@ interface ThreeDotsIconProps {
 const ThreeDotsIcon: React.FC<ThreeDotsIconProps> = ({
   width = 4,
   height = 15,
-  color = '#D9D9D9',
+  color = Colors.dark.Text.primary,
 }) => {
   return (
     <Svg width={width} height={height} viewBox="0 0 4 15" fill="none">

@@ -1,32 +1,30 @@
 import { StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { Colors } from '../constants/colors';
 
 interface BottomNavigationStyle {
   container: ViewStyle;
   tab: ViewStyle;
   activeTab: ViewStyle;
-  activeIcon: TextStyle;
   inactiveIcon: TextStyle;
   gradientIcon: ViewStyle;
 }
 
-export const getBottomNavigationStyle = (isDarkMode: boolean, marginBottom: number) => {
-  const COLORS = {
-    background: isDarkMode ? '#1a1a1a' : '#f8f8f8',
-    active: '#ff0000',
-    inactive: isDarkMode ? '#8e8e93' : '#6d6d70',
-  };
+export const getBottomNavigationStyle = (
+  isDarkMode: boolean,
+  marginBottom: number
+) => {
+  const themeColors = isDarkMode ? Colors.dark : Colors.light;
 
   return StyleSheet.create<BottomNavigationStyle>({
     container: {
       flexDirection: 'row',
-      backgroundColor: COLORS.background,
+      backgroundColor: themeColors.Bottom.background,
       paddingTop: 12,
       paddingBottom: marginBottom + 12,
       paddingHorizontal: 20,
       justifyContent: 'space-around',
       alignItems: 'center',
       borderTopWidth: 1,
-      borderTopColor: isDarkMode ? '#2c2c2e' : '#e5e5e7',
     },
     tab: {
       padding: 8,
@@ -35,13 +33,10 @@ export const getBottomNavigationStyle = (isDarkMode: boolean, marginBottom: numb
       justifyContent: 'center',
     },
     activeTab: {
-      backgroundColor: isDarkMode ? '#2c2c2e' : '#e5e5e7',
-    },
-    activeIcon: {
-      color: COLORS.active,
+      backgroundColor: themeColors.Bottom.tabActive,
     },
     inactiveIcon: {
-      color: COLORS.inactive,
+      color: themeColors.Bottom.iconInactive,
     },
     gradientIcon: {
       padding: 8,

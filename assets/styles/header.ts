@@ -1,4 +1,5 @@
 import { StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { Colors } from '../constants/colors';
 
 interface HeaderStyle {
   container: ViewStyle;
@@ -13,24 +14,17 @@ interface HeaderStyle {
 
 // The marginTop comes from safe area insets passed from the component.
 export const getHeaderStyle = (isDarkMode: boolean, marginTop: number) => {
-  const COLORS = {
-    background: isDarkMode ? '#000' : '#f8f8f8',
-    searchBackground: isDarkMode ? '#2a2a2a' : '#e5e5e7',
-    text: isDarkMode ? '#ffffff' : '#000000',
-    title: isDarkMode ? '#ffffff' : '#000000',
-    searchPlaceholder: '#ff0000',
-    searchButton: '#00ff00',
-  };
+  const themeColors = isDarkMode ? Colors.dark : Colors.light;
 
   return StyleSheet.create<HeaderStyle>({
     container: {
-      backgroundColor: COLORS.background,
+      backgroundColor: themeColors.Header.background,
       paddingTop: marginTop,
       paddingBottom: 16,
       paddingHorizontal: 16,
       borderBottomLeftRadius: 0,
       borderBottomRightRadius: 30,
-      shadowColor: '#000',
+      shadowColor: Colors.light.Text.primary,
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.1,
       shadowRadius: 3,
@@ -46,10 +40,10 @@ export const getHeaderStyle = (isDarkMode: boolean, marginTop: number) => {
       height: 35,
       borderRadius: 40,
       marginRight: 12,
-      backgroundColor: '#8e8e93',
+      backgroundColor: themeColors.Header.icon,
     },
     title: {
-      color: COLORS.title,
+      color: Colors.accent,
       fontSize: 18,
       fontWeight: '600',
     },
@@ -63,16 +57,16 @@ export const getHeaderStyle = (isDarkMode: boolean, marginTop: number) => {
     },
     searchInput: {
       flex: 1,
-      color: COLORS.text,
+      color: Colors.accent,
       fontSize: 16,
       borderBottomWidth: 1,
-      borderBottomColor: COLORS.searchPlaceholder,
+      borderBottomColor: Colors.accent,
       paddingVertical: 4,
       marginRight: 12,
     },
     libaryInput: {
       flex: 1,
-      color: COLORS.searchPlaceholder,
+      color: Colors.accent,
       fontSize: 20,
       paddingVertical: 4,
       marginLeft: 7,

@@ -1,4 +1,5 @@
 import { StyleSheet, ViewStyle, TextStyle, ImageStyle } from 'react-native';
+import { Colors } from '../constants/colors';
 
 interface MiniPlayerStyle {
   container: ViewStyle;
@@ -15,9 +16,9 @@ interface MiniPlayerStyle {
 
 export const getMiniPlayerStyle = (isDarkMode: boolean) => {
   const COLORS = {
-    background: '#4A0000', // Dark red background as in design
-    text: '#ffffff',
-    secondaryText: '#ffffff',
+    background: Colors.accent,
+    text: Colors.dark.Text.primary,
+    secondaryText: Colors.dark.Text.primary,
   };
 
   return StyleSheet.create<MiniPlayerStyle>({
