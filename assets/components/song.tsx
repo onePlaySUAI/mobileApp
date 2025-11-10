@@ -6,18 +6,18 @@ interface songParams {
   artist: string,
   source: 'Spotify' | 'Youtube' | 'Download';
   albumCover: string,
-  active?: boolean,
 }
 
 export interface songProps {
   params: songParams,
   onDotsPress?: () => void,
   onPlay?: () => void, // new prop
+  active: boolean
 }
 
-export default function Song({ params, onDotsPress, onPlay }: songProps) {
+export default function Song({ params, onDotsPress, onPlay, active }: songProps) {
   const colorScheme = useColorScheme();
-  const style = getSongStyle(colorScheme === 'dark', params.active ?? false);
+  const style = getSongStyle(colorScheme === 'dark', active );
   const STRING_MAX_LENGTH = 22;
 
   return (

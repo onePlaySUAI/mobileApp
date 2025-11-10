@@ -91,6 +91,7 @@ export default function Home() {
                 params={songItem}
                 onDotsPress={() => openModal(songItem.title, songItem.artist)}
                 onPlay={() => dispatch(setCurrentSong(songItem))}
+                active={nowPlayingSong?.id === songItem.id}
               />
             ))
           )}

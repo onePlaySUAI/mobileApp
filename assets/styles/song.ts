@@ -36,9 +36,6 @@ export const getSongStyle = (isDarkMode: boolean, isActive: boolean) => {
   return StyleSheet.create<SongStyle>({
     songContainer: {
       height: 47,
-      borderStyle: 'dashed',
-      borderWidth: 2,
-      borderColor: COLORS.border,
       width: '100%',
       flexDirection: 'row',
       alignItems: 'center',
