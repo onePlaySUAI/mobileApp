@@ -2,60 +2,130 @@ import { View, Text, TouchableOpacity, Image } from "react-native";
 import { getNowPlayingBarStyle } from "@/assets/styles/nowPlayingBar";
 import { useColorScheme } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
+import { Audio } from "expo-av";
+import { useState, useEffect, useRef } from "react";
 
 interface NowPlayingBarProps {
   song?: {
     title: string;
     artist: string;
     albumCover?: string;
-    isPlaying?: boolean;
-  } | null;
-  onPlayPause?: () => void;
-  onFavorite?: () => void;
+    audioUrl: string;
+  } | null,
+  onFavorite?: () => void,
 }
 
-export default function NowPlayingBar({ 
-  song, 
-  onPlayPause, 
-  onFavorite 
-}: NowPlayingBarProps) {
-  const colorScheme = useColorScheme();
-  const style = getNowPlayingBarStyle(colorScheme === 'dark');
+Audio.setAudioModeAsync({
+  staysActiveInBackground: true,
+  playsInSilentModeIOS: true,
+})
 
-  if (!song) {
-    return null;
-  }
+export default function NowPlayingBar({ song, onFavorite }: NowPlayingBarProps) {
+  const colorScheme = useColorScheme();
+  const style = getNowPlayingBarStyle(colorScheme === "dark");
+
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const soundRef = useRef<Audio.Sound | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+
+    const loadSong = async () => {
+      if (!song?.audioUrl) return;
+
+      // Unload previous sound
+      if (soundRef.current) {
+        await soundRef.current.unloadAsync();
+        soundRef.current = null;
+      }
+
+      try {
+        const { sound: newSound } = await Audio.Sound.createAsync(
+          { uri: song.audioUrl },
+          { shouldPlay: true },
+          onPlaybackStatusUpdate
+        );
+
+        await newSound.setVolumeAsync(1); // ensure volume
+        soundRef.current = newSound;
+
+        if (!mounted) {
+          await newSound.unloadAsync();
+          soundRef.current = null;
+        }
+      } catch (error) {
+        console.log("Error loading audio:", error);
+      }
+    };
+
+    loadSong();
+
+    return () => {
+      mounted = false;
+      if (soundRef.current) {
+        soundRef.current.unloadAsync();
+        soundRef.current = null;
+      }
+    };
+  }, [song?.audioUrl]);
+
+  const onPlaybackStatusUpdate = (status: any) => {
+    if (!status.isLoaded || !status.durationMillis) return;
+    setIsPlaying(status.isPlaying);
+    setProgress(status.positionMillis / status.durationMillis);
+  };
+
+  const togglePlayPause = async () => {
+    if (!soundRef.current) return;
+
+    const status = await soundRef.current.getStatusAsync();
+    if (!status.isLoaded) return;
+
+    if (status.isPlaying) {
+      await soundRef.current.pauseAsync();
+    } else {
+      await soundRef.current.playAsync();
+    }
+  };
+
+  if (!song) return null;
 
   return (
     <View style={style.container}>
       <View style={style.leftSection}>
-        <Image 
-          source={{ uri: song.albumCover || require('@/assets/images/albumBlank.jpg') }} 
-          style={style.albumCover} 
+        <Image
+          source={song.albumCover ? { uri: song.albumCover } : require("@/assets/images/albumBlank.jpg")}
+          style={style.albumCover}
         />
         <View style={style.songInfo}>
           <View style={style.titleContainer}>
             <Text style={style.songTitle}>{song.title}</Text>
-            <Image 
-              source={require('@/assets/images/spotifyLogo.png')} 
-              style={style.sourceLogo} 
+            <Image
+              source={require("@/assets/images/spotifyLogo.png")}
+              style={style.sourceLogo}
             />
           </View>
           <Text style={style.artistName}>{song.artist}</Text>
         </View>
       </View>
-      
+
       <View style={style.rightSection}>
         <TouchableOpacity onPress={onFavorite} style={style.actionButton}>
           <Ionicons name="star" size={18} color="#ffd700" />
         </TouchableOpacity>
-        <TouchableOpacity onPress={onPlayPause} style={style.actionButton}>
-          <Ionicons 
-            name={song.isPlaying ? "pause" : "play"} 
-            size={18} 
-            color="#ffffff" 
+        <TouchableOpacity onPress={togglePlayPause} style={style.actionButton}>
+          <Ionicons
+            name={isPlaying ? "pause" : "play"}
+            size={18}
+            color="#ffffff"
           />
         </TouchableOpacity>
+      </View>
+
+      {/* Progress Bar */}
+      <View style={{ position: "absolute", bottom: 0, left: 0, height: 2, width: "100%", backgroundColor: "#444" }}>
+        <View style={{ height: 2, backgroundColor: "#1DB954", width: `${progress * 100}%` }} />
       </View>
     </View>
   );

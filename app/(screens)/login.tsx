@@ -28,8 +28,7 @@ export default function Login() {
     }
 
     setTimeout(() => {
-      // Mock login success
-      dispatch(setUser({ name: '', email }));
+      dispatch(setUser({ name: 'st', email }));
       setLoggedIn(true);
     }, 500);
   };

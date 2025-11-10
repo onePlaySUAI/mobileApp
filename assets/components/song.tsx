@@ -1,5 +1,5 @@
-import {Image, Pressable, Text, useColorScheme, View} from "react-native";
-import {getSongStyle} from "@/assets/styles/song";
+import { Image, Pressable, Text, useColorScheme, View, TouchableOpacity } from "react-native";
+import { getSongStyle } from "@/assets/styles/song";
 
 interface songParams {
   title: string,
@@ -8,54 +8,68 @@ interface songParams {
   albumCover: string,
   active?: boolean,
 }
+
 export interface songProps {
   params: songParams,
   onDotsPress?: () => void,
+  onPlay?: () => void, // new prop
 }
 
-export default function Song ({ params, onDotsPress }: songProps) {
+export default function Song({ params, onDotsPress, onPlay }: songProps) {
   const colorScheme = useColorScheme();
-  const style = getSongStyle(colorScheme === 'dark', params.active);
+  const style = getSongStyle(colorScheme === 'dark', params.active ?? false);
   const STRING_MAX_LENGTH = 22;
 
   return (
     <View style={style.songContainer}>
-      <View style={style.albumTitleContainer}>
+      <TouchableOpacity
+        style={style.albumTitleContainer}
+        onPress={onPlay} // trigger playing when tapping album/title
+        activeOpacity={0.7}
+      >
         {/* Album cover */}
         <Image
-          source={{uri: params.albumCover}}
+          source={{ uri: params.albumCover }}
           style={style.albumCover}
         />
-        {/* Title and Author box */}
+        {/* Title and Artist box */}
         <View>
-          <Text style={style.title}>{params.title.length > STRING_MAX_LENGTH ? params.title.slice(0, STRING_MAX_LENGTH) + '...' : params.title}</Text>
-          <Text style={style.artist}>{params.artist.length > STRING_MAX_LENGTH ? params.artist.slice(0, STRING_MAX_LENGTH) + '...' : params.artist}</Text>
+          <Text style={style.title}>
+            {params.title.length > STRING_MAX_LENGTH
+              ? params.title.slice(0, STRING_MAX_LENGTH) + "..."
+              : params.title}
+          </Text>
+          <Text style={style.artist}>
+            {params.artist.length > STRING_MAX_LENGTH
+              ? params.artist.slice(0, STRING_MAX_LENGTH) + "..."
+              : params.artist}
+          </Text>
         </View>
-      </View>
-      <View>
-        {/* Source logos */}
-        <View style={style.sourceContainer}>
-          <Image
-            source={require('@/assets/images/spotifyLogo.png')}
-            style={{
-              ...(params.source === 'Youtube' ? style.sourceYT : style.source),
-              display: (params.source === 'Spotify' ? 'flex' : 'none')
-            }}
-          />
-          <Image
-            source={require('@/assets/images/ytLogo.png')}
-            style={{
-              ...(params.source === 'Youtube' ? style.sourceYT : style.source),
-              display: (params.source === 'Youtube' ? 'flex' : 'none')
-            }}
-          />
-          <Image
-            source={require('@/assets/images/downloadLogo.png')}
-            style={{
-              ...(params.source === 'Youtube' ? style.sourceYT : style.source),
-              display: (params.source === 'Download' ? 'flex' : 'none')
-            }}
-          />
+      </TouchableOpacity>
+
+      {/* Source logos and dots */}
+      <View style={style.sourceContainer}>
+        <Image
+          source={require('@/assets/images/spotifyLogo.png')}
+          style={{
+            ...(params.source === 'Youtube' ? style.sourceYT : style.source),
+            display: params.source === 'Spotify' ? 'flex' : 'none'
+          }}
+        />
+        <Image
+          source={require('@/assets/images/ytLogo.png')}
+          style={{
+            ...(params.source === 'Youtube' ? style.sourceYT : style.source),
+            display: params.source === 'Youtube' ? 'flex' : 'none'
+          }}
+        />
+        <Image
+          source={require('@/assets/images/downloadLogo.png')}
+          style={{
+            ...(params.source === 'Youtube' ? style.sourceYT : style.source),
+            display: params.source === 'Download' ? 'flex' : 'none'
+          }}
+        />
 
         <Pressable
           onPress={onDotsPress}
@@ -70,9 +84,7 @@ export default function Song ({ params, onDotsPress }: songProps) {
             style={style.dotsStyle}
           />
         </Pressable>
-
-        </View>
       </View>
     </View>
-  )
+  );
 }
