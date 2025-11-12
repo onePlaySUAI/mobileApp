@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import { View, TextInput, Text, Pressable, ActivityIndicator, useColorScheme } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, TextInput, Text, Pressable, useColorScheme } from 'react-native';
 import { Redirect } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 import { LinearGradient } from 'expo-linear-gradient';
 import { getRegisterStyle, GRADIENT_COLORS } from '@/assets/styles/register';
 import { useDispatch } from 'react-redux';
 import { setUser } from '@/store/reducers';
-import { AppDispatch } from "@/store/store";
-import serverRegister, { registerResponse } from "@/assets/serverCalls/register";
-import LoadingScreen from "@/assets/components/loading";
+import { AppDispatch } from '@/store/store';
+import serverRegister, { registerResponse } from '@/assets/serverCalls/register';
+import LoadingScreen from '@/assets/components/loading';
 
 interface userInfo extends registerResponse {
-  email: string,
+  email: string;
 }
 
 export default function Register() {
@@ -33,16 +33,22 @@ export default function Register() {
 
   const getUser = async () => {
     await SecureStore.deleteItemAsync('user');
+
     const savedUser = await SecureStore.getItemAsync('user');
     if (!savedUser) return;
+
     const user = JSON.parse(savedUser) as userInfo;
-    if (user.userName && user.email && user.id && user.token) {
-      await registerSuccess(user.userName, user.email, user.token, user.id);
+    if (user.userName && user.userId && user.token) {
+      await registerSuccess(user.userName, user.email, user.token, user.userId.toString());
     }
   };
 
-  const registerSuccess = async (userName: string, email: string, token: string, id: string) => {
-    await SecureStore.setItemAsync('user', JSON.stringify({ id, token, userName, email }));
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const registerSuccess = async (userName: string, email: string, token: string, userId: string) => {
+    await SecureStore.setItemAsync('user', JSON.stringify({ userId, token, userName, email }));
     dispatch(setUser({ name: userName, email }));
     setRegistered(true);
   };
@@ -65,7 +71,7 @@ export default function Register() {
     try {
       setIsLoading(true);
       const user = await serverRegister(name, password, confirmPassword);
-      await registerSuccess(user.userName, email, user.token, user.id);
+      await registerSuccess(user.userName, email, user.token, user.userId.toString());
     } catch (e) {
       if (e === '401') setErrorText('Такой пользователь уже зарегистрирован!');
       else {
@@ -82,8 +88,6 @@ export default function Register() {
 
   if (registered) return <Redirect href="/home" />;
   if (redirectToLogin) return <Redirect href="/login" />;
-
-  getUser();
 
   if (isLoading) {
     return <LoadingScreen isDarkMode={isDarkMode} />;

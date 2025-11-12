@@ -11,22 +11,10 @@ export default function ProfileInfo({ isDark }: ProfileInfoProps) {
   const style = getProfileInfoStyle(isDark);
 
   return (
-    <>
-      <View style={style.nameBlock}>
-        <Text style={style.name}>{name}</Text>
-        <Text style={style.email}>{email}</Text>
-      </View>
-
-      <View style={style.phoneRow}>
-        <Text style={style.phoneLabel}>Your tel. number:</Text>
-        <TextInput
-          style={style.phoneInput}
-          placeholder={Platform.select({ ios: "+7 (999) 999 9999", default: "+7 (999) 999 9999" })}
-          placeholderTextColor={isDark ? "#a6a6a6" : "#888"}
-          keyboardType="phone-pad"
-        />
-      </View>
-    </>
+    <View style={style.nameBlock}>
+      <Text style={style.name}>{name}</Text>
+      <Text style={style.email}>{email}</Text>
+    </View>
   );
 }
 

@@ -6,6 +6,10 @@ import { getRegisterStyle, GRADIENT_COLORS } from '@/assets/styles/register';
 import { useDispatch } from 'react-redux';
 import { setUser } from '@/store/reducers';
 import { AppDispatch } from "@/store/store";
+import serverLogin from "@/assets/serverCalls/login";
+import * as SecureStore from 'expo-secure-store';
+import {isLoading} from "expo-font";
+import LoadingScreen from "@/assets/components/loading";
 
 export default function Login() {
   const theme = useColorScheme();
@@ -14,26 +18,41 @@ export default function Login() {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [errorText, setErrorText] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
   const [redirectToRegister, setRedirectToRegister] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async () => {
-    if (!email) {
-      setErrorText('Email cannot be empty');
+    if (!name || !password) {
+      setErrorText('Поля не могут быть пустыми');
       return;
     }
-
-    setTimeout(() => {
-      dispatch(setUser({ name: 'st', email }));
+    try {
+      const user = await serverLogin(name, password);
+      await SecureStore.setItemAsync('user', JSON.stringify({
+        userId: user.userId,
+        token: user.token,
+        userName: user.userName,
+      }));
+      dispatch(setUser({name, email: ''}));
       setLoggedIn(true);
-    }, 500);
+    } catch (e) {
+      if (e === '401') setErrorText('Неправильный логин или пароль');
+      else {
+        console.error(e);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+
   };
 
   if (loggedIn) return <Redirect href="/home" />;
+  if (isLoading) return <LoadingScreen isDarkMode={isDarkMode}/>;
   if (redirectToRegister) return <Redirect href="/register" />;
 
   return (
@@ -42,12 +61,11 @@ export default function Login() {
 
       <TextInput
         style={styles.input}
-        placeholder="Email"
+        placeholder="Name"
         placeholderTextColor={isDarkMode ? '#aaa' : '#777'}
-        keyboardType="email-address"
         autoCapitalize="none"
-        value={email}
-        onChangeText={setEmail}
+        value={name}
+        onChangeText={setName}
       />
 
       <View style={{ width: '100%', position: 'relative', marginBottom: 15 }}>

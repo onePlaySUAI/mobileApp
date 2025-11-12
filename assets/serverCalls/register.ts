@@ -1,5 +1,5 @@
 export interface registerResponse {
-  id: string,
+  userId: string,
   userName: string,
   token: string,
 }
