@@ -26,7 +26,25 @@ export default function NowPlayingBar({ song, onFavorite }: NowPlayingBarProps) 
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   const soundRef = useRef<Audio.Sound | null>(null);
+
+  useEffect(() => {
+    let interval: ReturnType<typeof setInterval> | null = null;
+
+    if (isLoading) {
+      interval = setInterval(() => {
+        setProgress((prev) => (prev >= 1 ? 0 : prev + 0.01));
+      }, 10);
+    } else {
+      if (interval) clearInterval(interval);
+    }
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isLoading]);
+
 
   useEffect(() => {
     let mounted = true;
@@ -34,6 +52,7 @@ export default function NowPlayingBar({ song, onFavorite }: NowPlayingBarProps) 
     const loadSong = async () => {
       if (!song?.audioUrl) return;
 
+      setIsLoading(true);
       if (soundRef.current) {
         await soundRef.current.unloadAsync();
         soundRef.current = null;
@@ -46,7 +65,7 @@ export default function NowPlayingBar({ song, onFavorite }: NowPlayingBarProps) 
           onPlaybackStatusUpdate
         );
 
-        await newSound.setVolumeAsync(1); // ensure volume
+        await newSound.setVolumeAsync(1);
         soundRef.current = newSound;
 
         if (!mounted) {
@@ -55,6 +74,8 @@ export default function NowPlayingBar({ song, onFavorite }: NowPlayingBarProps) 
         }
       } catch (error) {
         console.log("Error loading audio:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -103,6 +124,7 @@ export default function NowPlayingBar({ song, onFavorite }: NowPlayingBarProps) 
       <View style={style.leftSection}>
         <Image
           source={song.albumCover ? { uri: song.albumCover } : require("@/assets/images/albumBlank.jpg")}
+          //@ts-ignore
           style={style.albumCover}
         />
         <View style={style.songInfo}>
@@ -110,6 +132,7 @@ export default function NowPlayingBar({ song, onFavorite }: NowPlayingBarProps) 
             <Text style={style.songTitle}>{song.title}</Text>
             <Image
               source={require("@/assets/images/spotifyLogo.png")}
+              //@ts-ignore
               style={style.sourceLogo}
             />
           </View>
@@ -132,7 +155,7 @@ export default function NowPlayingBar({ song, onFavorite }: NowPlayingBarProps) 
 
       {/* Progress Bar */}
       <View style={{ position: "absolute", bottom: 0, left: 13, height: 2, width: "100%", backgroundColor: "#444" }}>
-        <View style={{ height: 2, backgroundColor: "#1DB954", width: `${progress * 100}%` }} />
+        <View style={{ height: 2, backgroundColor: isLoading ? "gray" : "#1DB954", width: `${progress * 100}%` }} />
       </View>
     </View>
   );

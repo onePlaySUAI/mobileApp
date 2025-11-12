@@ -2,7 +2,7 @@ import {registerResponse} from "@/assets/serverCalls/register";
 
 export default async function serverLogin (name: string, password: string): Promise<registerResponse> {
   const SERVER_LINK = process.env.EXPO_PUBLIC_SERVER_LINK as string;
-  const res = await fetch(`${SERVER_LINK}/api/auth/login`, {
+  const res = await fetch(`${SERVER_LINK}/api/Auth/login`, {
     method: 'POST',
     headers: {
       'Content-type': 'application/json'

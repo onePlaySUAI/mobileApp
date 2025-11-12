@@ -31,6 +31,7 @@ export default function Login() {
       setErrorText('Поля не могут быть пустыми');
       return;
     }
+    setIsLoading(true);
     try {
       const user = await serverLogin(name, password);
       await SecureStore.setItemAsync('user', JSON.stringify({

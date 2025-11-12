@@ -32,8 +32,6 @@ export default function Register() {
   const styles = getRegisterStyle(isDarkMode);
 
   const getUser = async () => {
-    await SecureStore.deleteItemAsync('user');
-
     const savedUser = await SecureStore.getItemAsync('user');
     if (!savedUser) return;
 
