@@ -1,5 +1,5 @@
 import { createStore, combineReducers } from 'redux';
-import { userReducer } from './reducers';
+import { userReducer } from './userSlice';
 import { songsReducer } from './songsSlice';
 
 const rootReducer = combineReducers({

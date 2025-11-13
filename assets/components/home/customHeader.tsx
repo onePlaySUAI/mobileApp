@@ -1,10 +1,14 @@
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import {View, TextInput, TouchableOpacity, useColorScheme, ActivityIndicator} from "react-native";
 import { getHeaderStyle } from "@/assets/styles/header";
-import { useColorScheme } from "react-native";
 import { useSafeAreaInsets, type EdgeInsets } from "react-native-safe-area-context";
-import { Ionicons } from '@expo/vector-icons';
 import SearchIcon from "../icons/SearchIcon";
 import { router } from "expo-router";
+import {useState} from "react";
+import ytGetSongByQuery from "@/assets/serverCalls/ytGetSongByQuery";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "@/store/store";
+import {addSong} from "@/store/songsSlice";
+import {random} from "nanoid";
 
 
 interface headerProps {
@@ -18,6 +22,31 @@ export default function CustomHeader ({ params }: headerParams) {
   const colorScheme = useColorScheme();
   const insets: EdgeInsets = useSafeAreaInsets();
   const style = getHeaderStyle(colorScheme === 'dark', insets.top);
+  const [query, setQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const searchByQuery = async () => {
+    setIsLoading(true);
+    try {
+      const song = await ytGetSongByQuery(query);
+      console.log(song.stream);
+      dispatch(addSong({
+        id: `${Math.random() * 100}`,
+        title: song.name,
+        artist: song.authorName,
+        albumCover: '',
+        audioUrl: song.stream,
+        // @ts-ignore
+        source: ['Download', 'Spotify', 'Youtube'][song.type]
+      }));
+    } catch (e) {
+      console.error(e);
+      if (e === '500') alert('Ошибка сервера, повторите попытку позже');
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   return (
     <View style={style.container}>
@@ -29,9 +58,14 @@ export default function CustomHeader ({ params }: headerParams) {
           style={style.searchInput}
           placeholder="Search"
           placeholderTextColor="#ff0000"
+          value={query}
+          onChangeText={setQuery}
         />
-        <TouchableOpacity style={style.searchButton}>
-          <SearchIcon></SearchIcon>
+        <TouchableOpacity
+          style={style.searchButton}
+          onPress={searchByQuery}
+        >
+          { isLoading ? <ActivityIndicator /> : <SearchIcon/>}
         </TouchableOpacity>
       </View>
     </View>

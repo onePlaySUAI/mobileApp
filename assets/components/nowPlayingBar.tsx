@@ -18,7 +18,7 @@ interface NowPlayingBarProps {
 Audio.setAudioModeAsync({
   staysActiveInBackground: true,
   playsInSilentModeIOS: true,
-})
+});
 
 export default function NowPlayingBar({ song, onFavorite }: NowPlayingBarProps) {
   const colorScheme = useColorScheme();
@@ -53,6 +53,8 @@ export default function NowPlayingBar({ song, onFavorite }: NowPlayingBarProps) 
       if (!song?.audioUrl) return;
 
       setIsLoading(true);
+      setIsPlaying(false);
+
       if (soundRef.current) {
         await soundRef.current.unloadAsync();
         soundRef.current = null;
@@ -99,7 +101,7 @@ export default function NowPlayingBar({ song, onFavorite }: NowPlayingBarProps) 
       setProgress(0);
       setIsPlaying(false);
       if (soundRef.current) {
-        soundRef.current.setPositionAsync(0).then();
+        soundRef.current.setPositionAsync(0);
       }
     }
   };
@@ -112,8 +114,10 @@ export default function NowPlayingBar({ song, onFavorite }: NowPlayingBarProps) 
 
     if (status.isPlaying) {
       await soundRef.current.pauseAsync();
+      setIsPlaying(false);
     } else {
       await soundRef.current.playAsync();
+      setIsPlaying(true);
     }
   };
 
@@ -153,7 +157,6 @@ export default function NowPlayingBar({ song, onFavorite }: NowPlayingBarProps) 
         </TouchableOpacity>
       </View>
 
-      {/* Progress Bar */}
       <View style={{ position: "absolute", bottom: 0, left: 13, height: 2, width: "100%", backgroundColor: "#444" }}>
         <View style={{ height: 2, backgroundColor: isLoading ? "gray" : "#1DB954", width: `${progress * 100}%` }} />
       </View>

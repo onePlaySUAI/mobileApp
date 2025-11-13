@@ -5,7 +5,7 @@ import * as SecureStore from 'expo-secure-store';
 import { LinearGradient } from 'expo-linear-gradient';
 import { getRegisterStyle, GRADIENT_COLORS } from '@/assets/styles/register';
 import { useDispatch } from 'react-redux';
-import { setUser } from '@/store/reducers';
+import { setUser } from '@/store/userSlice';
 import { AppDispatch } from '@/store/store';
 import serverRegister, { registerResponse } from '@/assets/serverCalls/register';
 import LoadingScreen from '@/assets/components/loading';
@@ -32,6 +32,8 @@ export default function Register() {
   const styles = getRegisterStyle(isDarkMode);
 
   const getUser = async () => {
+    await SecureStore.deleteItemAsync('user');
+
     const savedUser = await SecureStore.getItemAsync('user');
     if (!savedUser) return;
 

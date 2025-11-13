@@ -4,11 +4,10 @@ import { Redirect } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { getRegisterStyle, GRADIENT_COLORS } from '@/assets/styles/register';
 import { useDispatch } from 'react-redux';
-import { setUser } from '@/store/reducers';
+import { setUser } from '@/store/userSlice';
 import { AppDispatch } from "@/store/store";
 import serverLogin from "@/assets/serverCalls/login";
 import * as SecureStore from 'expo-secure-store';
-import {isLoading} from "expo-font";
 import LoadingScreen from "@/assets/components/loading";
 
 export default function Login() {

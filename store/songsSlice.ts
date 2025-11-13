@@ -1,10 +1,9 @@
-import { createStore, combineReducers } from 'redux';
+import { AnyAction } from 'redux';
 
-// --- Types ---
 export type SongSource = 'Spotify' | 'Youtube' | 'Download';
 
 export interface SongItem {
-  id: string; // optional but recommended for keys
+  id: string;
   title: string;
   artist: string;
   albumCover: string;
@@ -17,11 +16,10 @@ export interface SongsState {
   current: SongItem | null;
 }
 
-// --- Action Types ---
 const SET_SONG_LIST = 'songs/SET_SONG_LIST';
 const SET_CURRENT_SONG = 'songs/SET_CURRENT_SONG';
+const ADD_SONG = 'songs/ADD_SONG';
 
-// --- Actions ---
 interface SetSongListAction {
   type: typeof SET_SONG_LIST;
   payload: SongItem[];
@@ -32,7 +30,12 @@ interface SetCurrentSongAction {
   payload: SongItem;
 }
 
-export type SongsAction = SetSongListAction | SetCurrentSongAction;
+interface AddSongAction {
+  type: typeof ADD_SONG;
+  payload: SongItem;
+}
+
+export type SongsAction = SetSongListAction | SetCurrentSongAction | AddSongAction | AnyAction;
 
 export const setSongList = (songs: SongItem[]): SetSongListAction => ({
   type: SET_SONG_LIST,
@@ -44,13 +47,16 @@ export const setCurrentSong = (song: SongItem): SetCurrentSongAction => ({
   payload: song,
 });
 
-// --- Initial State ---
+export const addSong = (song: SongItem): AddSongAction => ({
+  type: ADD_SONG,
+  payload: song,
+});
+
 const initialState: SongsState = {
   list: [],
   current: null,
 };
 
-// --- Reducer ---
 export const songsReducer = (
   state = initialState,
   action: SongsAction
@@ -60,20 +66,12 @@ export const songsReducer = (
       return { ...state, list: action.payload };
     case SET_CURRENT_SONG:
       return { ...state, current: action.payload };
+    case ADD_SONG:
+      return {
+        ...state,
+        list: [...state.list, action.payload]
+      };
     default:
       return state;
   }
 };
-
-// --- Example Store ---
-const rootReducer = combineReducers({
-  song: songsReducer,
-  // add other reducers like user: userReducer
-});
-
-const store = createStore(rootReducer);
-
-export type RootState = ReturnType<typeof rootReducer>;
-export type AppDispatch = typeof store.dispatch;
-
-export default store;
