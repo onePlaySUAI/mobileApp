@@ -4,12 +4,10 @@ import { useSafeAreaInsets, type EdgeInsets } from "react-native-safe-area-conte
 import SearchIcon from "../icons/SearchIcon";
 import { router } from "expo-router";
 import {useState} from "react";
-import ytGetSongByQuery from "@/assets/serverCalls/ytGetSongByQuery";
+import {ytGetSongByQuery} from "@/assets/serverCalls/youtube";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "@/store/store";
 import {addSong} from "@/store/songsSlice";
-import {random} from "nanoid";
-
 
 interface headerProps {
   page: 'Home' | 'Library';
@@ -27,18 +25,19 @@ export default function CustomHeader ({ params }: headerParams) {
   const dispatch = useDispatch<AppDispatch>();
 
   const searchByQuery = async () => {
+    if (isLoading) return;
+
     setIsLoading(true);
     try {
       const song = await ytGetSongByQuery(query);
       console.log(song.stream);
       dispatch(addSong({
-        id: `${Math.random() * 100}`,
+        id: song.youTubeId,
         title: song.name,
         artist: song.authorName,
-        albumCover: '',
+        albumCover: song.imageSet.medium ?? '',
         audioUrl: song.stream,
-        // @ts-ignore
-        source: ['Download', 'Spotify', 'Youtube'][song.type]
+        source: 'Youtube',
       }));
     } catch (e) {
       console.error(e);

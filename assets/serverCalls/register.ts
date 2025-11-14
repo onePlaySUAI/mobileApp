@@ -1,12 +1,14 @@
+import SERVER_LINK from "@/assets/serverCalls/SERVER_LINK";
+
 export interface registerResponse {
   userId: string,
   userName: string,
   token: string,
+  refreshToken: string,
 }
 
 export default async function serverRegister (name: string, password: string, confirmPassword: string):
   Promise<registerResponse> {
-    const SERVER_LINK = process.env.EXPO_PUBLIC_SERVER_LINK as string;
     const res = await fetch(`${SERVER_LINK}/api/Auth/register`, {
       method: "POST",
       headers: {

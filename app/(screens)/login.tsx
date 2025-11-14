@@ -36,6 +36,7 @@ export default function Login() {
       await SecureStore.setItemAsync('user', JSON.stringify({
         userId: user.userId,
         token: user.token,
+        refreshToken: user.refreshToken,
         userName: user.userName,
       }));
       dispatch(setUser({name, email: ''}));

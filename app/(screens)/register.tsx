@@ -9,9 +9,10 @@ import { setUser } from '@/store/userSlice';
 import { AppDispatch } from '@/store/store';
 import serverRegister, { registerResponse } from '@/assets/serverCalls/register';
 import LoadingScreen from '@/assets/components/loading';
+import updateUserByToken from "@/assets/serverCalls/refreshToken";
 
 interface userInfo extends registerResponse {
-  email: string;
+  email?: string;
 }
 
 export default function Register() {
@@ -24,7 +25,7 @@ export default function Register() {
   const [errorText, setErrorText] = useState('');
   const [registered, setRegistered] = useState(false);
   const [redirectToLogin, setRedirectToLogin] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const dispatch = useDispatch<AppDispatch>();
   const theme = useColorScheme();
@@ -32,23 +33,30 @@ export default function Register() {
   const styles = getRegisterStyle(isDarkMode);
 
   const getUser = async () => {
-    await SecureStore.deleteItemAsync('user');
+    // await SecureStore.deleteItemAsync('user');
 
     const savedUser = await SecureStore.getItemAsync('user');
     if (!savedUser) return;
 
     const user = JSON.parse(savedUser) as userInfo;
-    if (user.userName && user.userId && user.token) {
-      await registerSuccess(user.userName, user.email, user.token, user.userId.toString());
+    if (user.refreshToken) {
+      try {
+        const updatedUser = await updateUserByToken();
+        await registerSuccess(updatedUser.userName, user.email ?? '', updatedUser.token, updatedUser.userId.toString(), updatedUser.refreshToken);
+      } catch {
+        return;
+      }
     }
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
     getUser();
   }, []);
 
-  const registerSuccess = async (userName: string, email: string, token: string, userId: string) => {
-    await SecureStore.setItemAsync('user', JSON.stringify({ userId, token, userName, email }));
+  const registerSuccess = async (userName: string, email: string, token: string, userId: string, refreshToken: string ) => {
+    await SecureStore.setItemAsync('user', JSON.stringify({ userId, token, userName, email, refreshToken }));
     dispatch(setUser({ name: userName, email }));
     setRegistered(true);
   };
@@ -71,7 +79,7 @@ export default function Register() {
     try {
       setIsLoading(true);
       const user = await serverRegister(name, password, confirmPassword);
-      await registerSuccess(user.userName, email, user.token, user.userId.toString());
+      await registerSuccess(user.userName, email, user.token, user.userId.toString(), user.refreshToken);
     } catch (e) {
       if (e === '401') setErrorText('Такой пользователь уже зарегистрирован!');
       else {
