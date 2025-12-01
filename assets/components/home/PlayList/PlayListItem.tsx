@@ -1,32 +1,21 @@
 import React from 'react';
 import { TouchableOpacity, View, Text, useColorScheme } from 'react-native';
-import { SongParams } from '../../song';
-import { getPlaylistItemStyle } from '@/assets/styles/playlistItem';
 import ThreeDotsIcon from '../../icons/ThreeDotsIcon';
 import PlayListCover from './PlayListCover';
-import { getThemeColors } from '../../../constants/colors';
+import { getPlaylistItemStyle } from '@/assets/styles/playList/playlistItem';
+import { PlaylistItemProps } from '@/types/components';
+import { THEME_COLORS } from '@/assets/constants/colors';
 
-export interface Playlist {
-  id: string;
-  name: string;
-  songs: SongParams[];
-}
 
-interface PlaylistItemProps {
-  playlist: Playlist;
-  onPress?: () => void;
-  onDotsPress?: () => void;
-}
 
 const PlayListItem = ({
+  appTheme,
   playlist,
   onPress,
   onDotsPress,
 }: PlaylistItemProps) => {
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === 'dark';
-  const themeColors = getThemeColors(isDark);
-  const styles = getPlaylistItemStyle(isDark);
+  const themeColors = THEME_COLORS[appTheme];
+  const styles = getPlaylistItemStyle(appTheme);
 
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>

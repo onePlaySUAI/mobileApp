@@ -1,4 +1,5 @@
 // Action type constants
+import { SongParams } from '../types/components';
 const SET_USER = 'SET_USER';
 const SET_ACTIVE_TAB = 'SET_ACTIVE_TAB';
 const SET_ACTIVE_PLAYLIST = 'SET_ACTIVE_PLAYLIST';
@@ -48,7 +49,7 @@ export interface MusicState {
     }[];
   }[];
   modalVisible: boolean;
-  modalCurrentSong: { title: string; artist: string };
+  modalCurrentSong: SongParams | null;
   playlistModalVisible: boolean;
   playlistModalCurrent: { id: string; name: string };
 }
@@ -85,7 +86,7 @@ export interface SetModalVisibleAction {
 
 export interface SetModalCurrentSongAction {
   type: typeof SET_MODAL_CURRENT_SONG;
-  payload: { title: string; artist: string };
+  payload: SongParams;
   [key: string]: any;
 }
 
@@ -189,7 +190,7 @@ const initialMusicState: MusicState = {
     },
   ],
   modalVisible: false,
-  modalCurrentSong: { title: 'null', artist: 'null' },
+  modalCurrentSong: null,
   playlistModalVisible: false,
   playlistModalCurrent: { id: 'null', name: 'null' },
 };
@@ -264,10 +265,7 @@ export const setModalVisible = (visible: boolean): SetModalVisibleAction => ({
   payload: visible,
 });
 
-export const setModalCurrentSong = (song: {
-  title: string;
-  artist: string;
-}): SetModalCurrentSongAction => ({
+export const setModalCurrentSong = (song: SongParams): SetModalCurrentSongAction => ({
   type: SET_MODAL_CURRENT_SONG,
   payload: song,
 });

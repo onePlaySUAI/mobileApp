@@ -1,9 +1,14 @@
 // Global color constants for consistent theming across the app
 
+// toDo: сделать доступ к темам либо функцией либо мапой (скорее второе)
+// и перетащить enum с темами сюда
+
 import { darkTheme } from './colors/themes/dark';
 import { lightTheme } from './colors/themes/light';
 import { gradients } from './colors/gradients';
 import { semanticColors } from './colors/semantic';
+
+export enum AppTheme { LIGHT, DARK };
 
 export const Colors = {
   // Primary Colors
@@ -23,5 +28,7 @@ export const Colors = {
   ...semanticColors,
 };
 
-export const getThemeColors = (isDark: boolean) =>
-  isDark ? Colors.dark : Colors.light;
+export const THEME_COLORS = {
+    [AppTheme.DARK]: Colors.dark ,
+    [AppTheme.LIGHT]: Colors.light,
+} as const;

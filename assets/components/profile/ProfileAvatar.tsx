@@ -1,13 +1,12 @@
 import { View } from 'react-native';
 import PlusIcon from '../icons/PlusIcon';
-import { getProfileAvatarStyle } from '../../styles/profileAvatar';
+import { getProfileAvatarStyle } from '@/assets/styles/profile/profileAvatar';
+import { ProfileAvatarProps } from '@/types/components';
 
-interface ProfileAvatarProps {
-  isDark: boolean;
-}
 
-export default function ProfileAvatar({ isDark }: ProfileAvatarProps) {
-  const style = getProfileAvatarStyle(isDark);
+
+export default function ProfileAvatar({ appTheme }: ProfileAvatarProps) {
+  const style = getProfileAvatarStyle(appTheme);
 
   return (
     <View style={style.avatarWrap}>

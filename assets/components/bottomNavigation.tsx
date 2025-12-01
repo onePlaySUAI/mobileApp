@@ -1,27 +1,22 @@
 import { View, TouchableOpacity, useColorScheme } from 'react-native';
-import { getBottomNavigationStyle } from '@/assets/styles/bottomNavigation';
 import {
   useSafeAreaInsets,
   type EdgeInsets,
 } from 'react-native-safe-area-context';
 import SearchIcon from './icons/SearchIcon';
 import LibraryIcon from './icons/LibraryIcon';
-import { getThemeColors } from '../constants/colors';
-
-interface BottomNavigationProps {
-  activeTab: 'search' | 'library';
-  onTabPress: (tab: 'search' | 'library') => void;
-}
+import { getBottomNavigationStyle } from '../styles/home/bottomNavigation';
+import { BottomNavigationProps } from '@/types/components';
+import { THEME_COLORS } from '../constants/colors';
 
 export default function BottomNavigation({
+  appTheme,
   activeTab,
   onTabPress,
 }: BottomNavigationProps) {
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === 'dark';
-  const themeColors = getThemeColors(isDark);
+  const themeColors = THEME_COLORS[appTheme];
   const insets: EdgeInsets = useSafeAreaInsets();
-  const style = getBottomNavigationStyle(isDark, insets.bottom);
+  const style = getBottomNavigationStyle(appTheme, insets.bottom);
 
   return (
     <View style={style.container}>

@@ -1,5 +1,5 @@
 import { StyleSheet, ViewStyle, TextStyle, ImageStyle } from 'react-native';
-import { Colors } from '../constants/colors';
+import { AppTheme, Colors } from '@/assets/constants/colors';
 
 interface MiniPlayerStyle {
   container: ViewStyle;
@@ -14,7 +14,7 @@ interface MiniPlayerStyle {
   actionButton: ViewStyle;
 }
 
-export const getMiniPlayerStyle = (isDarkMode: boolean) => {
+export const getMiniPlayerStyle = (appTheme: AppTheme) => {
   const COLORS = {
     background: Colors.accent,
     text: Colors.dark.Text.primary,

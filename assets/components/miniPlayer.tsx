@@ -10,26 +10,16 @@ import { Ionicons } from '@expo/vector-icons';
 import SpotifyIcon from './icons/SpotifyIcon';
 import AlbumPlaceholderIcon from './icons/AlbumPlaceholderIcon';
 import { Colors } from '../constants/colors';
+import { MiniPlayerProps } from '@/types/components';
 
-interface MiniPlayerProps {
-  song?: {
-    title: string;
-    artist: string;
-    albumCover?: string;
-    isPlaying?: boolean;
-    isFavorite?: boolean;
-  } | null;
-  onPlayPause?: () => void;
-  onFavorite?: () => void;
-}
 
 export default function MiniPlayer({
+  appTheme,
   song,
   onPlayPause,
   onFavorite,
 }: MiniPlayerProps) {
-  const colorScheme = useColorScheme();
-  const style = getMiniPlayerStyle(colorScheme === 'dark');
+  const style = getMiniPlayerStyle(appTheme);
 
   if (!song) {
     return null;

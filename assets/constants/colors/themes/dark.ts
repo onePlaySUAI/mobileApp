@@ -1,5 +1,3 @@
-import { Background } from "@react-navigation/elements";
-
 const darkColors = {
   black: '#000000',
   gray100: '#D9D9D9',

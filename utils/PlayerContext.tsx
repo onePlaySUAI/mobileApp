@@ -1,6 +1,7 @@
 import React, { createContext, useContext, ReactNode } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../store/store';
+import { RootState } from '../store/store';
+import { SongParams } from '../types/components';
 import {
   setActiveTab,
   setActivePlaylist,
@@ -12,7 +13,7 @@ import {
   setPlaylistModalVisible,
   setPlaylistModalCurrent,
   MusicState,
-} from '../../store/reducers';
+} from '../store/reducers';
 
 interface MusicContextType {
   activeTab: 'search' | 'library';
@@ -25,9 +26,9 @@ interface MusicContextType {
   setPlaylists: (playlists: MusicState['playlists']) => void;
   modalVisible: boolean;
   setModalVisible: (visible: boolean) => void;
-  modalCurrentSong: { title: string; artist: string };
-  setModalCurrentSong: (song: { title: string; artist: string }) => void;
-  openModal: (title: string, artist: string) => void;
+  modalCurrentSong: SongParams | null;
+  setModalCurrentSong: (song: SongParams) => void;
+  openModal: (song: SongParams) => void;
   closeModal: () => void;
   handlePlayPause: () => void;
   handleFavorite: () => void;
@@ -69,9 +70,9 @@ export const PlayerProvider: React.FC<MusicProviderProps> = ({ children }) => {
     dispatch(setActivePlaylist(playlist?.id || null));
   };
 
-  const openModal = (title: string, artist: string): void => {
+  const openModal = (song: SongParams): void => {
     dispatch(setModalVisible(true));
-    dispatch(setModalCurrentSong({ title, artist }));
+    dispatch(setModalCurrentSong(song));
   };
 
   const closeModal = (): void => {
@@ -116,7 +117,7 @@ export const PlayerProvider: React.FC<MusicProviderProps> = ({ children }) => {
     modalVisible: musicState.modalVisible,
     setModalVisible: (visible: boolean) => dispatch(setModalVisible(visible)),
     modalCurrentSong: musicState.modalCurrentSong,
-    setModalCurrentSong: (song: { title: string; artist: string }) =>
+    setModalCurrentSong: (song: SongParams) =>
       dispatch(setModalCurrentSong(song)),
     openModal,
     closeModal,

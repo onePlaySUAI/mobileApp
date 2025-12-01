@@ -1,14 +1,12 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import SpotifyIcon from '../icons/SpotifyIcon';
 import YoutubeIcon from '../icons/YoutubeIcon';
-import { getProfileServicesStyle } from '../../styles/profileServices';
+import { getProfileServicesStyle } from '@/assets/styles/profile/profileServices';
+import { ProfileServicesProps } from '@/types/components';
 
-interface ProfileServicesProps {
-  isDark: boolean;
-}
 
-export default function ProfileServices({ isDark }: ProfileServicesProps) {
-  const style = getProfileServicesStyle(isDark);
+export default function ProfileServices({ appTheme }: ProfileServicesProps) {
+  const style = getProfileServicesStyle(appTheme);
 
   return (
     <View style={style.actions}>

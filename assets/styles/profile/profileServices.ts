@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native';
-import { Colors } from '../constants/colors';
+import { AppTheme, Colors, THEME_COLORS } from '@/assets/constants/colors';
 
-export const getProfileServicesStyle = (isDark: boolean) => {
-  const themeColors = isDark ? Colors.dark : Colors.light;
+export const getProfileServicesStyle = (appTheme: AppTheme) => {
+  const themeColors = THEME_COLORS[appTheme];
   return StyleSheet.create({
     actions: {
       paddingTop: 18,

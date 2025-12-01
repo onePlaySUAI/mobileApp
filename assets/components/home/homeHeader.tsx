@@ -5,20 +5,13 @@ import {
   TouchableOpacity,
   useColorScheme,
 } from 'react-native';
-import { getHeaderStyle } from '@/assets/styles/header';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import SearchIcon from '../icons/SearchIcon';
 import { router } from 'expo-router';
-import { useSearch } from '@/app/utils/useSearch';
+import { useSearch } from '@/utils/useSearch';
 import { Colors } from '@/assets/constants/colors';
-
-interface HeaderProps {
-  page: 'search' | 'library';
-}
-
-interface HeaderParams {
-  params: HeaderProps;
-}
+import { getHeaderStyle } from '@/assets/styles/home/header';
+import { HeaderParams } from '@/types/components';
 
 export default function HomeHeader({ params }: HeaderParams) {
   const colorScheme = useColorScheme();

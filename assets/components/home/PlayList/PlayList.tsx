@@ -10,26 +10,18 @@ import {
 } from 'react-native';
 import Song from '../../song';
 import EmptyState from '../../emptyState';
-import { getPlaylistContentStyle } from '@/assets/styles/playlistContent';
-import { Playlist } from './PlayListItem';
 import PlaylistCover from './PlayListCover';
-
-interface PlaylistContentProps {
-  playlist: Playlist;
-  onAddMusic?: () => void;
-  openModal: (title: string, artist: string) => void;
-  closeModal: () => void;
-}
+import { getPlaylistContentStyle } from '@/assets/styles/playList/playlistContent';
+import { PlaylistContentProps } from '@/types/components';
 
 const PlaylistContent = ({
+  appTheme,
   playlist,
   onAddMusic,
   openModal,
-  closeModal,
+  closeModal
 }: PlaylistContentProps) => {
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === 'dark';
-  const styles = getPlaylistContentStyle(isDark);
+  const styles = getPlaylistContentStyle(appTheme);
   const songs = playlist.songs || [];
 
   const handleAddMusic = () => {
@@ -61,13 +53,13 @@ const PlaylistContent = ({
 
           {/* Empty State или песни */}
           {songs.length === 0 ? (
-            <EmptyState isDark={isDark} />
+            <EmptyState appTheme={appTheme} />
           ) : (
             songs.map((song, index) => (
               <Song
                 key={index}
                 params={song}
-                onDotsPress={() => openModal(song.title, song.artist)}
+                onDotsPress={() => openModal(song)}
               />
             ))
           )}

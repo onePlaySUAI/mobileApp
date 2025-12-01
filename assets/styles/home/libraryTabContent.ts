@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native';
-import { Colors } from '../constants/colors';
+import { AppTheme, THEME_COLORS } from '@/assets/constants/colors';
 
-export const getLibraryTabContentStyle = (isDark: boolean) => {
-  const themeColors = isDark ? Colors.dark : Colors.light;
+export const getLibraryTabContentStyle = (appTheme: AppTheme) => {
+  const themeColors = THEME_COLORS[appTheme];
 
   return StyleSheet.create({
     container: {

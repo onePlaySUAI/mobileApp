@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { Colors } from '../constants/colors';
+import { Colors } from '@/assets/constants/colors';
 
 export const getPlaylistHeaderStyle = (isDark: boolean, topInset: number) => {
   const marginTop = topInset;

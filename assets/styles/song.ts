@@ -1,5 +1,5 @@
 import { StyleSheet, ViewStyle, TextStyle, ImageStyle } from 'react-native';
-import { Colors } from '../constants/colors';
+import { Colors } from '@/assets/constants/colors';
 
 interface SongStyle {
   songContainer: ViewStyle;

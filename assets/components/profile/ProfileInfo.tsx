@@ -4,18 +4,15 @@ import { RootState } from '@/store/store';
 import { useState, useEffect } from 'react';
 import { setUser } from '@/store/reducers';
 import { Colors } from '../../constants/colors';
-import { getProfileInfoStyle } from '../../styles/profileInfo';
+import { getProfileInfoStyle } from '@/assets/styles/profile/profileInfo';
+import { ProfileInfoProps } from '@/types/components';
 
-interface ProfileInfoProps {
-  isDark: boolean;
-}
-
-export default function ProfileInfo({ isDark }: ProfileInfoProps) {
+export default function ProfileInfo({ appTheme }: ProfileInfoProps) {
   const { name, email } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
   const [isEditingName, setIsEditingName] = useState(false);
   const [tempName, setTempName] = useState(name);
-  const { styles, colors } = getProfileInfoStyle(isDark);
+  const { styles, colors } = getProfileInfoStyle(appTheme);
 
   useEffect(() => {
     setTempName(name);

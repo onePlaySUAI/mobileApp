@@ -2,16 +2,16 @@
 
 import { ScrollView } from 'react-native';
 import Song from '@/assets/components/song';
-import { mockSearchSongs } from '@/app/utils/sampleData';
+import { mockSearchSongs } from '@/utils/sampleData';
+import { SongParams } from '@/types/components';
 
 interface SearchTabContentProps {
-  openModal: (title: string, artist: string) => void;
+  openModal: (song: SongParams) => void;
   closeModal: () => void;
 }
 
 export default function SearchTabContent({
   openModal,
-  closeModal,
 }: SearchTabContentProps) {
   return (
     <ScrollView
@@ -25,7 +25,7 @@ export default function SearchTabContent({
         <Song
           key={index}
           params={song}
-          onDotsPress={() => openModal(song.title, song.artist)}
+          onDotsPress={() => openModal(song)}
         />
       ))}
     </ScrollView>

@@ -1,8 +1,8 @@
 import { StyleSheet } from 'react-native';
-import { Colors } from '../constants/colors';
+import { AppTheme, Colors, THEME_COLORS } from '@/assets/constants/colors';
 
-export const getProfileAvatarStyle = (isDark: boolean) => {
-  const themeColors = isDark ? Colors.dark : Colors.light;
+export const getProfileAvatarStyle = (appTheme: AppTheme) => {
+  const themeColors = THEME_COLORS[appTheme];
 
   return StyleSheet.create({
     avatarWrap: {

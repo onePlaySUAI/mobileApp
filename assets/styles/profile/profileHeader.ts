@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
-import { Colors } from '../constants/colors';
+import { AppTheme, Colors, THEME_COLORS } from '@/assets/constants/colors';
 
-export const getProfileHeaderStyle = (isDark: boolean, topInset: number) => {
+export const getProfileHeaderStyle = (appTheme: AppTheme, topInset: number) => {
   const marginTop = topInset;
-  const themeColors = isDark ? Colors.dark : Colors.light;
+  const themeColors = THEME_COLORS[appTheme];
 
   return StyleSheet.create({
     headerContainer: {

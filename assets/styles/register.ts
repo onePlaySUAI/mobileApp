@@ -1,5 +1,5 @@
 import { StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import { Colors } from '../constants/colors';
+import { AppTheme, Colors, THEME_COLORS } from '@/assets/constants/colors';
 
 interface RegisterStyle {
   container: ViewStyle;
@@ -16,10 +16,10 @@ interface RegisterStyle {
 }
 
 const SPOTIFY_GREEN = Colors.primary;
-const YT_RED = Colors.error;
+const YT_RED = Colors.accent;
 
-export const getRegisterStyle = (isDarkMode: boolean) => {
-  const themeColors = isDarkMode ? Colors.dark : Colors.light;
+export const getRegisterStyle = (appTheme: AppTheme) => {
+  const themeColors = THEME_COLORS[appTheme];
 
   const styles = StyleSheet.create<RegisterStyle>({
     container: {
@@ -54,7 +54,7 @@ export const getRegisterStyle = (isDarkMode: boolean) => {
       top: 12,
     },
     showHideText: {
-      color: themeColors.Text.tertiary,
+      color: themeColors.Text.secondary,
     },
     button: {
       width: '100%',
@@ -78,7 +78,7 @@ export const getRegisterStyle = (isDarkMode: boolean) => {
       marginTop: 20,
     },
     loginText: {
-      color: themeColors.Text.tertiary,
+      color: themeColors.Text.secondary,
       textDecorationLine: 'underline',
     },
   });

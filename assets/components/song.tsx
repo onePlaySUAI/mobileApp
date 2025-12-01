@@ -1,24 +1,13 @@
 import { Image, Pressable, Text, useColorScheme, View } from 'react-native';
 import { getSongStyle } from '@/assets/styles/song';
-import { truncateText } from '@/app/utils/textHelpers';
+import { truncateText } from '@/utils/textHelpers';
 import SpotifyIcon from './icons/SpotifyIcon';
 import YoutubeIcon from './icons/YoutubeIcon';
 import DownloadIcon from './icons/DownloadIcon';
 import ThreeDotsIcon from './icons/ThreeDotsIcon';
 import { Colors } from '../constants/colors';
+import { SongProps } from '@/types/components';
 
-export interface SongParams {
-  title: string;
-  artist: string;
-  source: 'Spotify' | 'Youtube' | 'Download';
-  albumCover: string;
-  active?: boolean;
-}
-
-export interface SongProps {
-  params: SongParams;
-  onDotsPress?: () => void;
-}
 
 const STRING_MAX_LENGTH = 22;
 

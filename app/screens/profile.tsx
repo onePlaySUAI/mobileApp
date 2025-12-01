@@ -9,11 +9,13 @@ import ProfileHeader from '@/assets/components/profile/ProfileHeader';
 import ProfileAvatar from '@/assets/components/profile/ProfileAvatar';
 import ProfileInfo from '@/assets/components/profile/ProfileInfo';
 import ProfileServices from '@/assets/components/profile/ProfileServices';
-import { getProfileStyle } from '@/assets/styles/profile';
+import { getProfileStyle } from '@/assets/styles/profile/profile';
+import { AppTheme } from '@/assets/constants/colors';
+
 
 export default function ProfileScreen() {
-  const isDark = useColorScheme() === 'dark';
-  const style = getProfileStyle(isDark);
+  const appTheme = useColorScheme() === 'dark' ? AppTheme.DARK : AppTheme.LIGHT;
+  const style = getProfileStyle(appTheme);
 
   return (
     <View style={style.wrapper}>
@@ -30,10 +32,10 @@ export default function ProfileScreen() {
           bounces={false}
         >
           <View style={style.container}>
-            <ProfileHeader isDark={isDark} />
-            <ProfileAvatar isDark={isDark} />
-            <ProfileInfo isDark={isDark} />
-            <ProfileServices isDark={isDark} />
+            <ProfileHeader appTheme={appTheme} />
+            <ProfileAvatar appTheme={appTheme} />
+            <ProfileInfo appTheme={appTheme} />
+            <ProfileServices appTheme={appTheme} />
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

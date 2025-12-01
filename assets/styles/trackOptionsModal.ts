@@ -1,9 +1,10 @@
 import { StyleSheet } from 'react-native';
-import { Colors } from '../constants/colors';
+import { Colors } from '@/assets/constants/colors';
+import { AppTheme } from '@/assets/constants/colors';
 
 // Порефакторить
 
-const LIGHT_THEME = {
+const LIGHT_THEME_COLORS = {
   containerBackground: Colors.light.OptionsModal.background,
   textPrimary: Colors.light.OptionsModal.text,
   textSecondary: Colors.light.OptionsModal.secondaryText,
@@ -11,7 +12,7 @@ const LIGHT_THEME = {
   buttonBackground: Colors.light.Button.background,
 };
 
-const DARK_THEME = {
+const DARK_THEME_COLORS = {
   containerBackground: Colors.dark.OptionsModal.background,
   textPrimary: Colors.dark.OptionsModal.text,
   textSecondary: Colors.dark.OptionsModal.secondaryText,
@@ -19,8 +20,13 @@ const DARK_THEME = {
   buttonBackground: Colors.dark.Button.background,
 };
 
-export default function getModalStyles(isDark: boolean, paddingBottom: number) {
-  const COLORS = isDark ? DARK_THEME : LIGHT_THEME;
+const THEME_COLORS = {
+    [AppTheme.DARK]: DARK_THEME_COLORS,
+    [AppTheme.LIGHT]: LIGHT_THEME_COLORS,
+} as const;
+
+export default function getModalStyles(appTheme: AppTheme, paddingBottom: number) {
+  const COLORS = THEME_COLORS[appTheme];
 
   return StyleSheet.create({
     overlay: {

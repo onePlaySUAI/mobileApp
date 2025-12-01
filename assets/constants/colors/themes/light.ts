@@ -1,5 +1,3 @@
-import { darkTheme } from "./dark";
-
 const lightColors = {
   white: '#FFFFFF',
   gray900: '#000000',

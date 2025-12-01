@@ -1,4 +1,4 @@
-// Global size constants for consistent spacing and sizing across the app
+// Переделать на что-то более понятное
 
 export const Sizes = {
   // Padding/Margin

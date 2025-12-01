@@ -7,11 +7,12 @@ import { getRegisterStyle, GRADIENT_COLORS } from '@/assets/styles/register';
 import { useDispatch } from 'react-redux';
 import { setUser } from '@/store/reducers';
 import { AppDispatch } from '@/store/store';
+import { AppTheme } from '@/assets/constants/colors';
 
 export default function Register() {
-  const theme = useColorScheme();
-  const isDarkMode = theme === 'dark';
-  const { styles, colors } = getRegisterStyle(isDarkMode);
+  const appTheme = useColorScheme() === 'dark' ? AppTheme.DARK : AppTheme.LIGHT;
+  
+  const { styles, colors } = getRegisterStyle(appTheme);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -59,12 +60,12 @@ export default function Register() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Create Account</Text>
+      <Text style={styles.title}>Create Acrrcount</Text>
 
       <TextInput
         style={styles.input}
         placeholder="Name"
-        placeholderTextColor={colors.Text.tertiary}
+        placeholderTextColor={colors.Text.placeholder}
         value={name}
         onChangeText={setName}
       />
@@ -72,7 +73,7 @@ export default function Register() {
       <TextInput
         style={styles.input}
         placeholder="Email"
-        placeholderTextColor={colors.Text.tertiary}
+        placeholderTextColor={colors.Text.placeholder}
         keyboardType="email-address"
         autoCapitalize="none"
         value={email}
@@ -83,7 +84,7 @@ export default function Register() {
         <TextInput
           style={styles.input}
           placeholder="Password"
-          placeholderTextColor={colors.Text.tertiary}
+          placeholderTextColor={colors.Text.placeholder}
           secureTextEntry={!showPassword}
           value={password}
           onChangeText={setPassword}

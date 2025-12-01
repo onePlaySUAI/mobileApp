@@ -87,7 +87,7 @@ export interface UseSearchProps {
   filteredSongs: {
     title: string;
     artist: string;
-    source: 'Spotify' | 'Youtube' | 'Download';
+    source: 'Spotify' | 'Youtube' | 'Download'; // можно порефакторить
     albumCover: string;
     active?: boolean;
   }[];

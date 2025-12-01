@@ -7,16 +7,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 import MaskedView from '@react-native-masked-view/masked-view';
 import { useState } from 'react';
 import BackIcon from '../../icons/BackIcon';
-import { getPlaylistHeaderStyle } from '@/assets/styles/playlistHeader';
 import PlayListPauseIcon from '../../icons/PlayListPauseIcon';
 import PlayListStartIcon from '../../icons/PlayListStartIcon';
 import { Colors } from '../../../constants/colors';
+import { getPlaylistHeaderStyle } from '@/assets/styles/playList/playlistHeader';
+import { PlayListHeaderProps } from '@/types/components';
 
-interface PlayListHeaderProps {
-  onBack?: () => void;
-  title?: string;
-  onPlayPause?: (isPlaying: boolean) => void;
-}
 
 export default function PlayListHeader({
   title,

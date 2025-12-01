@@ -2,24 +2,17 @@ import React from 'react';
 import { Modal, Text, View, Pressable } from 'react-native';
 import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context';
 import getModalStyles from '@/assets/styles/trackOptionsModal';
-import { SongParams } from './song';
 import { Colors } from '../constants/colors';
-
-interface TrackOptionsModalProps {
-  visible: boolean;
-  onClose: () => void;
-  isDarkMode: boolean;
-  song: Partial<SongParams>;
-}
+import { TrackOptionsModalProps } from '@/types/components';
 
 export default function TrackOptionsModal({
   visible,
   onClose,
-  isDarkMode,
   song,
+  appTheme,
 }: TrackOptionsModalProps) {
   const insets: EdgeInsets = useSafeAreaInsets();
-  const styles = getModalStyles(isDarkMode, insets.bottom);
+  const styles = getModalStyles(appTheme, insets.bottom);
 
   if (!song) return null;
 

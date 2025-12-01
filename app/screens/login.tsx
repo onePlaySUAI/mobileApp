@@ -6,11 +6,11 @@ import { getRegisterStyle, GRADIENT_COLORS } from '@/assets/styles/register';
 import { useDispatch } from 'react-redux';
 import { setUser } from '@/store/reducers';
 import { AppDispatch } from '@/store/store';
+import { AppTheme } from '@/assets/constants/colors';
 
 export default function Login() {
-  const theme = useColorScheme();
-  const isDarkMode = theme === 'dark';
-  const { styles, colors } = getRegisterStyle(isDarkMode);
+  const appTheme = useColorScheme() === 'dark' ? AppTheme.DARK : AppTheme.LIGHT;
+  const { styles, colors } = getRegisterStyle(appTheme);
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -45,7 +45,7 @@ export default function Login() {
       <TextInput
         style={styles.input}
         placeholder="Email"
-        placeholderTextColor={colors.Text.tertiary}
+        placeholderTextColor={colors.Text.primary}
         keyboardType="email-address"
         autoCapitalize="none"
         value={email}
@@ -56,7 +56,7 @@ export default function Login() {
         <TextInput
           style={styles.input}
           placeholder="Password"
-          placeholderTextColor={colors.Text.tertiary}
+          placeholderTextColor={colors.Text.primary}
           secureTextEntry={!showPassword}
           value={password}
           onChangeText={setPassword}

@@ -1,20 +1,12 @@
-import { StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import { Colors } from '../constants/colors';
-
-interface BottomNavigationStyle {
-  container: ViewStyle;
-  tab: ViewStyle;
-  activeTab: ViewStyle;
-  inactiveIcon: TextStyle;
-  gradientIcon: ViewStyle;
-}
+import { StyleSheet} from 'react-native';
+import { AppTheme, THEME_COLORS } from '@/assets/constants/colors';
+import { BottomNavigationStyle } from '@/types/components';
 
 export const getBottomNavigationStyle = (
-  isDarkMode: boolean,
+  appTheme: AppTheme,
   marginBottom: number
 ) => {
-  const themeColors = isDarkMode ? Colors.dark : Colors.light;
-
+  const themeColors = THEME_COLORS[appTheme];
   return StyleSheet.create<BottomNavigationStyle>({
     container: {
       flexDirection: 'row',

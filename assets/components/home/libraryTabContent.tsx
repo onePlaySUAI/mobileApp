@@ -6,25 +6,18 @@ import {
   ScrollView,
   useColorScheme,
 } from 'react-native';
-import PlaylistItem, { Playlist } from './PlayList/PlayListItem';
-import { getLibraryTabContentStyle } from '@/assets/styles/libraryTabContent';
-
-interface LibraryTabContentProps {
-  playlists: Playlist[];
-  onPlaylistPress: (playlist: Playlist) => void;
-  onAddPlaylist: () => void;
-  onDotsPress: (playlist: Playlist) => void;
-}
+import { getLibraryTabContentStyle } from '@/assets/styles/home/libraryTabContent';
+import { LibraryTabContentProps } from '@/types/components';
+import PlayListItem from "./PlayList/PlayListItem";
 
 const LibraryTabContent = ({
+  appTheme,
   playlists,
   onPlaylistPress,
   onAddPlaylist,
   onDotsPress,
 }: LibraryTabContentProps) => {
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === 'dark';
-  const styles = getLibraryTabContentStyle(isDark);
+  const styles = getLibraryTabContentStyle(appTheme);
 
   return (
     <View style={styles.container}>
@@ -42,8 +35,9 @@ const LibraryTabContent = ({
         contentContainerStyle={styles.listContent}
       >
         {playlists.map((playlist) => (
-          <PlaylistItem
+          <PlayListItem
             key={playlist.id}
+            appTheme={appTheme}
             playlist={playlist}
             onPress={() => onPlaylistPress(playlist)}
             onDotsPress={() => onDotsPress(playlist)}

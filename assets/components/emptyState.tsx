@@ -1,19 +1,15 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { getEmptyStateStyle } from '../styles/emptyState';
-
-interface EmptyStateProps {
-  title?: string;
-  description?: string;
-  isDark?: boolean;
-}
+import { EmptyStateProps } from '@/types/components';
 
 const EmptyState: React.FC<EmptyStateProps> = ({
+  appTheme,
   title = 'No songs yet',
   description = 'Start adding songs to your playlist',
   isDark = false,
 }) => {
-  const styles = getEmptyStateStyle(isDark);
+  const styles = getEmptyStateStyle(appTheme);
 
   return (
     <View style={styles.emptyState}>

@@ -1,8 +1,8 @@
+import { AppTheme, THEME_COLORS } from '@/assets/constants/colors';
 import { StyleSheet } from 'react-native';
-import { Colors } from '../constants/colors';
 
-export const getProfileStyle = (isDark: boolean) => {
-  const themeColors = isDark ? Colors.dark : Colors.light;
+export const getProfileStyle = (appTheme: AppTheme) => {
+  const themeColors = THEME_COLORS[appTheme];
 
   return StyleSheet.create({
     wrapper: {

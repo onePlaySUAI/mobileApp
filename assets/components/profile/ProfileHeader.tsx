@@ -8,21 +8,18 @@ import { LinearGradient } from 'expo-linear-gradient';
 import MaskedView from '@react-native-masked-view/masked-view';
 import BackIcon from '../icons/BackIcon';
 import { Colors } from '../../constants/colors';
-import { getProfileHeaderStyle } from '../../styles/profileHeader';
+import { getProfileHeaderStyle } from '@/assets/styles/profile/profileHeader';
+import { ProfileHeaderProps } from '@/types/components';
 
-interface ProfileHeaderProps {
-  isDark: boolean;
-  title?: string;
-  showBackButton?: boolean;
-}
+
 
 export default function ProfileHeader({
-  isDark,
+  appTheme,
   title = 'Profile',
   showBackButton = true,
 }: ProfileHeaderProps) {
   const insets: EdgeInsets = useSafeAreaInsets();
-  const styles = getProfileHeaderStyle(isDark, insets.top);
+  const styles = getProfileHeaderStyle(appTheme, insets.top);
 
   return (
     <View style={styles.headerContainer}>

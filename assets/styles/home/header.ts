@@ -1,5 +1,5 @@
 import { StyleSheet, ViewStyle, TextStyle } from 'react-native';
-import { Colors } from '../constants/colors';
+import { Colors } from '@/assets/constants/colors';
 
 interface HeaderStyle {
   container: ViewStyle;
