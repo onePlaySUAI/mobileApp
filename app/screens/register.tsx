@@ -7,10 +7,10 @@ import { getRegisterStyle, GRADIENT_COLORS } from '@/assets/styles/register';
 import { useDispatch } from 'react-redux';
 import { setUser } from '@/store/reducers';
 import { AppDispatch } from '@/store/store';
-import { AppTheme } from '@/assets/constants/colors';
+import { getAppTheme } from '@/assets/constants/colors';
 
 export default function Register() {
-  const appTheme = useColorScheme() === 'dark' ? AppTheme.DARK : AppTheme.LIGHT;
+  const appTheme = getAppTheme();
   
   const { styles, colors } = getRegisterStyle(appTheme);
 

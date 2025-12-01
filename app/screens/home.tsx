@@ -14,7 +14,7 @@ import { useAuthentication } from '@/utils/useAuthentication';
 import PlaylistContent from '@/assets/components/home/PlayList/PlayList';
 import PlayListHeader from '@/assets/components/home/PlayList/PlayListHeader';
 import TrackOptionsModal from '@/assets/components/trackOptionsModal';
-import { AppTheme } from '@/assets/constants/colors';
+import { getAppTheme } from '@/assets/constants/colors';
 
 export default function Home() {
   const { isAuthenticated } = useAuthentication();
@@ -37,7 +37,7 @@ export default function Home() {
     closePlaylistModal,
   } = useMusic();
   
-  const appTheme = useColorScheme() === 'dark' ? AppTheme.DARK : AppTheme.LIGHT;
+  const appTheme = getAppTheme();
   if (!isAuthenticated) {
     return <Redirect href="/screens/register" />;
   }

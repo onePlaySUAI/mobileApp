@@ -10,11 +10,11 @@ import ProfileAvatar from '@/assets/components/profile/ProfileAvatar';
 import ProfileInfo from '@/assets/components/profile/ProfileInfo';
 import ProfileServices from '@/assets/components/profile/ProfileServices';
 import { getProfileStyle } from '@/assets/styles/profile/profile';
-import { AppTheme } from '@/assets/constants/colors';
+import { getAppTheme } from '@/assets/constants/colors';
 
 
 export default function ProfileScreen() {
-  const appTheme = useColorScheme() === 'dark' ? AppTheme.DARK : AppTheme.LIGHT;
+  const appTheme = getAppTheme();
   const style = getProfileStyle(appTheme);
 
   return (
