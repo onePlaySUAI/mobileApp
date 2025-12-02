@@ -7,7 +7,6 @@ const EmptyState: React.FC<EmptyStateProps> = ({
   appTheme,
   title = 'No songs yet',
   description = 'Start adding songs to your playlist',
-  isDark = false,
 }) => {
   const styles = getEmptyStateStyle(appTheme);
 
