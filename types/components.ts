@@ -74,7 +74,6 @@ export interface EmptyStateProps {
   appTheme: AppTheme,
   title?: string;
   description?: string;
-  isDark?: boolean;
 }
 
 
