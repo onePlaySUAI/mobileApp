@@ -1,9 +1,9 @@
-import { View, Text, TouchableOpacity, Image } from "react-native";
-import { getNowPlayingBarStyle } from "@/assets/styles/nowPlayingBar";
-import { useColorScheme } from "react-native";
-import { Ionicons } from '@expo/vector-icons';
-import { Audio } from "expo-av";
-import { useState, useEffect, useRef } from "react";
+import {View, Text, TouchableOpacity, Image} from "react-native";
+import {getNowPlayingBarStyle} from "@/assets/styles/nowPlayingBar";
+import {useColorScheme} from "react-native";
+import {Ionicons} from '@expo/vector-icons';
+import {Audio} from "expo-av";
+import {useState, useEffect, useRef} from "react";
 
 interface NowPlayingBarProps {
   song?: {
@@ -13,6 +13,7 @@ interface NowPlayingBarProps {
     audioUrl: string;
   } | null,
   onFavorite?: () => void,
+  onPlayPause?: Function,
 }
 
 Audio.setAudioModeAsync({
@@ -20,7 +21,7 @@ Audio.setAudioModeAsync({
   playsInSilentModeIOS: true,
 });
 
-export default function NowPlayingBar({ song, onFavorite }: NowPlayingBarProps) {
+export default function NowPlayingBar({song, onFavorite, onPlayPause}: NowPlayingBarProps) {
   const colorScheme = useColorScheme();
   const style = getNowPlayingBarStyle(colorScheme === "dark");
 
@@ -61,9 +62,9 @@ export default function NowPlayingBar({ song, onFavorite }: NowPlayingBarProps) 
       }
 
       try {
-        const { sound: newSound } = await Audio.Sound.createAsync(
-          { uri: song.audioUrl },
-          { shouldPlay: true },
+        const {sound: newSound} = await Audio.Sound.createAsync(
+          {uri: song.audioUrl},
+          {shouldPlay: true},
           onPlaybackStatusUpdate
         );
 
@@ -127,7 +128,7 @@ export default function NowPlayingBar({ song, onFavorite }: NowPlayingBarProps) 
     <View style={style.container}>
       <View style={style.leftSection}>
         <Image
-          source={song.albumCover ? { uri: song.albumCover } : require("@/assets/images/albumBlank.jpg")}
+          source={song.albumCover ? {uri: song.albumCover} : require("@/assets/images/albumBlank.jpg")}
           //@ts-ignore
           style={style.albumCover}
         />
@@ -146,7 +147,7 @@ export default function NowPlayingBar({ song, onFavorite }: NowPlayingBarProps) 
 
       <View style={style.rightSection}>
         <TouchableOpacity onPress={onFavorite} style={style.actionButton}>
-          <Ionicons name="star" size={18} color="#ffd700" />
+          <Ionicons name="star" size={18} color="#ffd700"/>
         </TouchableOpacity>
         <TouchableOpacity onPress={togglePlayPause} style={style.actionButton}>
           <Ionicons
@@ -157,8 +158,8 @@ export default function NowPlayingBar({ song, onFavorite }: NowPlayingBarProps) 
         </TouchableOpacity>
       </View>
 
-      <View style={{ position: "absolute", bottom: 0, left: 13, height: 2, width: "100%", backgroundColor: "#444" }}>
-        <View style={{ height: 2, backgroundColor: isLoading ? "gray" : "#1DB954", width: `${progress * 100}%` }} />
+      <View style={{position: "absolute", bottom: 0, left: 13, height: 2, width: "100%", backgroundColor: "#444"}}>
+        <View style={{height: 2, backgroundColor: isLoading ? "gray" : "#1DB954", width: `${progress * 100}%`}}/>
       </View>
     </View>
   );

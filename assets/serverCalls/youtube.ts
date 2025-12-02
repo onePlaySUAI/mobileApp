@@ -1,5 +1,6 @@
 import refreshToken from "@/assets/serverCalls/refreshToken";
 import SERVER_LINK from "@/assets/serverCalls/SERVER_LINK";
+import {Platform} from "react-native";
 
 interface songResponse {
   "name": string,
@@ -19,8 +20,9 @@ interface songResponse {
 }
 
 export async function ytGetSongByQuery (query: string): Promise<songResponse> {
-  const params = new URLSearchParams({ query });
+  const params = new URLSearchParams({ query, isSafari: String(Platform.OS === 'ios') });
   const API_URl = `${SERVER_LINK}/api/YouTube/getSongByQuery?${params}`;
+  console.log(API_URl)
 
   let res = await fetch(API_URl);
 

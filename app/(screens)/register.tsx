@@ -33,23 +33,34 @@ export default function Register() {
   const styles = getRegisterStyle(isDarkMode);
 
   const getUser = async () => {
-    // await SecureStore.deleteItemAsync('user');
-
-    const savedUser = await SecureStore.getItemAsync('user');
-    if (!savedUser) return;
-
-    const user = JSON.parse(savedUser) as userInfo;
-    if (user.refreshToken) {
-      try {
-        const updatedUser = await updateUserByToken();
-        await registerSuccess(updatedUser.userName, user.email ?? '', updatedUser.token, updatedUser.userId.toString(), updatedUser.refreshToken);
-      } catch {
+    // await SecureStore.deleteItemAsync('user')
+    try {
+      const savedUser = await SecureStore.getItemAsync('user');
+      if (!savedUser) {
+        setIsLoading(false);
         return;
       }
-    }
 
-    setIsLoading(false);
+      const user = JSON.parse(savedUser) as userInfo;
+      if (user.refreshToken) {
+        try {
+          const updatedUser = await updateUserByToken();
+          await registerSuccess(
+            updatedUser.userName,
+            user.email ?? '',
+            updatedUser.token,
+            updatedUser.userId.toString(),
+            updatedUser.refreshToken
+          );
+        } catch {
+          setRegistered(false);
+        }
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
+
 
   useEffect(() => {
     getUser();
