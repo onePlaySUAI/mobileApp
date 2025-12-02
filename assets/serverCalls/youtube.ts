@@ -1,8 +1,7 @@
-import refreshToken from "@/assets/serverCalls/refreshToken";
 import SERVER_LINK from "@/assets/serverCalls/SERVER_LINK";
 import {Platform} from "react-native";
 
-interface songResponse {
+interface SongResponse {
   "name": string,
   "type": 0,
   "stream": string,
@@ -19,31 +18,35 @@ interface songResponse {
   }
 }
 
-export async function ytGetSongByQuery (query: string): Promise<songResponse> {
+// Массив SongResponse, в каждой песне пустой streamId
+type SongListResponse = (Omit<SongResponse, "streamId"> & {
+  streamId: "";
+})[];
+
+export async function ytGetSongByQuery (query: string): Promise<SongResponse> {
   const params = new URLSearchParams({ query, isSafari: String(Platform.OS === 'ios') });
   const API_URl = `${SERVER_LINK}/api/YouTube/getSongByQuery?${params}`;
   console.log(API_URl)
 
-  let res = await fetch(API_URl);
+  const res = await fetch(API_URl);
 
-  if (!res.ok) {
-    if (res.status === 476) {
-      try {
-        await refreshToken();
-        res = await fetch(API_URl);
-      } catch (e) {
-        console.error('Failed to refresh the token')
-        throw e;
-      }
-    } else {
-      throw res.status.toString();
-    }
-  }
+  if (!res.ok) throw res.status.toString();
+
   const data = await res.json();
-  return data as songResponse;
+  return data as SongResponse;
 }
 
-// 500 ошибку, не работает нормально
-// export async function getListOfSongsByQuery (query: string, size: number): Promise<songResponse[]> {
-//
-// }
+export async function getListOfSongsByQuery (query: string, size: number): Promise<SongListResponse> {
+  const params = new URLSearchParams({ query, size: String(size) });
+
+  const API_URL = `${SERVER_LINK}/api/YouTube/getListOfSongsByQuery?${params}`;
+  console.log(API_URL);
+
+  const res = await fetch(API_URL);
+
+  if (!res.ok) throw res.status.toString();
+
+  const data = await res.json();
+  console.log(data)
+  return data as SongListResponse;
+}

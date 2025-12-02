@@ -2,15 +2,13 @@ import React from "react";
 import {Modal, Text, View, Pressable} from "react-native";
 import {EdgeInsets, useSafeAreaInsets} from "react-native-safe-area-context";
 import getModalStyles from "@/assets/styles/songOptionsModal";
+import {SongType} from "@/store/songsSlice";
 
 interface SongOptionsModalProps {
   visible: boolean;
   onClose: () => void;
   isDarkMode: boolean;
-  song: {
-    title: string;
-    artist: string;
-  };
+  song: SongType
 }
 
 export default function SongOptionsModal({visible, onClose, isDarkMode, song,}: SongOptionsModalProps) {

@@ -68,8 +68,9 @@ export const getNowPlayingBarStyle = (isDarkMode: boolean) => {
       fontSize: 12,
     },
     sourceLogo: {
-      width: 14,
       height: 14,
+      width: 14,
+      borderRadius: '50%',
     },
     actionButton: {
       padding: 6,

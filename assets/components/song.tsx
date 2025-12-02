@@ -11,11 +11,11 @@ interface songParams {
 export interface songProps {
   params: songParams,
   onDotsPress?: () => void,
-  onPlay?: () => void, // new prop
+  onPress: () => void,
   active: boolean
 }
 
-export default function Song({ params, onDotsPress, onPlay, active }: songProps) {
+export default function Song({ params, onDotsPress, onPress, active }: songProps) {
   const colorScheme = useColorScheme();
   const style = getSongStyle(colorScheme === 'dark', active );
   const STRING_MAX_LENGTH = 22;
@@ -24,7 +24,7 @@ export default function Song({ params, onDotsPress, onPlay, active }: songProps)
     <View style={style.songContainer}>
       <TouchableOpacity
         style={style.albumTitleContainer}
-        onPress={onPlay} // trigger playing when tapping album/title
+        onPress={onPress}
         activeOpacity={0.7}
       >
         {/* Album cover */}

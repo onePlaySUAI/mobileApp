@@ -4,8 +4,6 @@ interface AppStyle {
   safeAreaProvider: ViewStyle,
   container: ViewStyle,
   text: TextStyle,
-  songsPlaceHolder: ViewStyle,
-  songsContent: ViewStyle,
 }
 
 const LIGHT_THEME_COLORS = {
@@ -15,7 +13,7 @@ const LIGHT_THEME_COLORS = {
 };
 
 const DARK_THEME_COLORS = {
-  background: '#1a1a1a', // Darker background to match Figma design
+  background: '#1a1a1a',
   text: '#ffffff',
   shadow: 'transparent',
 };
@@ -26,17 +24,6 @@ export const getHomeStyle = (isDarkMode: boolean) => {
   return StyleSheet.create<AppStyle>({
     safeAreaProvider: {
       backgroundColor: COLORS.background,
-    },
-    songsPlaceHolder: {
-      flex: 1,
-      width: '100%',
-      backgroundColor: COLORS.background,
-    },
-    songsContent: {
-      padding: 10,
-      flexDirection: 'column',
-      justifyContent: 'flex-start',
-      gap: 10,
     },
     container: {
       flex: 1,

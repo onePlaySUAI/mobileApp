@@ -4,22 +4,20 @@ import { useSafeAreaInsets, type EdgeInsets } from "react-native-safe-area-conte
 import SearchIcon from "../icons/SearchIcon";
 import { router } from "expo-router";
 import {useState} from "react";
-import {ytGetSongByQuery} from "@/assets/serverCalls/youtube";
+import {getListOfSongsByQuery, ytGetSongByQuery} from "@/assets/serverCalls/youtube";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "@/store/store";
 import {addSong} from "@/store/songsSlice";
 
-interface headerProps {
-  page: 'Home' | 'Library';
-}
 interface headerParams {
-  params: headerProps;
+  page: 'Home' | 'Library';
+  isDarkmode: boolean;
 }
 
-export default function CustomHeader ({ params }: headerParams) {
-  const colorScheme = useColorScheme();
+export default function CustomHeader ({ isDarkmode, page }: headerParams) {
   const insets: EdgeInsets = useSafeAreaInsets();
-  const style = getHeaderStyle(colorScheme === 'dark', insets.top);
+  const style = getHeaderStyle(isDarkmode, insets.top);
+
   const [query, setQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
@@ -29,16 +27,24 @@ export default function CustomHeader ({ params }: headerParams) {
 
     setIsLoading(true);
     try {
-      const song = await ytGetSongByQuery(query);
-      console.log(song.stream);
-      dispatch(addSong({
-        id: song.youTubeId,
-        title: song.name,
-        artist: song.authorName,
-        albumCover: song.imageSet.medium ?? '',
-        audioUrl: song.stream,
-        source: 'Youtube',
-      }));
+      const [ytSong] = await Promise.all([
+        ytGetSongByQuery(query),
+        // getListOfSongsByQuery(query, 11)
+        // Spotify...
+      ])
+      const songs = [ytSong];
+      for (let song of songs) {
+        if (song) {
+          dispatch(addSong({
+            id: song.youTubeId,
+            title: song.name,
+            artist: song.authorName,
+            albumCover: song.imageSet.medium ?? '',
+            audioUrl: song.stream,
+            source: 'Youtube',
+          }));
+        }
+      }
     } catch (e) {
       console.error(e);
       if (e === '500') alert('Ошибка сервера, повторите попытку позже');

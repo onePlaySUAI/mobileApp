@@ -1,2 +1,3 @@
+// Вместо того чтобы постоянно писать process.env ...
 const SERVER_LINK = process.env.EXPO_PUBLIC_SERVER_LINK as string;
 export default SERVER_LINK;
