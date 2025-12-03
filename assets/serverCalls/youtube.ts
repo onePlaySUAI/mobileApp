@@ -20,13 +20,12 @@ interface SongResponse {
 
 // Массив SongResponse, в каждой песне пустой streamId
 type SongListResponse = (Omit<SongResponse, "streamId"> & {
-  streamId: "";
+  streamId: ".";
 })[];
 
 export async function ytGetSongByQuery (query: string): Promise<SongResponse> {
   const params = new URLSearchParams({ query, isSafari: String(Platform.OS === 'ios') });
   const API_URl = `${SERVER_LINK}/api/YouTube/getSongByQuery?${params}`;
-  console.log(API_URl)
 
   const res = await fetch(API_URl);
 
@@ -40,13 +39,24 @@ export async function getListOfSongsByQuery (query: string, size: number): Promi
   const params = new URLSearchParams({ query, size: String(size) });
 
   const API_URL = `${SERVER_LINK}/api/YouTube/getListOfSongsByQuery?${params}`;
-  console.log(API_URL);
 
   const res = await fetch(API_URL);
 
   if (!res.ok) throw res.status.toString();
 
   const data = await res.json();
-  console.log(data)
   return data as SongListResponse;
+}
+
+export async function getSteamByYItId (youtubeId: string): Promise<string> {
+  const params = new URLSearchParams({ youtubeId, isSafari: String(Platform.OS === 'ios') });
+  const API_URl = `${SERVER_LINK}/api/YouTube/getStreamByYouTubeId?${params}`;
+  console.log(API_URl)
+
+  const res = await fetch(API_URl);
+
+  if (!res.ok) throw res.status.toString();
+
+  const data = await res.json() as SongResponse;
+  return data.stream;
 }

@@ -1,4 +1,4 @@
-import {View, TextInput, TouchableOpacity, useColorScheme, ActivityIndicator} from "react-native";
+import {View, TextInput, TouchableOpacity, Image, ActivityIndicator} from "react-native";
 import { getHeaderStyle } from "@/assets/styles/header";
 import { useSafeAreaInsets, type EdgeInsets } from "react-native-safe-area-context";
 import SearchIcon from "../icons/SearchIcon";
@@ -23,23 +23,25 @@ export default function CustomHeader ({ isDarkmode, page }: headerParams) {
   const dispatch = useDispatch<AppDispatch>();
 
   const searchByQuery = async () => {
-    if (isLoading) return;
+    if (isLoading || !query) return;
 
     setIsLoading(true);
     try {
-      const [ytSong] = await Promise.all([
+      const [ytSong, listOfYtSongs] = await Promise.all([
         ytGetSongByQuery(query),
-        // getListOfSongsByQuery(query, 11)
+        getListOfSongsByQuery(query, 11)
         // Spotify...
       ])
-      const songs = [ytSong];
+      const songs = [ytSong, ...listOfYtSongs];
       for (let song of songs) {
         if (song) {
           dispatch(addSong({
             id: song.youTubeId,
             title: song.name,
             artist: song.authorName,
-            albumCover: song.imageSet.medium ?? '',
+            albumCover: song.imageSet,
+            youTubeId: song.youTubeId,
+            lastFMMbId: song.lastFMMbId,
             audioUrl: song.stream,
             source: 'Youtube',
           }));
@@ -57,7 +59,10 @@ export default function CustomHeader ({ isDarkmode, page }: headerParams) {
     <View style={style.container}>
       <View style={style.searchContainer}>
         <TouchableOpacity onPress={() => router.push('/(screens)/profile')}>
-          <View style={style.circle} />
+          <Image
+            style={style.circle}
+            source={require('@/assets/images/mockPfp.jpg')}
+          />
         </TouchableOpacity>
         <TextInput
           style={style.searchInput}

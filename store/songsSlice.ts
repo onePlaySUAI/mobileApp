@@ -1,4 +1,5 @@
 import { AnyAction } from 'redux';
+import {mockSongs} from "@/mocks/mockSongs";
 
 export type SongSource = 'Spotify' | 'Youtube' | 'Download';
 
@@ -6,8 +7,18 @@ export interface SongType {
   id: string;
   title: string;
   artist: string;
-  albumCover: string;
+  albumName?: string,
+  lastFMMbId?: string,
+  youTubeId?: string,
+  albumCover: {
+    small: string | null,
+    medium: string | null,
+    large: string | null,
+    extraLarge: string | null,
+    mega: string | null,
+  };
   audioUrl: string;
+
   source: SongSource;
 }
 
@@ -79,7 +90,7 @@ export const prevSong = (): PrevSongAction => ({ type: PREV_SONG });
 
 /* Initial state */
 const initialState: SongsState = {
-  list: [],
+  list: mockSongs,
   currentIndex: null,
 };
 

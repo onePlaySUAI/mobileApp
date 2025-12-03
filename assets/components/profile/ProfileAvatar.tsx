@@ -1,4 +1,4 @@
-import { View, StyleSheet } from "react-native";
+import {View, StyleSheet, Image} from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import PlusIcon from "../icons/PlusIcon";
 
@@ -12,7 +12,7 @@ export default function ProfileAvatar({ isDark }: ProfileAvatarProps) {
   return (
     <View style={style.avatarWrap}>
       <View style={style.avatarCircle}>
-        <PlusIcon></PlusIcon>
+        <Image source={require('@/assets/images/mockPfp.jpg')} />
       </View>
     </View>
   );
@@ -35,6 +35,7 @@ function getProfileAvatarStyle(isDark: boolean) {
       backgroundColor: COLORS.card,
       alignItems: 'center',
       justifyContent: 'center',
+      overflow: 'hidden'
     },
     plusWrap: {
       width: 140,

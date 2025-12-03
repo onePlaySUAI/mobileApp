@@ -45,3 +45,4 @@ app-example
 #bullshit
 .idea
 .env
+et --hard HEAD@{1}

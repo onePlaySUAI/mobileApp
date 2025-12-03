@@ -1,9 +1,9 @@
-import { StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import {StyleSheet, ViewStyle, TextStyle, ImageStyle} from 'react-native';
 
 interface HeaderStyle {
   container: ViewStyle;
   headerTop: ViewStyle;
-  circle: ViewStyle;
+  circle: ImageStyle;
   title: TextStyle;
   searchContainer: ViewStyle;
   searchInput: TextStyle;
@@ -33,7 +33,7 @@ export const getHeaderStyle = (isDarkMode: boolean, marginTop: number) => {
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.1,
       shadowRadius: 3,
-      elevation: 3, // Android shadow
+      elevation: 3,
     },
     headerTop: {
       flexDirection: 'row',

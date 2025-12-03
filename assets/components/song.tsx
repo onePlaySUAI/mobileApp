@@ -5,7 +5,13 @@ interface songParams {
   title: string,
   artist: string,
   source: 'Spotify' | 'Youtube' | 'Download';
-  albumCover: string,
+  albumCover: {
+    "small": string | null,
+    "medium": string | null,
+    "large": string | null,
+    "extraLarge": string | null,
+    "mega": string | null
+  },
 }
 
 export interface songProps {
@@ -29,7 +35,7 @@ export default function Song({ params, onDotsPress, onPress, active }: songProps
       >
         {/* Album cover */}
         <Image
-          source={{ uri: params.albumCover }}
+          source={{ uri: params.albumCover.medium ?? '' }}
           style={style.albumCover}
         />
         {/* Title and Artist box */}
