@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { SongType } from "@/store/songsSlice";
 import { getSteamByYItId } from "@/assets/serverCalls/youtube";
 import { useAudioControls } from "@/assets/hooks/audioControls";
+import * as Haptics from 'expo-haptics';
 
 interface NowPlayingBarProps {
   song?: SongType;
@@ -13,7 +14,7 @@ interface NowPlayingBarProps {
   onPlayPause?: () => void;
 }
 
-interface FullScreenProps {
+interface CompactViewProps {
   song: SongType;
   isDarkmode: boolean;
   isPlaying: boolean;
@@ -24,7 +25,10 @@ interface FullScreenProps {
   onFavorite?: () => void;
 }
 
-interface CompactViewProps extends FullScreenProps {}
+interface FullScreenProps extends CompactViewProps {
+  handleNextSong: () => void,
+  handlePrevSong: () => void,
+}
 
 export default function NowPlayingBar({
                                         song,
@@ -76,6 +80,20 @@ export default function NowPlayingBar({
     setIsFullScreen((p) => !p);
   };
 
+  // Mock functions for next/prev
+  const handleNextSong = async () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
+  };
+
+  const handlePrevSong = async () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
+  };
+
+  const TGP = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
+    togglePlayPause();
+  }
+
   if (!song) return null;
 
   return (
@@ -88,8 +106,10 @@ export default function NowPlayingBar({
           isLoading={isLoading}
           isError={isError}
           progress={progress}
-          togglePlayPause={togglePlayPause}
+          togglePlayPause={TGP}
           onFavorite={onFavorite}
+          handleNextSong={handleNextSong}
+          handlePrevSong={handlePrevSong}
         />
       ) : (
         <CompactView
@@ -99,7 +119,7 @@ export default function NowPlayingBar({
           isLoading={isLoading}
           isError={isError}
           progress={progress}
-          togglePlayPause={togglePlayPause}
+          togglePlayPause={TGP}
           onFavorite={onFavorite}
         />
       )}
@@ -107,8 +127,26 @@ export default function NowPlayingBar({
   );
 }
 
-function FullScreen({song, isDarkmode, isPlaying, isLoading, isError, progress, togglePlayPause, onFavorite,}: FullScreenProps) {
+function FullScreen({
+                      song,
+                      isDarkmode,
+                      isPlaying,
+                      isLoading,
+                      isError,
+                      progress,
+                      togglePlayPause,
+                      onFavorite,
+                      handleNextSong,
+                      handlePrevSong,
+                    }: FullScreenProps) {
   const style = getFullScreenStyle(isDarkmode);
+  const [progressBarScale, setProgressBarScale] = useState(1);
+
+  const handleProgressBarPress = (e: any) => {
+    e.stopPropagation();
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
+    setProgressBarScale(1.2);
+  }
 
   return (
     <>
@@ -137,33 +175,41 @@ function FullScreen({song, isDarkmode, isPlaying, isLoading, isError, progress, 
       </View>
 
       <View style={style.controls}>
-        <TouchableOpacity onPress={onFavorite} style={style.controlButton}>
-          <Ionicons name="star" size={24} color="#ffd700" />
+        <TouchableOpacity onPress={handlePrevSong} style={style.controlButton} hitSlop={30}>
+          <Ionicons name="play-skip-back" size={24} color="#ffffff" />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={togglePlayPause} style={style.controlButton}>
+        <TouchableOpacity onPress={togglePlayPause} style={style.controlButton} hitSlop={30}>
           <Ionicons
             name={isPlaying ? "pause" : "play"}
             size={24}
             color="#ffffff"
           />
         </TouchableOpacity>
+
+        <TouchableOpacity onPress={handleNextSong} style={style.controlButton} hitSlop={30}>
+          <Ionicons name="play-skip-forward" size={24} color="#ffffff" />
+        </TouchableOpacity>
       </View>
 
       {/* Progress bar */}
-      <View
+      <TouchableOpacity
         style={{
           height: 15,
           width: "80%",
           backgroundColor: "#444",
           marginTop: 16,
           borderRadius: 50,
-          overflow: 'hidden',
+          overflow: "hidden",
+          transform: [{scale: progressBarScale}]
         }}
+        onLongPress={handleProgressBarPress}
+        onPressOut={() => setProgressBarScale(1)}
+        hitSlop={{top: 10, right: 10, left: 10, bottom: 30}}
       >
         <View
           style={{
-            height: '100%',
+            height: "100%",
             backgroundColor: isLoading
               ? "gray"
               : isError
@@ -172,12 +218,21 @@ function FullScreen({song, isDarkmode, isPlaying, isLoading, isError, progress, 
             width: `${progress * 100}%`,
           }}
         />
-      </View>
+      </TouchableOpacity>
     </>
   );
 }
 
-function CompactView({song, isDarkmode, isPlaying, isLoading, isError, progress, togglePlayPause, onFavorite,}: CompactViewProps) {
+function CompactView({
+     song,
+     isDarkmode,
+     isPlaying,
+     isLoading,
+     isError,
+     progress,
+     togglePlayPause,
+     onFavorite,
+ }: CompactViewProps) {
   const style = getNowPlayingBarStyle(isDarkmode);
 
   return (
@@ -208,11 +263,10 @@ function CompactView({song, isDarkmode, isPlaying, isLoading, isError, progress,
       </View>
 
       <View style={style.rightSection}>
-        <TouchableOpacity onPress={onFavorite} style={style.actionButton}>
+        <TouchableOpacity onPress={onFavorite} style={style.actionButton} >
           <Ionicons name="star" size={18} color="#ffd700" />
         </TouchableOpacity>
-
-        <TouchableOpacity onPress={togglePlayPause} style={style.actionButton}>
+        <TouchableOpacity onPress={togglePlayPause} style={style.actionButton} hitSlop={10}>
           <Ionicons
             name={isPlaying ? "pause" : "play"}
             size={18}
@@ -221,7 +275,8 @@ function CompactView({song, isDarkmode, isPlaying, isLoading, isError, progress,
         </TouchableOpacity>
       </View>
 
-      <View
+      {/* Progress bar */}
+      <TouchableOpacity
         style={{
           position: "absolute",
           bottom: 0,
@@ -233,7 +288,7 @@ function CompactView({song, isDarkmode, isPlaying, isLoading, isError, progress,
       >
         <View
           style={{
-            height: 2,
+            height: '100%',
             backgroundColor: isLoading
               ? "gray"
               : isError
@@ -242,7 +297,7 @@ function CompactView({song, isDarkmode, isPlaying, isLoading, isError, progress,
             width: `${progress * 100}%`,
           }}
         />
-      </View>
+      </TouchableOpacity>
     </>
   );
 }

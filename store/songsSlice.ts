@@ -1,4 +1,5 @@
 import { AnyAction } from 'redux';
+import {mockSongs} from "@/mocks/mockSongs";
 
 export type SongSource = 'Spotify' | 'Youtube' | 'Download';
 
@@ -89,7 +90,7 @@ export const prevSong = (): PrevSongAction => ({ type: PREV_SONG });
 
 /* Initial state */
 const initialState: SongsState = {
-  list: [],
+  list: mockSongs,
   currentIndex: null,
 };
 

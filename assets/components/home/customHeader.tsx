@@ -1,4 +1,4 @@
-import {View, TextInput, TouchableOpacity, useColorScheme, ActivityIndicator} from "react-native";
+import {View, TextInput, TouchableOpacity, Image, ActivityIndicator} from "react-native";
 import { getHeaderStyle } from "@/assets/styles/header";
 import { useSafeAreaInsets, type EdgeInsets } from "react-native-safe-area-context";
 import SearchIcon from "../icons/SearchIcon";
@@ -59,7 +59,10 @@ export default function CustomHeader ({ isDarkmode, page }: headerParams) {
     <View style={style.container}>
       <View style={style.searchContainer}>
         <TouchableOpacity onPress={() => router.push('/(screens)/profile')}>
-          <View style={style.circle} />
+          <Image
+            style={style.circle}
+            source={require('@/assets/images/mockPfp.jpg')}
+          />
         </TouchableOpacity>
         <TextInput
           style={style.searchInput}

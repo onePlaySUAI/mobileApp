@@ -4,6 +4,7 @@ import Song from "@/assets/components/song";
 import getSongsPlaceholderStyle from "@/assets/styles/songsPlaceholder";
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "@/store/store";
+import * as Haptics from "expo-haptics";
 
 interface props {
   isDarkmode: boolean,
@@ -27,7 +28,10 @@ export default function SongsPlaceholder({isDarkmode, nowPlayingSongId, openModa
           key={index}
           params={song}
           onDotsPress={() => openModal(song)}
-          onPress={() => dispatch(setCurrentSong(song))}
+          onPress={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
+            dispatch(setCurrentSong(song));
+          }}
           active={song.id === nowPlayingSongId}
         />
       ))

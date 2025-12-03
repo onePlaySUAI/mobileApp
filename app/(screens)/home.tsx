@@ -8,8 +8,9 @@ import BottomNavigation from "@/assets/components/bottomNavigation";
 import NowPlayingBar from "@/assets/components/home/nowPlayingBar";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-import {selectCurrentSong, setCurrentSong, SongType} from "@/store/songsSlice";
+import {selectCurrentSong, SongType} from "@/store/songsSlice";
 import SongsPlaceholder from "@/assets/components/home/songsPlaceholder";
+
 
 export default function Home() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -31,6 +32,8 @@ export default function Home() {
   };
 
   const style = getHomeStyle(isDarkmode);
+
+
   
   return (
     <SafeAreaProvider style={style.safeAreaProvider}>

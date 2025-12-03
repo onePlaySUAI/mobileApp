@@ -175,9 +175,11 @@ export const getFullScreenStyle = (isDarkmode: boolean): FullScreenPlayerStyle =
     },
     controls: {
       flexDirection: 'row',
-      justifyContent: 'space-around',
-      width: '80%',
+      justifyContent: 'space-between',
+      paddingHorizontal: 50,
+      width: '100%',
       marginTop: 16,
+      boxSizing: 'border-box',
     },
     controlButton: {
       padding: 16,
