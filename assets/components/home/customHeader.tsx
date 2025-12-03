@@ -27,19 +27,21 @@ export default function CustomHeader ({ isDarkmode, page }: headerParams) {
 
     setIsLoading(true);
     try {
-      const [ytSong] = await Promise.all([
+      const [ytSong, listOfYtSongs] = await Promise.all([
         ytGetSongByQuery(query),
-        // getListOfSongsByQuery(query, 11)
+        getListOfSongsByQuery(query, 11)
         // Spotify...
       ])
-      const songs = [ytSong];
+      const songs = [ytSong, ...listOfYtSongs];
       for (let song of songs) {
         if (song) {
           dispatch(addSong({
             id: song.youTubeId,
             title: song.name,
             artist: song.authorName,
-            albumCover: song.imageSet.medium ?? '',
+            albumCover: song.imageSet,
+            youTubeId: song.youTubeId,
+            lastFMMbId: song.lastFMMbId,
             audioUrl: song.stream,
             source: 'Youtube',
           }));

@@ -6,8 +6,18 @@ export interface SongType {
   id: string;
   title: string;
   artist: string;
-  albumCover: string;
+  albumName?: string,
+  lastFMMbId?: string,
+  youTubeId?: string,
+  albumCover: {
+    small: string | null,
+    medium: string | null,
+    large: string | null,
+    extraLarge: string | null,
+    mega: string | null,
+  };
   audioUrl: string;
+
   source: SongSource;
 }
 

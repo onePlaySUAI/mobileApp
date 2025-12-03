@@ -1,18 +1,20 @@
-import {SongType} from "@/store/songsSlice";
+import {setCurrentSong, SongType} from "@/store/songsSlice";
 import {ScrollView, Text, View} from "react-native";
 import Song from "@/assets/components/song";
 import getSongsPlaceholderStyle from "@/assets/styles/songsPlaceholder";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "@/store/store";
 
 interface props {
   isDarkmode: boolean,
   nowPlayingSongId: string,
   openModal: (song: SongType) => void,
-  setCurrentSong: (song: SongType) => void,
   songs: SongType[],
 }
 
-export default function SongsPlaceholder({isDarkmode, nowPlayingSongId, openModal, setCurrentSong, songs}: props) {
+export default function SongsPlaceholder({isDarkmode, nowPlayingSongId, openModal, songs}: props) {
   const style = getSongsPlaceholderStyle(isDarkmode);
+  const dispatch = useDispatch<AppDispatch>();
 
   return (
     <ScrollView style={style.songsPlaceHolder} contentContainerStyle={style.songsContent}>
@@ -25,7 +27,7 @@ export default function SongsPlaceholder({isDarkmode, nowPlayingSongId, openModa
           key={index}
           params={song}
           onDotsPress={() => openModal(song)}
-          onPress={() => setCurrentSong(song)}
+          onPress={() => dispatch(setCurrentSong(song))}
           active={song.id === nowPlayingSongId}
         />
       ))

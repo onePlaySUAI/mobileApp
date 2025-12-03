@@ -44,7 +44,6 @@ export default function Home() {
           isDarkmode={isDarkmode}
           nowPlayingSongId={nowPlayingSong?.id ?? ''}
           openModal={openModal}
-          setCurrentSong={setCurrentSong}
           songs={songs}
         />
       </SafeAreaView>
