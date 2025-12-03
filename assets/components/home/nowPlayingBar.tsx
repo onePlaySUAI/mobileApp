@@ -45,6 +45,9 @@ export default function NowPlayingBar({
     togglePlayPause,
     setAudioMode,
     unloadSound,
+    seekToStart,
+    previousSong,
+    nxtSong,
   } = useAudioControls();
 
   const [isFullScreen, setIsFullScreen] = useState(false);
@@ -80,13 +83,14 @@ export default function NowPlayingBar({
     setIsFullScreen((p) => !p);
   };
 
-  // Mock functions for next/prev
   const handleNextSong = async () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
+    nxtSong();
   };
 
   const handlePrevSong = async () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
+    previousSong();
   };
 
   const TGP = () => {

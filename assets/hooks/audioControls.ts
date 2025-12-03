@@ -1,6 +1,9 @@
 // audioControls.ts
 import { Audio } from "expo-av";
 import { useCallback, useRef, useState } from "react";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "@/store/store";
+import {nextSong, prevSong} from "@/store/songsSlice";
 
 export function useAudioControls(onPlaybackStatusUpdate?: (s: any) => void) {
   const soundRef = useRef<Audio.Sound | null>(null);
@@ -8,6 +11,8 @@ export function useAudioControls(onPlaybackStatusUpdate?: (s: any) => void) {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [progress, setProgress] = useState(0);
+
+  const dispatch = useDispatch<AppDispatch>();
 
   const setAudioMode = useCallback(async () => {
     try {
@@ -119,6 +124,14 @@ export function useAudioControls(onPlaybackStatusUpdate?: (s: any) => void) {
     [unloadSound, seekToStart, onPlaybackStatusUpdate]
   );
 
+  const previousSong = useCallback(() => {
+    dispatch(prevSong());
+  }, [dispatch]);
+
+  const nxtSong = useCallback(() => {
+    dispatch(nextSong());
+  }, [dispatch])
+
   return {
     isPlaying,
     isLoading,
@@ -132,5 +145,8 @@ export function useAudioControls(onPlaybackStatusUpdate?: (s: any) => void) {
     togglePlayPause,
     unloadSound,
     setAudioMode,
+    seekToStart,
+    previousSong,
+    nxtSong,
   };
 }

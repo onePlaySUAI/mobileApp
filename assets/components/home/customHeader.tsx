@@ -23,7 +23,7 @@ export default function CustomHeader ({ isDarkmode, page }: headerParams) {
   const dispatch = useDispatch<AppDispatch>();
 
   const searchByQuery = async () => {
-    if (isLoading) return;
+    if (isLoading || !query) return;
 
     setIsLoading(true);
     try {
