@@ -1,4 +1,4 @@
-import {ActivityIndicator, Text, View} from "react-native";
+import {ActivityIndicator, Text, View, Image} from "react-native";
 import React from "react";
 
 interface loadingScreenParams {
@@ -14,9 +14,13 @@ export default function LoadingScreen ({isDarkMode}: loadingScreenParams) {
       backgroundColor: isDarkMode ? '#000' : '#fff'
     }}>
       <ActivityIndicator size="large" color="#888" />
-      <Text style={{ marginTop: 15, color: isDarkMode ? '#fff' : '#000' }}>
+      <Text style={{ marginTop: 15, marginBottom: 15, color: isDarkMode ? '#fff' : '#000' }}>
         Загрузка...
       </Text>
+      <Image
+        source={require('@/assets/images/loadingGIf.gif')}
+        alt={'Loading GIF'}
+      />
     </View>
   );
 }

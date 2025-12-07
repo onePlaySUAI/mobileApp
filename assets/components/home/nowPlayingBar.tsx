@@ -5,7 +5,10 @@ import { useEffect, useState } from "react";
 import { SongType } from "@/store/songsSlice";
 import { getSteamByYItId } from "@/assets/serverCalls/youtube";
 import { useAudioControls } from "@/assets/hooks/audioControls";
-import * as Haptics from 'expo-haptics';
+import { useSpotifyControls } from "@/assets/hooks/useSpotifyControls"; // <-- import your Spotify hook
+import * as Haptics from "expo-haptics";
+import {useSelector} from "react-redux";
+import {type RootState} from "@/store/store";
 
 interface NowPlayingBarProps {
   song?: SongType;
@@ -30,12 +33,21 @@ interface FullScreenProps extends CompactViewProps {
   handlePrevSong: () => void,
 }
 
+
 export default function NowPlayingBar({
                                         song,
                                         isDarkmode,
                                         onFavorite,
-                                        onPlayPause,
                                       }: NowPlayingBarProps) {
+  const spotifyAccessToken = useSelector((state: RootState) => state.spotify.spotifyToken);
+  const spotifyControls = useSpotifyControls(spotifyAccessToken);
+  const ytControls = useAudioControls();
+
+  const audioControls = song?.source === "Spotify"
+    ? spotifyControls
+    : ytControls;
+
+
   const {
     isPlaying,
     isLoading,
@@ -48,7 +60,7 @@ export default function NowPlayingBar({
     seekToStart,
     previousSong,
     nxtSong,
-  } = useAudioControls();
+  } = audioControls;
 
   const [isFullScreen, setIsFullScreen] = useState(false);
   const style = isFullScreen
@@ -60,9 +72,15 @@ export default function NowPlayingBar({
 
     (async () => {
       await setAudioMode();
-      if (!mounted) return;
+      if (!mounted || !song) return;
 
-      if (song) {
+      if (song.source === "Spotify") {
+        // load by Spotify URI
+        if (song.id) {
+          await loadSound(`spotify:track:${song.id}`);
+        }
+      } else {
+        // YouTube / generic audio
         if (song.audioUrl === "." && song.youTubeId) {
           const stream = await getSteamByYItId(song.youTubeId);
           await loadSound(stream);
@@ -76,7 +94,7 @@ export default function NowPlayingBar({
       mounted = false;
       unloadSound();
     };
-  }, [song?.audioUrl, song?.youTubeId]);
+  }, [song?.audioUrl, song?.youTubeId, song?.id]);
 
   const handlePress = (e: any) => {
     e.stopPropagation();
@@ -96,7 +114,7 @@ export default function NowPlayingBar({
   const TGP = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Soft);
     togglePlayPause();
-  }
+  };
 
   if (!song) return null;
 
@@ -130,6 +148,7 @@ export default function NowPlayingBar({
     </TouchableOpacity>
   );
 }
+
 
 function FullScreen({
                       song,
@@ -219,7 +238,7 @@ function FullScreen({
               : isError
                 ? "#ff0000"
                 : "#1DB954",
-            width: `${progress * 100}%`,
+            width: `${(progress ?? 0) * 100}%`, // safe fallback
           }}
         />
       </TouchableOpacity>
@@ -292,13 +311,13 @@ function CompactView({
       >
         <View
           style={{
-            height: '100%',
+            height: "100%",
             backgroundColor: isLoading
               ? "gray"
               : isError
                 ? "#ff0000"
                 : "#1DB954",
-            width: `${progress * 100}%`,
+            width: `${(progress ?? 0) * 100}%`, // safe fallback
           }}
         />
       </TouchableOpacity>

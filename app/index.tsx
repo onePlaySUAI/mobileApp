@@ -64,7 +64,8 @@ export default function Index() {
 
 
   useEffect(() => {
-    getUser();
+    // getUser();
+    setIsRegistered(true)
   }, []);
 
 

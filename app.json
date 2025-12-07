@@ -5,7 +5,7 @@
     "version": "0.5.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "helloworld",
+    "scheme": "OP",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {

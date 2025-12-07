@@ -1,27 +1,23 @@
 import SERVER_LINK from "@/assets/serverCalls/SERVER_LINK";
 import {Platform} from "react-native";
 
-interface SongResponse {
+export interface SongResponse {
   "name": string,
-  "type": 0,
+  "type": 0 | 1 ,
   "stream": string,
   "authorName": string,
-  "albumName": string,
-  "lastFMMbId": string,
-  "youTubeId": string,
+  "albumName"?: string,
+  "lastFMMbId"?: string,
+  "youTubeId"?: string,
+  "spotifyId"?: string,
   "imageSet": {
-    "small": string,
-    "medium": string,
-    "large": string,
-    "extraLarge": string,
-    "mega": string
+    "small": string | null,
+    "medium": string | null,
+    "large": string | null,
+    "extraLarge": string | null,
+    "mega": string | null
   }
 }
-
-// Массив SongResponse, в каждой песне пустой streamId
-type SongListResponse = (Omit<SongResponse, "streamId"> & {
-  streamId: ".";
-})[];
 
 export async function ytGetSongByQuery (query: string): Promise<SongResponse> {
   const params = new URLSearchParams({ query, isSafari: String(Platform.OS === 'ios') });
@@ -35,7 +31,7 @@ export async function ytGetSongByQuery (query: string): Promise<SongResponse> {
   return data as SongResponse;
 }
 
-export async function getListOfSongsByQuery (query: string, size: number): Promise<SongListResponse> {
+export async function getListOfSongsByQuery (query: string, size: number): Promise<SongResponse[]> {
   const params = new URLSearchParams({ query, size: String(size) });
 
   const API_URL = `${SERVER_LINK}/api/YouTube/getListOfSongsByQuery?${params}`;
@@ -45,7 +41,7 @@ export async function getListOfSongsByQuery (query: string, size: number): Promi
   if (!res.ok) throw res.status.toString();
 
   const data = await res.json();
-  return data as SongListResponse;
+  return data as SongResponse[];
 }
 
 export async function getSteamByYItId (youtubeId: string): Promise<string> {
