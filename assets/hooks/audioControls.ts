@@ -94,7 +94,13 @@ export function useAudioControls(onPlaybackStatusUpdate?: (s: any) => void) {
 
       try {
         const { sound } = await Audio.Sound.createAsync(
-          { uri: audioUrl },
+          { 
+            uri: audioUrl,
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
+              'Referer': 'https://www.youtube.com/'
+            }
+          },
           { shouldPlay: true },
           (status) => {
             if (!status || !status.isLoaded || !status.durationMillis) return;
@@ -114,8 +120,10 @@ export function useAudioControls(onPlaybackStatusUpdate?: (s: any) => void) {
 
         await sound.setVolumeAsync(1);
         soundRef.current = sound;
-      } catch (err) {
-        console.warn("Load failed", err);
+      } catch (err: any) {
+        console.warn('Load failed message', err?.message);
+        console.warn('Load failed code', err?.code);
+        console.warn('Load failed stack', err?.stack);
         setIsError(true);
       } finally {
         setIsLoading(false);

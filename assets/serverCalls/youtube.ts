@@ -51,7 +51,6 @@ export async function getListOfSongsByQuery (query: string, size: number): Promi
 export async function getSteamByYItId (youtubeId: string): Promise<string> {
   const params = new URLSearchParams({ youtubeId, isSafari: String(Platform.OS === 'ios') });
   const API_URl = `${SERVER_LINK}/api/YouTube/getStreamByYouTubeId?${params}`;
-  console.log(API_URl)
 
   const res = await fetch(API_URl);
 

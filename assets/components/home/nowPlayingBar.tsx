@@ -1,11 +1,11 @@
 import { View, Text, TouchableOpacity, Image } from "react-native";
-import { getFullScreenStyle, getNowPlayingBarStyle } from "@/assets/styles/nowPlayingBar";
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { SongType } from "@/store/songsSlice";
 import { getSteamByYItId } from "@/assets/serverCalls/youtube";
 import { useAudioControls } from "@/assets/hooks/audioControls";
 import * as Haptics from 'expo-haptics';
+import { getFullScreenStyle, getNowPlayingBarStyle } from "@/assets/styles/nowPlayingBar";
 
 interface NowPlayingBarProps {
   song?: SongType;
@@ -59,16 +59,21 @@ export default function NowPlayingBar({
     let mounted = true;
 
     (async () => {
-      await setAudioMode();
-      if (!mounted) return;
+      try {
+        await setAudioMode();
+        if (!mounted) return;
 
-      if (song) {
-        if (song.audioUrl === "." && song.youTubeId) {
-          const stream = await getSteamByYItId(song.youTubeId);
-          await loadSound(stream);
-        } else {
-          await loadSound(song.audioUrl);
+        if (song) {
+          if (song.audioUrl === "." && song.youTubeId) {
+            const stream = await getSteamByYItId(song.youTubeId);
+            await loadSound(stream);
+          } else {
+            await loadSound(song.audioUrl);
+          }
         }
+      } catch (err: any) {
+        console.error('Error in nowPlayingBar useEffect:', err?.message || err);
+        // Optionally set error state or show alert
       }
     })();
 

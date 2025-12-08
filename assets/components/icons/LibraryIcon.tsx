@@ -1,28 +1,36 @@
 import React from 'react';
 import Svg, { Rect, Defs, LinearGradient, Stop } from 'react-native-svg';
 
-const LibraryIcon = ({ width = 27, height = 25, color = null }) => {
+const LibraryIcon = ({
+  width = 27,
+  height = 25,
+  color,
+}: {
+  width?: number;
+  height?: number;
+  color?: string | null;
+}) => {
   return (
     <Svg width={width} height={height} viewBox="0 0 27 25" fill="none">
       <Rect
         width="5"
         height="25"
         rx="2.5"
-        fill={color || "url(#paint0_linear)"}
+        fill={color || 'url(#paint0_linear)'}
       />
       <Rect
         x="8"
         width="5"
         height="25"
         rx="2.5"
-        fill={color || "url(#paint1_linear)"}
+        fill={color || 'url(#paint1_linear)'}
       />
       <Rect
         x="16"
         width="11"
         height="25"
         rx="3"
-        fill={color || "url(#paint2_linear)"}
+        fill={color || 'url(#paint2_linear)'}
       />
       <Defs>
         <LinearGradient

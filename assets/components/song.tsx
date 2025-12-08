@@ -1,5 +1,6 @@
 import { Image, Pressable, Text, useColorScheme, View, TouchableOpacity } from "react-native";
 import { getSongStyle } from "@/assets/styles/song";
+import { SongType } from "@/store/songsSlice";
 
 interface songParams {
   title: string,
@@ -15,7 +16,7 @@ interface songParams {
 }
 
 export interface songProps {
-  params: songParams,
+  params: SongType,
   onDotsPress?: () => void,
   onPress: () => void,
   active: boolean

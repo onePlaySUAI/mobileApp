@@ -52,9 +52,9 @@ export default function Login() {
 
   };
 
-  if (loggedIn) return <Redirect href="/home" />;
+  if (loggedIn) return <Redirect href="/(screens)/home" />;
   if (isLoading) return <LoadingScreen isDarkMode={isDarkMode}/>;
-  if (redirectToRegister) return <Redirect href="/register" />;
+  if (redirectToRegister) return <Redirect href="/(screens)/register" />;
 
   return (
     <View style={styles.container}>

@@ -1,64 +1,81 @@
-import { View, Text, TextInput, StyleSheet, Platform } from "react-native";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
+import { View, Text, TextInput, Pressable } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '@/store/store';
+import { useState, useEffect } from 'react';
 
-interface ProfileInfoProps {
-  isDark: boolean;
-}
+import { Colors } from '../../constants/colors';
+import { getProfileInfoStyle } from '@/assets/styles_old/profile/profileInfo';
+import { ProfileInfoProps } from '@/types/components';
+import { setUser } from '@/store/userSlice';
 
-export default function ProfileInfo({ isDark }: ProfileInfoProps) {
+export default function ProfileInfo({ appTheme }: ProfileInfoProps) {
   const { name, email } = useSelector((state: RootState) => state.user);
-  const style = getProfileInfoStyle(isDark);
+  const dispatch = useDispatch();
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [tempName, setTempName] = useState(name);
+  const { styles, colors } = getProfileInfoStyle(appTheme);
 
-  return (
-    <View style={style.nameBlock}>
-      <Text style={style.name}>{name}</Text>
-      <Text style={style.email}>{email}</Text>
-    </View>
-  );
-}
+  useEffect(() => {
+    setTempName(name);
+  }, [name]);
 
-function getProfileInfoStyle(isDark: boolean) {
-  const COLORS = {
-    text: isDark ? '#ffffff' : '#2e2e2e',
-    textSecondary: isDark ? '#bfbfbf' : '#797979',
+  const handleNamePress = () => {
+    setIsEditingName(true);
+    setTempName(name);
   };
 
-  return StyleSheet.create({
-    nameBlock: {
-      alignItems: 'center',
-      paddingTop: 16,
-      paddingBottom: 8,
-    },
-    name: {
-      color: COLORS.text,
-      fontSize: 22,
-      fontWeight: '600',
-    },
-    email: {
-      color: COLORS.textSecondary,
-      fontSize: 20,
-      marginTop: 6,
-    },
-    phoneRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      alignSelf: 'center',
-      backgroundColor: isDark ? '#2b2b2e' : '#ededf0',
-      paddingHorizontal: 14,
-      paddingVertical: 10,
-      borderRadius: 8,
-      marginTop: 16,
-      gap: 10,
-    },
-    phoneLabel: {
-      color: COLORS.text,
-      fontSize: 14,
-    },
-    phoneInput: {
-      color: COLORS.textSecondary,
-      fontSize: 14,
-      minWidth: 160,
-    },
-  });
+  const handleNameSubmit = () => {
+    const newName = tempName.trim();
+    if (newName) {
+      dispatch(setUser({ name: newName, email }));
+    }
+    setIsEditingName(false);
+  };
+
+  const handleNameBlur = () => {
+    handleNameSubmit();
+  };
+
+  return (
+    <View>
+      <View style={styles.nameBlock}>
+        {isEditingName ? (
+          <TextInput
+            style={styles.nameInput}
+            value={tempName}
+            onChangeText={setTempName}
+            onBlur={handleNameBlur}
+            onSubmitEditing={handleNameSubmit}
+            autoFocus
+            selectTextOnFocus
+            returnKeyType="done"
+          />
+        ) : (
+          <Pressable
+            onPress={handleNamePress}
+            android_ripple={{
+              color: Colors.accent,
+            }}
+            style={({ pressed }) => [{ opacity: pressed ? 0.7 : 1 }]}
+          >
+            <Text style={styles.name}>{name || 'Tap to set name'}</Text>
+          </Pressable>
+        )}
+      </View>
+
+      {/* Email */}
+      <View style={styles.inputRow}>
+        <Text style={styles.label}>Your email:</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="example@mail.com"
+          placeholderTextColor={colors.Text.placeholder}
+          keyboardType="email-address"
+          autoCapitalize="none"
+          defaultValue={email}
+          returnKeyType="done"
+        />
+      </View>
+    </View>
+  );
 }

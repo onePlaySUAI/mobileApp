@@ -54,10 +54,13 @@ export default function Index() {
         );
 
         setIsRegistered(true);
-      } catch {
+      } catch (e) {
+        console.log("Error updating user by token:", e);
+        await SecureStore.deleteItemAsync("user");
         setIsRegistered(false);
       }
     } else {
+      await SecureStore.deleteItemAsync("user");
       setIsRegistered(false);
     }
   };
@@ -72,7 +75,7 @@ export default function Index() {
     case true:
       return <Redirect href={'/(screens)/home'} />
     case false:
-      return <Redirect href={'/(screens)/register'} />
+      return <Redirect href={'/(screens)/login'} />
     default:
       return <LoadingScreen isDarkMode={isDarkmode} />
   }
