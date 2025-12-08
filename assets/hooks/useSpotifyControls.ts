@@ -1,8 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import SpotifyWebApi from "spotify-web-api-js";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/store/store";
-import { nextSong, prevSong } from "@/store/songsSlice";
 
 // playback state type from spotify-web-api-js
 type PlaybackState = SpotifyApi.CurrentPlaybackResponse | null;
@@ -14,8 +11,6 @@ export function useSpotifyControls(accessToken: string | null) {
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [progress, setProgress] = useState(0);
-
-  const dispatch = useDispatch<AppDispatch>();
 
   // initialize client
   useEffect(() => {
@@ -125,23 +120,21 @@ export function useSpotifyControls(accessToken: string | null) {
     if (!spotifyRef.current) return;
     try {
       await spotifyRef.current.skipToPrevious();
-      dispatch(prevSong());
     } catch (err) {
       console.warn("Spotify previousSong failed", err);
       setIsError(true);
     }
-  }, [dispatch]);
+  }, []);
 
   const nxtSong = useCallback(async () => {
     if (!spotifyRef.current) return;
     try {
       await spotifyRef.current.skipToNext();
-      dispatch(nextSong());
     } catch (err) {
       console.warn("Spotify nxtSong failed", err);
       setIsError(true);
     }
-  }, [dispatch]);
+  }, []);
 
   return {
     isPlaying,

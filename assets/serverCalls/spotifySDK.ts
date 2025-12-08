@@ -1,11 +1,13 @@
 import Spotify from 'spotify-web-api-js';
 import {SongResponse} from "@/assets/serverCalls/youtube";
+import {getSpotifyRefreshToken} from "@/assets/serverCalls/spotify";
+import * as SecureStore from 'expo-secure-store';
 
 const spotify = new Spotify();
 
 export async function getSongsSpotify(query: string, token: string | null, size: number) {
-  // eslint-disable-next-line no-unused-expressions
-  if (!token) [];
+  // return early when no token
+  if (!token) return [];
 
   spotify.setAccessToken(token);
   try {
@@ -42,7 +44,15 @@ export async function getSongsSpotify(query: string, token: string | null, size:
     }
 
     return songsArray;
-  } catch {
+  } catch (e: any) {
+    if (e?.response === 'The access token expired') {
+      const newRefresh = await getSpotifyRefreshToken();
+      // persist new token and update spotify client, then retry with new token
+      await SecureStore.setItemAsync('spotify', newRefresh);
+      spotify.setAccessToken(newRefresh);
+      return getSongsSpotify(query, newRefresh, size);
+    }
+    console.error(e)
     return [];
   }
 }
