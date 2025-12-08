@@ -1,0 +1,48 @@
+import { StyleSheet } from 'react-native';
+import { Colors } from '@/assets/constants/colors';
+
+export const getPlaylistHeaderStyle = (isDark: boolean, topInset: number) => {
+  const marginTop = topInset;
+  const themeColors = isDark ? Colors.dark : Colors.light;
+
+  return StyleSheet.create({
+    headerContainer: {
+      backgroundColor: themeColors.Header.background,
+      paddingTop: marginTop,
+      paddingBottom: 16,
+      paddingHorizontal: 16,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 3,
+      elevation: 3, // Android shadow
+    },
+    headerContent: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingHorizontal: 0,
+      paddingVertical: 10,
+      height: 56,
+    },
+    backButton: {
+      width: 40,
+      height: 40,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    titleMask: {
+      fontSize: 20,
+      fontWeight: '600',
+      backgroundColor: 'transparent',
+      textAlign: 'center',
+    },
+    title: {
+      fontSize: 20,
+      fontWeight: '600',
+      textAlign: 'center',
+    },
+    spacer: {
+      width: 40,
+    },
+  });
+};

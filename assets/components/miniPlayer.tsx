@@ -1,0 +1,78 @@
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  useColorScheme,
+} from 'react-native';
+import { getMiniPlayerStyle } from '@/assets/styles_old/miniPlayer';
+import { Ionicons } from '@expo/vector-icons';
+import SpotifyIcon from './icons/SpotifyIcon';
+import AlbumPlaceholderIcon from './icons/AlbumPlaceholderIcon';
+import { Colors } from '../constants/colors';
+import { MiniPlayerProps } from '@/types/components';
+
+
+export default function MiniPlayer({
+  appTheme,
+  song,
+  onPlayPause,
+  onFavorite,
+}: MiniPlayerProps) {
+  const style = getMiniPlayerStyle(appTheme);
+
+  if (!song) {
+    return null;
+  }
+
+  return (
+    <View style={style.container}>
+      <View style={style.leftSection}>
+        {song.albumCover ? (
+          <Image source={{ uri: song.albumCover }} style={style.albumCover} />
+        ) : (
+          <View
+            style={[
+              style.albumCover,
+              {
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: Colors.dark.Text.primary,
+              },
+            ]}
+          >
+            <AlbumPlaceholderIcon
+              width={32}
+              height={32}
+              color={Colors.dark.Text.secondary}
+            />
+          </View>
+        )}
+        <View style={style.songInfo}>
+          <View style={style.titleContainer}>
+            <Text style={style.songTitle}>{song.title}</Text>
+            <SpotifyIcon width={16} height={16} />
+          </View>
+          <Text style={style.artistName}>{song.artist}</Text>
+        </View>
+      </View>
+
+      <View style={style.rightSection}>
+        <TouchableOpacity onPress={onFavorite} style={style.actionButton}>
+          <Ionicons
+            name={song.isFavorite ? 'star' : 'star-outline'}
+            size={18}
+            color={Colors.favorite}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={onPlayPause} style={style.actionButton}>
+          <Ionicons
+            name={song.isPlaying ? 'pause' : 'play'}
+            size={18}
+            color="#ffffff"
+          />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+}

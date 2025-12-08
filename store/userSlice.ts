@@ -8,6 +8,7 @@ const SET_USER = 'SET_USER';
 export interface SetUserAction {
   type: typeof SET_USER;
   payload: UserState;
+  [key: string]: any;
 }
 
 export type UserAction = SetUserAction;
