@@ -39,9 +39,9 @@ export default function CustomHeader ({ isDarkmode, page }: headerParams) {
         r.status === "fulfilled" ? r.value : []
       );
       const songs = [
-        ...(Array.isArray(ytSearchQuery) ? ytSearchQuery : [ytSearchQuery]),
-        ...songsList as SongResponse[],
-        ...spotSongs as SongResponse[],
+        ...[ytSearchQuery] as SongResponse[],
+        ...(songsList ?? []) as SongResponse[],
+        ...(spotSongs ?? []) as SongResponse[],
       ];
 
       for (let song of songs) {
@@ -54,7 +54,7 @@ export default function CustomHeader ({ isDarkmode, page }: headerParams) {
             youTubeId: song.youTubeId,
             lastFMMbId: song.lastFMMbId,
             audioUrl: song.stream,
-            source: song.type === 0 ? 'Youtube' : 'Spotify',
+            source: song.type === 2 ? 'Youtube' : 'Spotify',
           }));
         }
       }

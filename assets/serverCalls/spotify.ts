@@ -71,6 +71,5 @@ export const getSpotifyRefreshToken = async (): Promise<string> => {
   }
 
   const data = await res.json() as { accessToken: string }
-  console.log(`refreshToken ${data.accessToken}`)
   return data.accessToken;
 }

@@ -3,7 +3,7 @@ import {Platform} from "react-native";
 
 export interface SongResponse {
   "name": string,
-  "type": 0 | 1 ,
+  "type": 0 | 1 | 2 ,
   "stream": string,
   "authorName": string,
   "albumName"?: string,
@@ -22,7 +22,6 @@ export interface SongResponse {
 export async function ytGetSongByQuery (query: string): Promise<SongResponse> {
   const params = new URLSearchParams({ query, isSafari: String(Platform.OS === 'ios') });
   const API_URl = `${SERVER_LINK}/api/YouTube/getSongByQuery?${params}`;
-
   const res = await fetch(API_URl);
 
   if (!res.ok) throw res.status.toString();
@@ -31,14 +30,23 @@ export async function ytGetSongByQuery (query: string): Promise<SongResponse> {
   return data as SongResponse;
 }
 
-export async function getListOfSongsByQuery (query: string, size: number): Promise<SongResponse[]> {
+export async function getListOfSongsByQuery(
+  query: string,
+  size: number
+): Promise<SongResponse[]> {
   const params = new URLSearchParams({ query, size: String(size) });
-
   const API_URL = `${SERVER_LINK}/api/YouTube/getListOfSongsByQuery?${params}`;
 
-  const res = await fetch(API_URL);
+  const res = await fetch(API_URL, {
+    method: "GET",
+    headers: {
+      Accept: "application/json", // request JSON response
+    },
+  });
 
-  if (!res.ok) throw res.status.toString();
+  if (!res.ok) {
+    throw new Error(`Request failed with status ${res.status}`);
+  }
 
   const data = await res.json();
   return data as SongResponse[];

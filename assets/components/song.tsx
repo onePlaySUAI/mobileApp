@@ -6,11 +6,11 @@ interface songParams {
   artist: string,
   source: 'Spotify' | 'Youtube' | 'Download';
   albumCover: {
-    "small": string | null,
-    "medium": string | null,
-    "large": string | null,
-    "extraLarge": string | null,
-    "mega": string | null
+    "small": string | null | undefined,
+    "medium": string | null | undefined,
+    "large": string | null | undefined,
+    "extraLarge": string | null | undefined,
+    "mega": string | null | undefined
   },
 }
 
