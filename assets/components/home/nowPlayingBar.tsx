@@ -189,7 +189,9 @@ function FullScreen({
             source={
               song.source === "Spotify"
                 ? require("@/assets/images/spotifyLogo.png")
-                : require("@/assets/images/ytLogo.png")
+                : song.source === 'Download'
+                  ? require('@/assets/images/downloadLogo.png')
+                  : require("@/assets/images/ytLogo.png")
             }
             style={style.sourceLogo}
           />
@@ -276,7 +278,9 @@ function CompactView({
               source={
                 song.source === "Spotify"
                   ? require("@/assets/images/spotifyLogo.png")
-                  : require("@/assets/images/ytLogo.png")
+                  : song.source === 'Download'
+                    ? require('@/assets/images/downloadLogo.png')
+                    : require("@/assets/images/ytLogo.png")
               }
               style={style.sourceLogo}
             />

@@ -23,6 +23,7 @@ export default function Index() {
   const isDarkmode = useColorScheme() === 'dark';
 
   const getUser = async () => {
+    await SecureStore.deleteItemAsync('user')
     const savedUser = await SecureStore.getItemAsync("user");
 
     if (!savedUser) {

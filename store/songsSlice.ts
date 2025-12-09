@@ -89,7 +89,7 @@ export const prevSong = (): PrevSongAction => ({ type: PREV_SONG });
 
 /* Initial state */
 const initialState: SongsState = {
-  list: [], // or mockSongs for testing
+  list: mockSongs, // or mockSongs for testing
   currentIndex: null,
 };
 
