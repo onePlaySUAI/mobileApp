@@ -45,7 +45,14 @@ export async function getSongsSpotify(query: string, token: string | null, size:
 
     return songsArray;
   } catch (e: any) {
-    if (e?.response === 'The access token expired') {
+    // Check for expired access token error from Spotify API
+    if (
+      (e?.status === 401) ||
+      (e?.response?.status === 401) ||
+      (e?.response?.error?.status === 401) ||
+      (typeof e?.message === 'string' && e.message.toLowerCase().includes('access token expired')) ||
+      (typeof e?.response?.error?.message === 'string' && e.response.error.message.toLowerCase().includes('access token expired'))
+    ) {
       const newRefresh = await getSpotifyRefreshToken();
       // persist new token and update spotify client, then retry with new token
       await SecureStore.setItemAsync('spotify', newRefresh);
