@@ -11,7 +11,6 @@ export const spotifyAuthUrl = async () => {
   const encodedRedirectUrl = encodeURIComponent(redirectUrl);
 
   console.log(redirectUrl)
-  console.log(`${SERVER_LINK}/api/Spotify/authorize-url/${encodedRedirectUrl}`)
 
   const res = await fetch(`${SERVER_LINK}/api/Spotify/authorize-url/${encodedRedirectUrl}`);
 
