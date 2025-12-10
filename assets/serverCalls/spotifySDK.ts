@@ -34,10 +34,10 @@ export async function getSongsSpotify(query: string, token: string | null, size:
         type: 1,
         imageSet: {
           small: null,
-          medium: song.album.images[0].url ?? null,
-          large: song.album.images[1].url ?? null,
+          medium: song.album.images[0]?.url ?? null,
+          large: song.album.images[1]?.url ?? null,
           extraLarge: null,
-          mega: song.album.images[1].url ?? null,
+          mega: song.album.images[1]?.url ?? null,
         },
         stream: song.uri,
       } as SongResponse )
