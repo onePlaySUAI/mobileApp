@@ -33,11 +33,6 @@ export default function Home() {
 
   const style = getHomeStyle(isDarkmode);
 
-  const spotToken = useSelector((state: RootState) => state.spotify.spotifyToken)
-  const refreshToken = useSelector((state: RootState) => state.spotify.spotifyRefresh)
-
-  console.log(`h: ${spotToken}, c: ${refreshToken}`)
-
   return (
     <SafeAreaProvider style={style.safeAreaProvider}>
       <CustomHeader 
