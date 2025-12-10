@@ -15,7 +15,6 @@ export type UserAction = SetUserAction;
 const initialState: UserState = {
   name: '',
   email: '',
-  // token: '',
 };
 
 export const userReducer = (state = initialState, action: UserAction): UserState => {

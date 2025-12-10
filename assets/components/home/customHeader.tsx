@@ -4,10 +4,11 @@ import { useSafeAreaInsets, type EdgeInsets } from "react-native-safe-area-conte
 import SearchIcon from "../icons/SearchIcon";
 import { router } from "expo-router";
 import {useState} from "react";
-import {getListOfSongsByQuery, ytGetSongByQuery} from "@/assets/serverCalls/youtube";
-import {useDispatch} from "react-redux";
-import {AppDispatch} from "@/store/store";
+import {getListOfSongsByQuery, SongResponse, ytGetSongByQuery} from "@/assets/serverCalls/youtube";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "@/store/store";
 import {addSong} from "@/store/songsSlice";
+import {getSongsSpotify} from "@/assets/serverCalls/spotifySDK";
 
 interface headerParams {
   page: 'Home' | 'Library';
@@ -18,6 +19,8 @@ export default function CustomHeader ({ isDarkmode, page }: headerParams) {
   const insets: EdgeInsets = useSafeAreaInsets();
   const style = getHeaderStyle(isDarkmode, insets.top);
 
+  const spotifyAccess = useSelector((state: RootState) => state.spotify.spotifyToken);
+
   const [query, setQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
@@ -27,23 +30,31 @@ export default function CustomHeader ({ isDarkmode, page }: headerParams) {
 
     setIsLoading(true);
     try {
-      const [ytSong, listOfYtSongs] = await Promise.all([
+      const results = await Promise.allSettled([
         ytGetSongByQuery(query),
-        getListOfSongsByQuery(query, 11)
-        // Spotify...
+        getListOfSongsByQuery(query, 11),
+        getSongsSpotify(query, spotifyAccess, 11),
       ])
-      const songs = [ytSong, ...listOfYtSongs];
+      const [ytSearchQuery, songsList, spotSongs] = results.map(r =>
+        r.status === "fulfilled" ? r.value : []
+      );
+      const songs = [
+        ...[ytSearchQuery] as SongResponse[],
+        ...(songsList ?? []) as SongResponse[],
+        ...(spotSongs ?? []) as SongResponse[],
+      ];
+
       for (let song of songs) {
         if (song) {
           dispatch(addSong({
-            id: song.youTubeId,
+            id: song.youTubeId ?? song.spotifyId ?? `fallback-${Date.now()}-${Math.random()}`,
             title: song.name,
             artist: song.authorName,
             albumCover: song.imageSet,
             youTubeId: song.youTubeId,
             lastFMMbId: song.lastFMMbId,
             audioUrl: song.stream,
-            source: 'Youtube',
+            source: song.type === 2 ? 'Youtube' : 'Spotify',
           }));
         }
       }

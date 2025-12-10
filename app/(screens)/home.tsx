@@ -6,7 +6,7 @@ import CustomHeader from "@/assets/components/home/customHeader";
 import SongOptionsModal from "@/assets/components/songOptionsModal";
 import BottomNavigation from "@/assets/components/bottomNavigation";
 import NowPlayingBar from "@/assets/components/home/nowPlayingBar";
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { RootState } from "@/store/store";
 import {selectCurrentSong, SongType} from "@/store/songsSlice";
 import SongsPlaceholder from "@/assets/components/home/songsPlaceholder";
@@ -33,8 +33,6 @@ export default function Home() {
 
   const style = getHomeStyle(isDarkmode);
 
-
-  
   return (
     <SafeAreaProvider style={style.safeAreaProvider}>
       <CustomHeader 

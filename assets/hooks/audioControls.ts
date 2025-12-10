@@ -1,4 +1,3 @@
-// audioControls.ts
 import { Audio } from "expo-av";
 import { useCallback, useRef, useState } from "react";
 import {useDispatch} from "react-redux";

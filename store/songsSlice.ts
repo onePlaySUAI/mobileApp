@@ -18,7 +18,6 @@ export interface SongType {
     mega: string | null,
   };
   audioUrl: string;
-
   source: SongSource;
 }
 
@@ -90,7 +89,7 @@ export const prevSong = (): PrevSongAction => ({ type: PREV_SONG });
 
 /* Initial state */
 const initialState: SongsState = {
-  list: mockSongs,
+  list: mockSongs, // or mockSongs for testing
   currentIndex: null,
 };
 
