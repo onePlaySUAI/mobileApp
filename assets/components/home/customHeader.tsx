@@ -47,7 +47,7 @@ export default function CustomHeader ({ isDarkmode, page }: headerParams) {
       for (let song of songs) {
         if (song) {
           dispatch(addSong({
-            id: song.youTubeId ?? song.spotifyId ?? String(Symbol(song.name)),
+            id: song.youTubeId ?? song.spotifyId ?? `fallback-${Date.now()}-${Math.random()}`,
             title: song.name,
             artist: song.authorName,
             albumCover: song.imageSet,
